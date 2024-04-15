@@ -6,17 +6,13 @@
             @if ($admin_logo_img == '')
                 <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
             @else
-                <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+                <img src="{{ Voyager::image($admin_logo_img) }}"  alt="Logo Icon">
             @endif
         </div>
     </a>
     <div class="login-container">
         <x-guest-layout>
             <x-authentication-card>
-                {{-- <x-slot name="logo">
-                    <x-authentication-card-logo />
-                </x-slot> --}}
-
                 <x-validation-errors class="mb-4" />
 
                 <form method="POST" action="{{ route('register') }}">
@@ -58,7 +54,7 @@
                                     <x-checkbox name="terms" id="terms" required />
 
                                     <div class="ml-2">
-                                        {!! __('Acepto los :terms_of_service y :privacy_policy', [
+                                        {!! __('Acepto los :terms_of_service', [
                                             'terms_of_service' =>
                                                 '<a target="_blank" href="
                                                 https://www.fedetirocol.com/politica-tratamiento-de-datos/

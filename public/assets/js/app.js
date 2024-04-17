@@ -199,22 +199,22 @@ try {
         document.getElementById("error-msg").style.opacity = 0;
         document.getElementById('error-msg').innerHTML = "";
         if (name == "" || name == null) {
-            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Please enter a Name*</div>";
+            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Ingresa el Nombre*</div>";
             fadeIn();
             return false;
         }
         if (email == "" || email == null) {
-            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Please enter a Email*</div>";
+            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Ingresa el Correo*</div>";
             fadeIn();
             return false;
         }
         if (subject == "" || subject == null) {
-            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Please enter a Subject*</div>";
+            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Ingresa el Asunto*</div>";
             fadeIn();
             return false;
         }
         if (comments == "" || comments == null) {
-            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Please enter a Comments*</div>";
+            document.getElementById('error-msg').innerHTML = "<div class='alert alert-warning error_message'>*Ingresa el Mensaje*</div>";
             fadeIn();
             return false;
         }

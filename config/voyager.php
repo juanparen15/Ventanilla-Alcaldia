@@ -135,7 +135,7 @@ return [
             'voyager::generic.home' => [
                 'route'        => '/',
                 'icon_class'   => 'voyager-home',
-                'target_blank' => true,
+                // 'target_blank' => true,
             ],
             'voyager::generic.logout' => [
                 'route'      => 'voyager.logout',

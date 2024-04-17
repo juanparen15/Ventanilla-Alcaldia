@@ -70,15 +70,14 @@
                                     class="h-8 px-4 text-[12px] tracking-wider inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white uppercase">Iniciar
                                     Sesión</a>
                             </li>
-                            {{-- <li class="inline">
+                            <li class="inline">
                                 @if (Route::has('register'))
                                     <a href="{{ route('register') }}"
-                                        class="h-8 px-4 text-[12px] tracking-wider inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white uppercase">Registrarme</a>
+                                        class="h-8 px-4 text-[12px] tracking-wider inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white uppercase">Registro</a>
                                 @endif
-                            </li> --}}
+                            </li>
                         @endauth
                         {{-- </div> --}}
-
                     @endif
 
                     {{-- <li class="inline">
@@ -99,22 +98,22 @@
             <div class="navigation lg_992:order-1 lg_992:flex hidden ms-auto" id="menu-collapse">
                 <ul class="navbar-nav nav-light sidebar-nav" id="navbar-navlist">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
+                        <a class="nav-link active" href="#home">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#review">Testimonial</a>
-                    </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="#services">Servicios</a>
+                    </li> --}}
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="#review">Testimonios</a>
+                    </li> --}}
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="#pricing">Pricing</a>
-                    </li>
-                    <li class="nav-item">
+                    </li> --}}
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="#blog">Blogs</a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact us</a>
+                        <a class="nav-link" href="#contact">Contactanos</a>
                     </li>
                 </ul>
             </div>
@@ -127,22 +126,22 @@
         <div class="swiper-container absolute end-0 top-0 w-full h-full">
             <div class="swiper-wrapper">
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;"
-                        data-background="assets/images/bg/1.jpg">
+                    <?php $slider1 = Voyager::setting('site.slider1', ''); ?>
+                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
+                        data-background="{{ Voyager::image($slider1) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
                         <div class="container relative">
                             <div class="grid grid-cols-1">
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        Connect with <br> customers smartly</h1>
-                                    <p class="text-white/70 text-lg max-w-xl">This is just a simple text made for this
-                                        unique and awesome template, you can replace it with any text.</p>
-
+                                        BIENVENIDO A LA VENTANILLA <br> UNICA VIRTUAL DE FEDETIRO</h1>
+                                    {{-- <p class="text-white/70 text-lg max-w-xl">This is just a simple text made for this
+                                        unique and awesome template, you can replace it with any text.</p> --}}
                                     <div class="mt-6">
                                         <a href=""
-                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">See
-                                            More</a>
+                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
+                                            Más</a>
                                     </div>
                                 </div>
                             </div><!--end grid-->
@@ -151,22 +150,73 @@
                 </div> <!-- end swiper-slide -->
 
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center;"
-                        data-background="assets/images/bg/2.jpg">
+                    <?php $slider2 = Voyager::setting('site.slider2', ''); ?>
+                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
+                        data-background="{{ Voyager::image($slider2) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
                         <div class="container relative">
                             <div class="grid grid-cols-1">
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        Get all the <br> inspirations for your business</h1>
-                                    <p class="text-white/70 text-lg max-w-xl">This is just a simple text made for this
-                                        unique and awesome template, you can replace it with any text.</p>
+                                        PENSADO EN NUESTROS DEPORTISTAS</h1>
+                                    <p class="text-white/70 text-lg max-w-xl">HEMOS CREADO ESTA VENTANILLA UNICA QUE
+                                        LES PERMITE HACER LOS TRAMITES Y SERVICIOS DESDE CUALQUIER DISPOSITIVO.</p>
 
                                     <div class="mt-6">
                                         <a href=""
-                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">See
-                                            More</a>
+                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
+                                            Más</a>
+                                    </div>
+                                </div>
+                            </div><!--end grid-->
+                        </div><!--end container-->
+                    </div><!-- end slide-inner -->
+                </div> <!-- end swiper-slide -->
+
+                <div class="swiper-slide flex items-center overflow-hidden">
+                    <?php $slider3 = Voyager::setting('site.slider3', ''); ?>
+                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
+                        data-background="{{ Voyager::image($slider3) }}">
+                        <div class="absolute inset-0 bg-black/70"></div>
+                        <div class="container relative">
+                            <div class="grid grid-cols-1">
+                                <div class="">
+                                    <h1
+                                        class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
+                                        INFORMATE SOBRE LOS REQUISITOS <br> PARA CADA UNO DE LOS TRAMITES <br> QUE
+                                        PUEDES REALIZAR AQUI.</h1>
+                                    {{-- <p class="text-white/70 text-lg max-w-xl"></p> --}}
+
+                                    <div class="mt-6">
+                                        <a href=""
+                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
+                                            Más</a>
+                                    </div>
+                                </div>
+                            </div><!--end grid-->
+                        </div><!--end container-->
+                    </div><!-- end slide-inner -->
+                </div> <!-- end swiper-slide -->
+
+                <div class="swiper-slide flex items-center overflow-hidden">
+                    <?php $slider4 = Voyager::setting('site.slider4', ''); ?>
+                    <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
+                        data-background="{{ Voyager::image($slider4) }}">
+                        <div class="absolute inset-0 bg-black/70"></div>
+                        <div class="container relative">
+                            <div class="grid grid-cols-1">
+                                <div class="">
+                                    <h1
+                                        class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
+                                        CONOCE LOS DISTINTOS PUNTOS <br> DE ATENCIÓN PRESENCIAL <br> ESTAMOS PARA
+                                        SERVIRTE</h1>
+                                    {{-- <p class="text-white/70 text-lg max-w-xl"></p> --}}
+
+                                    <div class="mt-6">
+                                        <a href=""
+                                            class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
+                                            Más</a>
                                     </div>
                                 </div>
                             </div><!--end grid-->
@@ -195,36 +245,93 @@
                 <div class="md:col-span-6">
                     <div class="lg:me-8">
                         <div class="relative">
-                            <img src="assets/images/about.jpg" class="rounded-full shadow dark:shadow-gray-700"
-                                alt="">
+                            <?php $bg_politicas = Voyager::setting('site.bg_politicas', ''); ?>
+                            <img src="{{ Voyager::image($bg_politicas) }}"
+                                class="rounded-full shadow dark:shadow-gray-700" alt="Logo Icon">
+                            {{-- <img src="assets/images/about.jpg" class="rounded-full shadow dark:shadow-gray-700"
+                                alt=""> --}}
 
-                            <div
-                                class="absolute top-1/2 -translate-y-1/2 start-0 end-0 mx-auto size-56 flex justify-center items-center bg-white dark:bg-slate-900 rounded-full shadow dark:shadow-gray-700">
+                            {{-- <div class="absolute top-1/2 -translate-y-1/2 start-0 end-0 mx-auto size-56 flex justify-center items-center bg-white dark:bg-slate-900 rounded-full shadow dark:shadow-gray-700">
                                 <div class="text-center">
                                     <span class="text-teal-500 text-2xl font-semibold mb-0 block"><span
                                             class="counter-value text-6xl font-semibold"
                                             data-target="15">1</span>+</span>
                                     <span class="font-semibold block mt-2">Years <br> Experience</span>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
 
                 <div class="md:col-span-6">
                     <div class="lg:ms-8">
-                        <h6 class="text-teal-500 text-sm font-semibold uppercase mb-2">Who Are We ?</h6>
-                        <h3 class="font-semibold text-2xl leading-normal mb-4">We're a global stakeholder <br>
-                            relations and partnership <br> building consultancy.</h3>
+                        {{-- <h6 class="text-teal-500 text-sm font-semibold uppercase mb-2">Who Are We ?</h6> --}}
+                        <h1 class="font-semibold text-2xl leading-normal mb-4">CONOCE NUESTRAS POLÍTICAS DE SERVICIO.
+                        </h1>
 
-                        <p class="text-slate-400 max-w-xl mb-6">Get instant helpful resources about anything on the go,
-                            easily implement secure money transfer solutions, boost your daily efficiency, connect to
-                            other app users and create your own Techwind network, and much more with just a few taps.
-                            commodo consequat. Duis aute irure.</p>
+                        <p class="text-slate-400 max-w-xl mb-6">Antes de dirigirse a un punto de atención presencial de
+                            La Ventanilla Única de Servicios, por favor lea las siguientes instrucciones y
+                            recomendaciones que deberá tener en cuenta para que pueda realizar su trámite de manera
+                            eficiente, ágil y segura, y obtener el resultado esperado a su solicitud:</p>
 
-                        <a href=""
+                        <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
+                            <div class="group relative overflow-hidden">
+                                <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
+                                    <img src="assets/images/blog/01.jpg" class="group-hover:scale-110 duration-500"
+                                        alt="">
+                                </div>
+
+                                <div class="mt-6">
+                                    {{-- <a href=""
+                                        class="title text-lg font-semibold hover:text-teal-500 duration-500 ease-in-out">La
+                                        Ventanilla Única de Servicios no tiene intermediarios.</a> --}}
+                                    <h2 class="text-slate-400 mt-2">La Ventanilla Única de Servicios no tiene
+                                        intermediarios.</h2>
+
+
+                                </div>
+                            </div><!--end content-->
+
+                            <div class="group relative overflow-hidden">
+                                <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
+                                    <img src="assets/images/blog/02.jpg" class="group-hover:scale-110 duration-500"
+                                        alt="">
+                                </div>
+
+                                <div class="mt-6">
+                                    <p class="text-slate-400 mt-2">
+                                        Algunos de nuestros trámites y servicios tienen una tarifa establecida por
+                                        norma.</p>
+                                </div>
+                            </div><!--end content-->
+
+                            <div class="group relative overflow-hidden">
+                                <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
+                                    <img src="assets/images/blog/03.jpg" class="group-hover:scale-110 duration-500"
+                                        alt="">
+                                </div>
+                                <div class="mt-6">
+                                    <p class="text-slate-400 mt-2">Es posible que deba agendar su cita con
+                                        anterioridad.</p>
+
+
+                                </div>
+                            </div><!--end content-->
+                        </div><!--end grid-->
+
+                        {{-- @if (Route::has('login'))
+                            @auth
+                                <a href="{{ url('/admin') }}"
+                                    class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Dashboard</a>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Iniciar
+                                    Sesión</a>
+                            @endauth
+                        @endif --}}
+                        {{-- <a href=""
                             class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Read
-                            More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a>
+                            More <i class="mdi mdi-chevron-right align-middle ms-0.5"></i></a> --}}
                     </div>
                 </div>
             </div>
@@ -232,7 +339,7 @@
     </section><!--end section-->
     <!-- End About -->
 
-    <!-- Start Feature -->
+    {{-- <!-- Start Feature -->
     <section class="relative md:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="services">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
@@ -441,16 +548,15 @@
             </div><!--end grid-->
         </div><!--end container-->
     </section><!--end section-->
-    <!-- End Features -->
+    <!-- End Features --> --}}
 
     <!-- Start Process -->
     <section class="realtive md:py-24 py-16">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
-                <h3 class="font-semibold text-2xl leading-normal mb-4">A Performance-driven Marketing Agency</h3>
+                <h3 class="font-semibold text-2xl leading-normal mb-4">Lo que debes saber para usar</h3>
 
-                <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
-                    template, you can replace it with any text.</p>
+                <p class="text-slate-400 max-w-xl mx-auto">Nuestros Trámites y Servicios.</p>
             </div><!--end grid-->
 
             <div class="grid md:grid-cols-12 grid-cols-1 mt-6 gap-6">
@@ -463,10 +569,11 @@
                                     class="px-4 py-2 text-start text-base font-medium rounded-md w-full hover:text-teal-500 duration-500"
                                     id="profile-tab" data-tabs-target="#profile" type="button" role="tab"
                                     aria-controls="profile" aria-selected="true">
-                                    <span class="block">Step 1</span>
-                                    <span class="text-lg mt-2 block">SEO Audit</span>
-                                    <span class="block mt-2">We offer flexible and comprehensive online marketing
-                                        plans</span>
+                                    {{-- <h1 class="block">1</h1> --}}
+                                    <span class="text-lg mt-2 block">CATALOGO</span>
+                                    <span class="block mt-2">Listado de todos los Trámites y Servicios, documentos y
+                                        demás requisitos, tiempos máximos de respuesta, costos (si aplicaran), puntos de
+                                        atención presencial.</span>
                                 </button>
                             </li>
                             <li role="presentation">
@@ -474,10 +581,11 @@
                                     class="px-4 py-2 text-start text-base font-medium rounded-md w-full mt-6 duration-500"
                                     id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
                                     aria-controls="dashboard" aria-selected="false">
-                                    <span class="block">Step 2</span>
-                                    <span class="text-lg mt-2 block">Project Execution</span>
-                                    <span class="block mt-2">We offer flexible and comprehensive online marketing
-                                        plans</span>
+                                    {{-- <span class="block">Step 2</span> --}}
+                                    <span class="text-lg mt-2 block">REGISTRO Y SOLICITUD EN LÍNEA</span>
+                                    <span class="block mt-2">Puedes hacer cualquiera de los Trámites y Servicios en
+                                        Línea previo registro y validación del mismo a cualquier hora y desde cualquier
+                                        lugar, solo necesitas una computadora.</span>
                                 </button>
                             </li>
                             <li role="presentation">
@@ -485,10 +593,11 @@
                                     class="px-4 py-2 text-start text-base font-medium rounded-md w-full mt-6 duration-500"
                                     id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
                                     aria-controls="settings" aria-selected="false">
-                                    <span class="block">Step 3</span>
-                                    <span class="text-lg mt-2 block">Results & Reporting</span>
-                                    <span class="block mt-2">We offer flexible and comprehensive online marketing
-                                        plans</span>
+                                    {{-- <span class="block">Step 3</span> --}}
+                                    <span class="text-lg mt-2 block">CONSULTA Y RESPUESTA EN LÍNEA</span>
+                                    <span class="block mt-2">Desde una computadora puedes consultar a cualquier hora y
+                                        desde cualquier lugar el estado de tus solicitudes de Trámites y Servicios; el
+                                        recibido y la respuesta le es remitido siempre por correo electrónico.</span>
                                 </button>
                             </li>
                         </ul>
@@ -550,7 +659,7 @@
     </section><!--end section-->
     <!-- End Process -->
 
-    <section class="relative md:py-24 py-16 md:pt-0 pt-0">
+    {{-- <section class="relative md:py-24 py-16 md:pt-0 pt-0">
         <div class="container relative">
             <div class="grid grid-cols-1 justify-center">
                 <div class="relative z-1">
@@ -597,9 +706,9 @@
 
         <div class="absolute bottom-0 start-0 end-0 sm:h-2/3 h-4/5 bg-gradient-to-b from-teal-400 to-teal-500"></div>
     </section><!--end section-->
-    <!-- End -->
+    <!-- End --> --}}
 
-    <!-- Start Review -->
+    {{-- <!-- Start Review -->
     <section class="relative md:py-24 py-16" id="review">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
@@ -770,10 +879,10 @@
             </div><!--end grid-->
         </div><!--end container-->
     </section><!--end section-->
-    <!-- End Review-->
+    <!-- End Review--> --}}
 
     <!-- Start Pricing -->
-    <section class="relative md:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="pricing">
+    {{-- <section class="relative md:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="pricing">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
                 <h3 class="font-semibold text-2xl leading-normal mb-4">Our Pricing</h3>
@@ -896,10 +1005,10 @@
                 </div><!--end content-->
             </div><!--end grid-->
         </div>
-    </section>
+    </section> --}}
     <!-- End Pricing -->
 
-    <!-- Start Blog -->
+    {{-- <!-- Start Blog -->
     <section class="relative md:py-24 py-16" id="blog">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
@@ -993,20 +1102,26 @@
             </div><!--end grid-->
         </div><!--end container-->
     </section><!--end section-->
-    <!-- End Blog -->
+    <!-- End Blog --> --}}
 
     <section class="relative lg:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="contact">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
-                <h3 class="font-semibold text-2xl leading-normal mb-4">Get in touch </h3>
+                <h3 class="font-semibold text-2xl leading-normal mb-4">CONTACTANOS</h3>
 
-                <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
-                    template, you can replace it with any text.</p>
+                {{-- <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
+                    template, you can replace it with any text.</p> --}}
             </div><!--end grid-->
 
             <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6">
-                <div class="lg:col-span-7 md:col-span-6">
-                    <img src="assets/images/contact.svg" alt="">
+                <div class="md:col-span-6">
+                    <div class="lg:me-8">
+                        <div class="relative">
+                            <?php $bg_contact = Voyager::setting('site.bg_contact', ''); ?>
+                            <img src="{{ Voyager::image($bg_contact) }}"
+                                class="rounded-full shadow dark:shadow-gray-700" alt="Logo Icon">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="lg:col-span-5 md:col-span-6">
@@ -1017,36 +1132,36 @@
                                 <div id="simple-msg"></div>
                                 <div class="grid lg:grid-cols-12 grid-cols-1 gap-3">
                                     <div class="lg:col-span-6">
-                                        <label for="name" class="font-semibold">Your Name:</label>
+                                        <label for="name" class="font-semibold">Tu Nombre:</label>
                                         <input name="name" id="name" type="text"
                                             class="mt-2 w-full py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0"
-                                            placeholder="Name :">
+                                            placeholder="Nombre :">
                                     </div>
 
                                     <div class="lg:col-span-6">
-                                        <label for="email" class="font-semibold">Your Email:</label>
+                                        <label for="email" class="font-semibold">Tu Correo:</label>
                                         <input name="email" id="email" type="email"
                                             class="mt-2 w-full py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0"
-                                            placeholder="Email :">
+                                            placeholder="Correo :">
                                     </div>
 
                                     <div class="lg:col-span-12">
-                                        <label for="subject" class="font-semibold">Your Question:</label>
+                                        <label for="subject" class="font-semibold">Asunto:</label>
                                         <input name="subject" id="subject"
                                             class="mt-2 w-full py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0"
-                                            placeholder="Subject :">
+                                            placeholder="Asunto :">
                                     </div>
 
                                     <div class="lg:col-span-12">
-                                        <label for="comments" class="font-semibold">Your Comment:</label>
+                                        <label for="comments" class="font-semibold">Mensaje:</label>
                                         <textarea name="comments" id="comments"
                                             class="mt-2 w-full py-2 px-3 h-28 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0"
-                                            placeholder="Message :"></textarea>
+                                            placeholder="Mensaje :"></textarea>
                                     </div>
                                 </div>
                                 <button type="submit" id="submit" name="send"
-                                    class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white mt-2">Send
-                                    Message</button>
+                                    class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white mt-2">Enviar
+                                    Mensaje</button>
                             </form>
                         </div>
                     </div>
@@ -1061,46 +1176,38 @@
             <div class="container relative text-center">
                 <div class="grid lg:grid-cols-12 md:grid-cols-3 grid-cols-1 items-center">
                     <div class="lg:col-span-3 md:text-start text-center">
-                        <a href="#" class="text-[22px] focus:outline-none">
-                            <img src="assets/images/logo-light.png" class="mx-auto md:me-auto md:ms-0"
-                                alt="">
-                        </a>
+                        <?php $admin_logo_img = Voyager::setting('admin.icon_image', ''); ?>
+                        <img src="{{ Voyager::image($admin_logo_img) }}" style="height:50px!important;"
+                            class="mx-auto md:me-auto md:ms-0" alt="Logo Icon">
                     </div>
 
                     <div class="lg:col-span-5 text-center mt-6 md:mt-0">
                         <p class="mb-0">©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Upcover. Design with <i class="mdi mdi-heart text-red-600"></i> by
-                            <a href="https://shreethemes.in/" target="_blank" class="text-reset">Shreethemes</a>.
+                            </script> Fedetiro. Hecho con <i class="mdi mdi-heart text-red-600"></i> por
+                            <a href="https://armorumsgdea.net" target="_blank" class="text-reset">ARMORUM VU-SGDEA
+                                ®</a>
                         </p>
                     </div>
 
                     <ul class="lg:col-span-4 list-none md:text-end text-center mt-6 md:mt-0">
-                        <li class="inline"><a href="https://1.envato.market/upcover" target="_blank"
-                                class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
-                                    data-feather="shopping-cart" class="size-4 align-middle" title="Buy Now"></i></a>
-                        </li>
-                        <li class="inline"><a href="https://dribbble.com/shreethemes" target="_blank"
-                                class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
-                                    data-feather="dribbble" class="size-4 align-middle" title="dribbble"></i></a>
-                        </li>
-                        <li class="inline"><a href="http://linkedin.com/company/shreethemes" target="_blank"
-                                class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
-                                    data-feather="linkedin" class="size-4 align-middle" title="Linkedin"></i></a>
-                        </li>
-                        <li class="inline"><a href="https://www.facebook.com/shreethemes" target="_blank"
+                        <li class="inline"><a href="https://www.facebook.com/Fedetirocol?mibextid=ibOpuV"
+                                target="_blank"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
                                     data-feather="facebook" class="size-4 align-middle" title="facebook"></i></a>
                         </li>
-                        <li class="inline"><a href="https://www.instagram.com/shreethemes/" target="_blank"
+                        <li class="inline"><a href="https://www.instagram.com/fedetirocol/" target="_blank"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
                                     data-feather="instagram" class="size-4 align-middle" title="instagram"></i></a>
                         </li>
-                        <li class="inline"><a href="https://twitter.com/shreethemes" target="_blank"
+                        <li class="inline"><a href="https://x.com/fedetirocol?s=21" target="_blank"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
                                     data-feather="twitter" class="size-4 align-middle" title="twitter"></i></a></li>
-                        <li class="inline"><a href="mailto:support@shreethemes.in"
+                        <li class="inline"><a href="https://www.youtube.com/@eventosfedetiro" target="_blank"
+                                class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
+                                    data-feather="youtube" class="size-4 align-middle" title="youtube"></i></a></li>
+                        <li class="inline"><a href="mailto:info@fedetirocol.com"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
                                     data-feather="mail" class="size-4 align-middle" title="email"></i></a></li>
                     </ul><!--end icon-->

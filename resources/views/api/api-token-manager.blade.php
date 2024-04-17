@@ -2,7 +2,7 @@
     <!-- Generate API Token -->
     <x-form-section submit="createApiToken">
         <x-slot name="title">
-            {{ __('Create API Token') }}
+            {{ __('Crea tu API Token') }}
         </x-slot>
 
         <x-slot name="description">

@@ -10,7 +10,7 @@ class ArmorumappTercero extends Model
 {
     use HasFactory;
 
-    protected $table = 'armorumapp_tercero';
+    protected $table = 'armorumapp_terceros';
 
     public function scopeCurrentUser($query)
     {

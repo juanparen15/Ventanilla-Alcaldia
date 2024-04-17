@@ -60,7 +60,7 @@
                                 <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
                                 <input type="text" class="form-control" id="primer_nombre" name="primer_nombre"
                                     placeholder="{{ __('Primer Nombre') }}"
-                                    value="{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}">
+                                    value="{{ old('primer_nombre', $dataTypeContent->armorumapp_terceros->primer_nombre ?? '') }}">
                             </div> --}}
                             <div class="form-group">
                                 <label for="email">{{ __('voyager::generic.email') }}</label>

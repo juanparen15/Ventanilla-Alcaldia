@@ -407,6 +407,11 @@
                             <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
                             <br></br>
                             <div class="form-group">
+                                <h5 for="">{{ __('Porcentaje de Descuento') }}</h5>
+                            </div>
+                            <label>{{ Voyager::setting('admin.descuento', '0%') }}</label>
+                            <br></br>
+                            <div class="form-group">
                                 <h5 for="">{{ __('Valor Credencial') }}</h5>
                             </div>
                             <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>

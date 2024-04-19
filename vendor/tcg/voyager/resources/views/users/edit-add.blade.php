@@ -40,6 +40,21 @@
                         @endif
 
                         <div class="panel-body">
+                            @can('editRoles', $dataTypeContent)
+                                <div class="form-group">
+                                    <label for="username">{{ __('Usuario') }}</label>
+                                    <input required="true" type="text" class="form-control" id="username" name="username"
+                                        placeholder="{{ __('Usuario') }}"
+                                        value="{{ old('username', $dataTypeContent->username ?? '') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">{{ __('Correo') }}</label>
+                                    <input required="true" type="email" class="form-control" id="email" name="email"
+                                        placeholder="{{ __('Correo') }}"
+                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
+                                </div>
+                            @endcan
                             <div class="form-group">
                                 <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
                                 <input required="true" type="text" class="form-control" id="primer_nombre"
@@ -127,8 +142,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="altura">{{ __('Altura (CM)') }}</label>
-                                <input min="120" max="250" required="true" type="number" class="form-control"
-                                    id="altura" name="altura" placeholder="{{ __('Altura (CM)') }}"
+                                <input min="120" max="250" required="true" type="number"
+                                    class="form-control" id="altura" name="altura"
+                                    placeholder="{{ __('Altura (CM)') }}"
                                     value="{{ old('altura', $dataTypeContent->altura ?? '') }}">
                             </div>
                             {{-- @php

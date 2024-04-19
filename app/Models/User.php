@@ -24,7 +24,7 @@ class User extends \TCG\Voyager\Models\User
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'primer_nombre',
         'username',
         'email',
         'password',
@@ -59,4 +59,9 @@ class User extends \TCG\Voyager\Models\User
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function tercero()
+    {
+        return $this->belongsTo(ArmorumappTercero::class);
+    }
 }

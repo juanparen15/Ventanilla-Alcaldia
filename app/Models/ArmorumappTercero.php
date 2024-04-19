@@ -18,4 +18,9 @@ class ArmorumappTercero extends Model
             return $query->where('user_id', Auth::user()->id);
         }
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

@@ -13,7 +13,7 @@ class ArmorumappSolicitud extends Model
     protected $table = 'armorumapp_solicitud';
     protected $fillable = [
         // Otros campos fillable que puedas tener
-        'documento_tercero',
+        'documento_tercero', 'tipo_peticion', 'imagen',
     ];
 
 
@@ -22,12 +22,13 @@ class ArmorumappSolicitud extends Model
         if (Auth::user()->role_id == 2) {
             // $this->documento_tercero = Auth::user()->username;
             return $query->where('documento_tercero', Auth::user()->username);
-            
         } else {
             // Si el usuario no está autenticado o su role_id no es igual a 2, retornamos una consulta vacía
             // return $query->where('id', '=', null);
         }
     }
+
+
 
     protected static function boot()
     {
@@ -44,4 +45,3 @@ class ArmorumappSolicitud extends Model
         });
     }
 }
-

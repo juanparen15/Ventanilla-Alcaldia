@@ -277,8 +277,11 @@
                         <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <img src="assets/images/blog/01.jpg" class="group-hover:scale-110 duration-500"
-                                        alt="">
+                                    <?php $bg_politica1 = Voyager::setting('site.politica1', ''); ?>
+                                    <img src="{{ Voyager::image($bg_politica1) }}"
+                                        class="group-hover:scale-110 duration-500" alt="Logo Icon">
+                                    {{-- <img src="assets/images/blog/01.jpg" class="group-hover:scale-110 duration-500"
+                                        alt=""> --}}
                                 </div>
 
                                 <div class="mt-6">
@@ -294,8 +297,11 @@
 
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <img src="assets/images/blog/02.jpg" class="group-hover:scale-110 duration-500"
-                                        alt="">
+                                    <?php $bg_politica2 = Voyager::setting('site.politica2', ''); ?>
+                                    <img src="{{ Voyager::image($bg_politica2) }}"
+                                        class="group-hover:scale-110 duration-500" alt="Logo Icon">
+                                    {{-- <img src="assets/images/blog/02.jpg" class="group-hover:scale-110 duration-500"
+                                        alt=""> --}}
                                 </div>
 
                                 <div class="mt-6">
@@ -307,8 +313,11 @@
 
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <img src="assets/images/blog/03.jpg" class="group-hover:scale-110 duration-500"
-                                        alt="">
+                                    <?php $bg_politica3 = Voyager::setting('site.politica3', ''); ?>
+                                    <img src="{{ Voyager::image($bg_politica3) }}"
+                                        class="group-hover:scale-110 duration-500" alt="Logo Icon">
+                                    {{-- <img src="assets/images/blog/03.jpg" class="group-hover:scale-110 duration-500"
+                                        alt=""> --}}
                                 </div>
                                 <div class="mt-6">
                                     <p class="text-slate-400 mt-2">Es posible que deba agendar su cita con
@@ -608,10 +617,13 @@
                     <div id="myTabContent"
                         class="p-6 bg-white dark:bg-slate-900 shadow dark:shadow-gray-700 rounded-md">
                         <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <img src="assets/images/blog/01.jpg" class="shadow dark:shadow-gray-700 rounded-md"
-                                alt="">
+                            <?php $bg_catalogo = Voyager::setting('site.bg_catalogo', ''); ?>
+                            <img src="{{ Voyager::image($bg_catalogo) }}"
+                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            {{-- <img src="assets/images/blog/01.jpg" class="shadow dark:shadow-gray-700 rounded-md"
+                                alt=""> --}}
 
-                            <div class="mt-6">
+                            {{-- <div class="mt-6">
                                 <h5 class="text-lg font-medium">SEO Audit</h5>
                                 <p class="text-slate-400 mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing
                                     elit. Itaque, impedit vitae. Nobis, similique omnis cumque sapiente laboriosam animi
@@ -620,13 +632,16 @@
                                     <a href="" class="text-teal-500">Read More <i
                                             class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="hidden " id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <img src="assets/images/blog/02.jpg" class="shadow dark:shadow-gray-700 rounded-md"
-                                alt="">
+                            <?php $bg_registro = Voyager::setting('site.bg_registro', ''); ?>
+                            <img src="{{ Voyager::image($bg_registro) }}"
+                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            {{-- <img src="assets/images/blog/02.jpg" class="shadow dark:shadow-gray-700 rounded-md"
+                                alt=""> --}}
 
-                            <div class="mt-6">
+                            {{-- <div class="mt-6">
                                 <h5 class="text-lg font-medium">Project Execution</h5>
                                 <p class="text-slate-400 mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing
                                     elit. Itaque, impedit vitae. Nobis, similique omnis cumque sapiente laboriosam animi
@@ -635,13 +650,16 @@
                                     <a href="" class="text-teal-500">Read More <i
                                             class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="hidden " id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <img src="assets/images/blog/03.jpg" class="shadow dark:shadow-gray-700 rounded-md"
-                                alt="">
+                            <?php $bg_consulta = Voyager::setting('site.bg_consulta', ''); ?>
+                            <img src="{{ Voyager::image($bg_consulta) }}"
+                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            {{-- <img src="assets/images/blog/03.jpg" class="shadow dark:shadow-gray-700 rounded-md"
+                                alt=""> --}}
 
-                            <div class="mt-6">
+                            {{-- <div class="mt-6">
                                 <h5 class="text-lg font-medium">Results & Reporting</h5>
                                 <p class="text-slate-400 mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing
                                     elit. Itaque, impedit vitae. Nobis, similique omnis cumque sapiente laboriosam animi
@@ -650,7 +668,7 @@
                                     <a href="" class="text-teal-500">Read More <i
                                             class="mdi mdi-chevron-right align-middle"></i></a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -1123,7 +1141,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="lg:col-span-5 md:col-span-6">
                     <div class="lg:ms-5">
                         <div class="bg-white dark:bg-slate-900 rounded-md shadow dark:shadow-gray-700 p-6">

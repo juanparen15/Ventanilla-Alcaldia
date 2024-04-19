@@ -46,7 +46,7 @@ class ArmorumappSolicitud extends AbstractWidget
                 'text' => 'Ver ' . $string,
                 'link' => route('voyager.armorumapp-solicitud.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
+            'image' => voyager_asset('images/widget-backgrounds/02.jpg'),
         ]));
     }
 

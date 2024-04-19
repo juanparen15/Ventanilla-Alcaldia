@@ -1,15 +1,15 @@
 <x-form-section submit="updateProfileInformation">
     <x-slot name="title">
-        {{ __('Información de Perfil') }}
+        {{ __('Verificación de Perfil') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Actualiza la información de perfil y la dirección de correo electrónico de tu cuenta.') }}
+        {{ __('Verifica tu dirección de correo electrónico de tu cuenta.') }}
     </x-slot>
 
     <x-slot name="form">
         <!-- Foto de Perfil -->
-        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+        {{-- @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{ photoName: null, photoPreview: null }" class="col-span-6 sm:col-span-4">
                 <!-- Input de Archivo para la Foto de Perfil -->
                 <input type="file" class="hidden" wire:model.live="photo" x-ref="photo"
@@ -49,15 +49,15 @@
 
                 <x-input-error for="photo" class="mt-2" />
             </div>
-        @endif
+        @endif --}}
 
         <!-- Nombre -->
-        <div class="col-span-6 sm:col-span-4">
+        {{-- <div class="col-span-6 sm:col-span-4">
             <x-label for="name" value="{{ __('Nombre') }}" />
             <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required
                 autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
-        </div>
+        </div> --}}
 
         <!-- Correo Electrónico -->
         <div class="col-span-6 sm:col-span-4">

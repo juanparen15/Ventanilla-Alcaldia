@@ -114,7 +114,26 @@
                                         @include('voyager::formfields.relationship', [
                                             'options' => $row->details,
                                         ])
-                                    @else
+                                        @else
+                                        {{-- <div class="form-group">
+                                            <label for="imagen">{{ __('Imagen') }}</label>
+                                            <input type="file" accept="image/*" class="form-control" id="imagen" name="imagen"
+                                                value="{{ old('imagen', $dataTypeContent->imagen ?? '') }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="asunto">{{ __('Asunto') }}</label>
+                                            <input type="text" class="form-control" id="asunto"
+                                                name="asunto"
+                                                value="{{ old('asunto', $dataTypeContent->asunto ?? '') }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mensaje">{{ __('Mensaje') }}</label>
+                                            <textarea class="form-control" id="mensaje"
+                                                name="mensaje"
+                                                value="{{ old('mensaje', $dataTypeContent->mensaje ?? '') }}"></textarea>
+                                        </div> --}}
+
+
                                         {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                     @endif
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)

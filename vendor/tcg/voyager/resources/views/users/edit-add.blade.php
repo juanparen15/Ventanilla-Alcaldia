@@ -1,4 +1,3 @@
-
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.' . (isset($dataTypeContent->id) ? 'edit' : 'add')) . ' ' .
@@ -42,32 +41,280 @@
 
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::generic.name') }}</label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="{{ __('voyager::generic.name') }}"
-                                    value="{{ old('name', $dataTypeContent->name ?? '') }}">
+                                <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
+                                <input required="true" type="text" class="form-control" id="primer_nombre"
+                                    name="primer_nombre" placeholder="{{ __('Primer Nombre') }}"
+                                    value="{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="username">{{ __('Nombre de Usuario') }}</label>
-                                <input type="text" class="form-control" id="username" name="username"
-                                    placeholder="{{ __('Nombre de Usuario') }}"
-                                    value="{{ old('username', $dataTypeContent->username ?? '') }}">
+                                <label for="segundo_nombre">{{ __('Segundo Nombre') }}</label>
+                                <input type="text" class="form-control" id="segundo_nombre" name="segundo_nombre"
+                                    placeholder="{{ __('Segundo Nombre') }}"
+                                    value="{{ old('segundo_nombre', $dataTypeContent->segundo_nombre ?? '') }}">
                             </div>
-                            
 
-                            {{-- <div class="form-group">
-                                <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
-                                <input type="text" class="form-control" id="primer_nombre" name="primer_nombre"
-                                    placeholder="{{ __('Primer Nombre') }}"
-                                    value="{{ old('primer_nombre', $dataTypeContent->armorumapp_terceros->primer_nombre ?? '') }}">
+                            <div class="form-group">
+                                <label for="primer_apellido">{{ __('Primer Apellido') }}</label>
+                                <input required="true" type="text" class="form-control" id="primer_apellido"
+                                    name="primer_apellido" placeholder="{{ __('Primer Apellido') }}"
+                                    value="{{ old('primer_apellido', $dataTypeContent->primer_apellido ?? '') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="segundo_apellido">{{ __('Segundo Apellido') }}</label>
+                                <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido"
+                                    placeholder="{{ __('Segundo Apellido') }}"
+                                    value="{{ old('segundo_apellido', $dataTypeContent->segundo_apellido ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="movil">{{ __('Móvil') }}</label>
+                                <input required="true" type="number" class="form-control" id="movil" name="movil"
+                                    placeholder="{{ __('Móvil') }}"
+                                    value="{{ old('movil', $dataTypeContent->movil ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">{{ __('Dirección') }}</label>
+                                <input required="true" type="text" class="form-control" id="direccion" name="direccion"
+                                    placeholder="{{ __('Dirección') }}"
+                                    value="{{ old('direccion', $dataTypeContent->direccion ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="fecha_nacimiento">{{ __('Fecha de Nacimiento') }}</label>
+                                <input required="true" type="date" class="form-control" id="fecha_nacimiento"
+                                    name="fecha_nacimiento" placeholder="{{ __('Fecha de Nacimiento') }}"
+                                    value="{{ old('fecha_nacimiento', $dataTypeContent->fecha_nacimiento ?? '') }}">
+                            </div>
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Lugar Nacimiento') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Lugar Nacimiento') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div> --}}
                             <div class="form-group">
+                                <label for="peso">{{ __('Peso (KG)') }}</label>
+                                <input min="30" max="200" required="true" type="number" class="form-control"
+                                    id="peso" name="peso" placeholder="{{ __('Peso KG') }}"
+                                    value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="altura">{{ __('Altura (CM)') }}</label>
+                                <input min="120" max="250" required="true" type="number" class="form-control"
+                                    id="altura" name="altura" placeholder="{{ __('Altura (CM)') }}"
+                                    value="{{ old('altura', $dataTypeContent->altura ?? '') }}">
+                            </div>
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Estado Civil') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Género') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            <div class="form-group">
+                                <label for="inicio_competencia">{{ __('Inicio Competencia') }}</label>
+                                <input required="true" type="date" class="form-control" id="inicio_competencia"
+                                    name="inicio_competencia" placeholder="{{ __('Inicio Competencia') }}"
+                                    value="{{ old('inicio_competencia', $dataTypeContent->inicio_competencia ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="practicando_tiro_desde">{{ __('Practica Tiro Desde') }}</label>
+                                <input required="true" type="date" class="form-control" id="practicando_tiro_desde"
+                                    name="practicando_tiro_desde" placeholder="{{ __('Practica Tiro Desde') }}"
+                                    value="{{ old('practicando_tiro_desde', $dataTypeContent->practicando_tiro_desde ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="entrenador_personal">{{ __('Entrenador Personal') }}</label>
+                                <input required="true" type="text" class="form-control" id="entrenador_personal"
+                                    name="entrenador_personal" placeholder="{{ __('Entrenador Personal') }}"
+                                    value="{{ old('entrenador_personal', $dataTypeContent->entrenador_personal ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="entrenador_nacional">{{ __('Entrenador Nacional') }}</label>
+                                <input required="true" type="text" class="form-control" id="entrenador_nacional"
+                                    name="entrenador_nacional" placeholder="{{ __('Entrenador Nacional') }}"
+                                    value="{{ old('entrenador_nacional', $dataTypeContent->entrenador_nacional ?? '') }}">
+                            </div>
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Lateralidad') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Ojo Maestro') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Liga') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Club') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            <div class="form-group">
+                                <label for="medico_tramitante">{{ __('Medico Tratante') }}</label>
+                                <input required="true" type="text" class="form-control" id="medico_tramitante"
+                                    name="medico_tramitante" placeholder="{{ __('Medico Tratante') }}"
+                                    value="{{ old('medico_tramitante', $dataTypeContent->medico_tramitante ?? '') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="lugar_entrenamiento">{{ __('Lugar de Entrenamiento') }}</label>
+                                <input required="true" type="text" class="form-control" id="lugar_entrenamiento"
+                                    name="lugar_entrenamiento" placeholder="{{ __('Lugar de Entrenamiento') }}"
+                                    value="{{ old('lugar_entrenamiento', $dataTypeContent->lugar_entrenamiento ?? '') }}">
+                            </div>
+
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Tipos de Arma') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            {{-- @php
+                            if (isset($dataTypeContent->lugar_nacimiento)) {
+                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                            } else {
+                                $selected_lugar_nacimiento = config('app.locale', '');
+                            }
+                        @endphp
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">{{ __('Modalidad de Arma') }}</label>
+                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
+                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento }}"
+                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+
+
+                            {{-- <div class="form-group">
                                 <label for="email">{{ __('voyager::generic.email') }}</label>
                                 <input type="email" class="form-control" id="email" name="email"
                                     placeholder="{{ __('voyager::generic.email') }}"
                                     value="{{ old('email', $dataTypeContent->email ?? '') }}">
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <label for="password">{{ __('voyager::generic.password') }}</label>
@@ -75,8 +322,8 @@
                                     <br>
                                     <small>{{ __('voyager::profile.password_hint') }}</small>
                                 @endif
-                                <input type="password" class="form-control" id="password" name="password" value=""
-                                    autocomplete="new-password">
+                                <input type="password" class="form-control" id="password" name="password"
+                                    value="" autocomplete="new-password">
                             </div>
 
                             @can('editRoles', $dataTypeContent)
@@ -136,19 +383,48 @@
                                 @endif
                                 <input type="file" data-name="avatar" name="avatar">
                             </div>
+                            <div class="form-group">
+                                <h5 for="username">{{ __('Número de Documento') }}</h5>
+                            </div>
+                            <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="primer_nombre">{{ __('Nombre Completo') }}</h5>
+                            </div>
+                            <label for="primer_nombre">{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}
+                                {{ old('segundo_nombre', $dataTypeContent->segundo_nombre ?? '') }}
+                                {{ old('primer_apellido', $dataTypeContent->primer_apellido ?? '') }}
+                                {{ old('segundo_apellido', $dataTypeContent->segundo_apellido ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="direccion">{{ __('Dirección') }}</h5>
+                            </div>
+                            <label for="direccion">{{ old('direccion', $dataTypeContent->direccion ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="movil">{{ __('Móvil') }}</h5>
+                            </div>
+                            <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="">{{ __('Valor Credencial') }}</h5>
+                            </div>
+                            <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
                         </div>
                     </div>
+
                 </div>
             </div>
+    </div>
 
-            <button type="submit" class="btn btn-primary pull-right save">
-                {{ __('voyager::generic.save') }}
-            </button>
-        </form>
-        <div style="display:none">
-            <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
-            <input type="hidden" id="upload_type_slug" value="{{ $dataType->slug }}">
-        </div>
+    <button type="submit" class="btn btn-primary pull-right save">
+        {{ __('voyager::generic.save') }}
+    </button>
+    </form>
+    <div style="display:none">
+        <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
+        <input type="hidden" id="upload_type_slug" value="{{ $dataType->slug }}">
+    </div>
     </div>
 @stop
 

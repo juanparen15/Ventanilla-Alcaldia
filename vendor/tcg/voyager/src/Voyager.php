@@ -30,6 +30,8 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use \App\Models\ArmorumappEstadocivil;
+use App\Models\ArmorumappLugar;
+use App\Models\Genero;
 use App\Models\TipoDocumento;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
@@ -370,5 +372,15 @@ class Voyager
     public function tipoDocumento()
     {
         return TipoDocumento::all();
+    }
+
+    public function lugarNacimiento()
+    {
+        return ArmorumappLugar::all();
+    }
+
+    public function genero()
+    {
+        return Genero::all();
     }
 }

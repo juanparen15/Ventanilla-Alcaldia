@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -59,4 +60,18 @@ class ArmorumappUser extends \TCG\Voyager\Models\User
     protected $appends = [
         'profile_photo_url',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Utiliza el evento creating para establecer el campo documento_tercero
+        static::creating(function ($solicitud) {
+            // Verifica si hay un usuario autenticado
+            if (Auth::check()) {
+                // Establece el valor del campo documento_tercero como el nombre de usuario del usuario autenticado
+                $solicitud->documento_tercero = Auth::user()->username;
+            }
+        });
+    }
 }

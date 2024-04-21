@@ -460,7 +460,7 @@
                                     <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image($dataTypeContent->avatar) }}"
                                         style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
                                 @endif
-                                <input type="file" data-name="avatar" name="avatar">
+                                <input type="file" data-name="avatar" accept="image/*" name="avatar">
                             </div>
                             <div class="form-group">
                                 <h5 for="username">{{ __('Número de Documento') }}</h5>

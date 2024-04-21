@@ -55,6 +55,27 @@
                                         value="{{ old('email', $dataTypeContent->email ?? '') }}">
                                 </div>
                             @endcan
+
+                            @php
+                                if (isset($dataTypeContent->tipo_documento)) {
+                                    $selected_tipo_documento = $dataTypeContent->tipo_documento;
+                                } else {
+                                    $selected_tipo_documento = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="tipo_documento">{{ __('Tipo Documento') }}</label>
+                                <select class="form-control select2" id="tipo_documento" name="tipo_documento">
+                                    @foreach (Voyager::tipoDocumento() as $tipo_documento)
+                                        <option value="{{ $tipo_documento->id }}"
+                                            {{ $tipo_documento->id == $selected_tipo_documento ? 'selected' : '' }}>
+                                            {{ $tipo_documento->tipo_documento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
                                 <input required="true" type="text" class="form-control" id="primer_nombre"
@@ -136,8 +157,9 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="peso">{{ __('Peso (KG)') }}</label>
-                                <input min="30" max="200" required="true" type="number" class="form-control"
-                                    id="peso" name="peso" placeholder="{{ __('Peso KG') }}"
+                                <input min="30" max="200" required="true" type="number"
+                                    class="form-control" id="peso" name="peso"
+                                    placeholder="{{ __('Peso KG') }}"
                                     value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
                             </div>
                             <div class="form-group">
@@ -147,23 +169,25 @@
                                     placeholder="{{ __('Altura (CM)') }}"
                                     value="{{ old('altura', $dataTypeContent->altura ?? '') }}">
                             </div>
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
+                            @php
+                                if (isset($dataTypeContent->estado_civil)) {
+                                    $selected_estado_civil = $dataTypeContent->estado_civil;
+                                } else {
+                                    $selected_estado_civil = null; // Cambia '' por null
+                                }
+                            @endphp
                             <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Estado Civil') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                <label for="estado_civil">{{ __('Estado Civil') }}</label>
+                                <select class="form-control select2" id="estado_civil" name="estado_civil">
+                                    @foreach (Voyager::estadoCivil() as $estado_civil)
+                                        <option value="{{ $estado_civil->id }}"
+                                            {{ $estado_civil->id == $selected_estado_civil ? 'selected' : '' }}>
+                                            {{ $estado_civil->estado_civil }} {{-- Ajusta esto según la estructura de tu modelo --}}
                                         </option>
                                     @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
+
                             {{-- @php
                             if (isset($dataTypeContent->lugar_nacimiento)) {
                                 $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;

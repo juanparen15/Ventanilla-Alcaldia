@@ -29,6 +29,9 @@ use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
+use \App\Models\ArmorumappEstadocivil;
+use App\Models\TipoDocumento;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
 
 class Voyager
@@ -64,6 +67,7 @@ class Voyager
         'Setting'     => Setting::class,
         'User'        => User::class,
         'Translation' => Translation::class,
+        // 'ArmorumappEstadocivil' => ArmorumappEstadocivil::class,
     ];
 
     public $setting_cache = null;
@@ -269,7 +273,7 @@ class Voyager
 
     public function routes()
     {
-        require __DIR__.'/../routes/voyager.php';
+        require __DIR__ . '/../routes/voyager.php';
     }
 
     public function getVersion()
@@ -350,11 +354,21 @@ class Voyager
             $appLocales = array_diff(scandir(resource_path('lang/vendor/voyager')), ['..', '.']);
         }
 
-        $vendorLocales = array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
+        $vendorLocales = array_diff(scandir(realpath(__DIR__ . '/../publishable/lang')), ['..', '.']);
         $allLocales = array_merge($vendorLocales, $appLocales);
 
         asort($allLocales);
 
         return $allLocales;
+    }
+
+    public function estadoCivil()
+    {
+        return ArmorumappEstadocivil::all();
+    }
+
+    public function tipoDocumento()
+    {
+        return TipoDocumento::all();
     }
 }

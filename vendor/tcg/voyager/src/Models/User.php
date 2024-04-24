@@ -52,13 +52,13 @@ class User extends Authenticatable implements UserContract
         return UserFactory::new();
     }
 
-    public function setEstadoCivilAttribute($value)
-    {
-        $this->attributes['estado_civil'] = $value;
-    }
+    // public function setEstadoCivilAttribute($value)
+    // {
+    //     $this->attributes['estado_civil'] = $value;
+    // }
 
-    public function getEstadoCivilAttribute()
-    {
-        return $this->attributes['estado_civil'];
-    }
+    // public function getEstadoCivilAttribute()
+    // {
+    //     return $this->attributes['estado_civil'];
+    // }
 }

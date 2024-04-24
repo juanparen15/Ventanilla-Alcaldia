@@ -31,7 +31,11 @@ use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use \App\Models\ArmorumappEstadocivil;
 use App\Models\ArmorumappLugar;
+use App\Models\Departamentos;
 use App\Models\Genero;
+use App\Models\Lateralidad;
+use App\Models\Municipios;
+use App\Models\OjoMaestro;
 use App\Models\TipoDocumento;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
@@ -69,7 +73,6 @@ class Voyager
         'Setting'     => Setting::class,
         'User'        => User::class,
         'Translation' => Translation::class,
-        // 'ArmorumappEstadocivil' => ArmorumappEstadocivil::class,
     ];
 
     public $setting_cache = null;
@@ -383,4 +386,24 @@ class Voyager
     {
         return Genero::all();
     }
+
+    public function lateralidad()
+    {
+        return Lateralidad::all();
+    }
+
+    public function ojo_maestro()
+    {
+        return OjoMaestro::all();
+    }
+
+    public function departamentos()
+    {
+        return Departamentos::all();
+    }
+    public function municipios()
+    {
+        return Municipios::all();
+    }
+
 }

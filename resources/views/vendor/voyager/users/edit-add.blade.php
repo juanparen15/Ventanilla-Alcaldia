@@ -74,8 +74,10 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
+                            <div class="form-group">
+                                <label for="username">{{ __('Número de Documento') }}</label>
+                                <h5 for="username">{{ old('username', $dataTypeContent->username ?? '') }}</h5>
+                            </div>
                             <div class="form-group">
                                 <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
                                 <input required="true" type="text" class="form-control" id="primer_nombre"
@@ -121,7 +123,7 @@
                                     name="fecha_nacimiento" placeholder="{{ __('Fecha de Nacimiento') }}"
                                     value="{{ old('fecha_nacimiento', $dataTypeContent->fecha_nacimiento ?? '') }}">
                             </div>
-                            @php
+                            {{-- @php
                                 if (isset($dataTypeContent->lugar_nacimiento)) {
                                     $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
                                 } else {
@@ -138,39 +140,77 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
+
                             @php
-                                if (isset($dataTypeContent->lugar_nacimiento)) {
-                                    $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                                if (isset($dataTypeContent->departamentos)) {
+                                    $selected_departamentos = $dataTypeContent->departamentos;
                                 } else {
-                                    $selected_lugar_nacimiento = null; // Cambia '' por null
+                                    $selected_departamentos = null; // Cambia '' por null
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Lugar de Nacimiento') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::lugarNacimiento() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento->id }}"
-                                            {{ $lugar_nacimiento->id == $selected_lugar_nacimiento ? 'selected' : '' }}>
-                                            {{ $lugar_nacimiento->nombre_lugar }}
+                                <label for="departamentos">{{ __('Departamento') }}</label>
+                                <select class="form-control select2" id="departamentos" name="departamentos">
+                                    @foreach (Voyager::departamentos() as $departamento)
+                                        <option value="{{ $departamento->id }}"
+                                            {{ $departamento->id == $selected_departamentos ? 'selected' : '' }}>
+                                            {{ $departamento->departamento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @php
+                                if (isset($dataTypeContent->municipios)) {
+                                    $selected_municipios = $dataTypeContent->municipios;
+                                } else {
+                                    $selected_municipios = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="municipios">{{ __('Municipio') }}</label>
+                                <select class="form-control select2" id="municipios" name="municipios">
+                                    @foreach (Voyager::municipios() as $municipio)
+                                        <option value="{{ $municipio->id }}"
+                                            {{ $municipio->id == $selected_municipios ? 'selected' : '' }}>
+                                            {{ $municipio->municipio }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
+
+                            {{-- <div class="form-group">
+                                    <label for="municipios">{{ __('Municipio') }}</label>
+                                    <select class="select2 @error('municipios') is-invalid @enderror" name="municipios"
+                                        id="municipios" style="width: 100%;">
+                                        @foreach (Voyager::municipios() as $municipio)
+                                            <option value="{{ $municipio->id }}"
+                                                {{ old('municipio', $municipio->id) == $municipio->id ? 'selected' : '' }}>
+                                                {{ $municipio->municipio }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('municipio')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div> --}}
+
                             {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
+                                if (isset($dataTypeContent->lugar_nacimiento)) {
+                                    $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
+                                } else {
+                                    $selected_lugar_nacimiento = null; // Cambia '' por null
+                                }
+                            @endphp
                             <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Lugar Nacimiento') }}</label>
+                                <label for="lugar_nacimiento">{{ __('Lugar de Nacimiento') }}</label>
                                 <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                    @foreach (Voyager::lugarNacimiento() as $lugar_nacimiento)
+                                        <option value="{{ $lugar_nacimiento->id }}"
+                                            {{ $lugar_nacimiento->id == $selected_lugar_nacimiento ? 'selected' : '' }}>
+                                            {{ $lugar_nacimiento->nombre_lugar }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -226,24 +266,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Género') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
                             <div class="form-group">
                                 <label for="inicio_competencia">{{ __('Inicio Competencia') }}</label>
                                 <input required="true" type="date" class="form-control" id="inicio_competencia"
@@ -268,75 +290,44 @@
                                     name="entrenador_nacional" placeholder="{{ __('Entrenador Nacional') }}"
                                     value="{{ old('entrenador_nacional', $dataTypeContent->entrenador_nacional ?? '') }}">
                             </div>
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Lateralidad') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Ojo Maestro') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Liga') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Club') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
 
+                            @php
+                                if (isset($dataTypeContent->lateralidad)) {
+                                    $selected_lateralidad = $dataTypeContent->lateralidad;
+                                } else {
+                                    $selected_lateralidad = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="lateralidad">{{ __('Lateralidad') }}</label>
+                                <select class="form-control select2" id="lateralidad" name="lateralidad">
+                                    @foreach (Voyager::lateralidad() as $lateralidad)
+                                        <option value="{{ $lateralidad->id }}"
+                                            {{ $lateralidad->id == $selected_lateralidad ? 'selected' : '' }}>
+                                            {{ $lateralidad->lateralidad }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @php
+                                if (isset($dataTypeContent->ojo_maestro)) {
+                                    $selected_ojo_maestro = $dataTypeContent->ojo_maestro;
+                                } else {
+                                    $selected_ojo_maestro = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="ojo_maestro">{{ __('Ojo Maestro') }}</label>
+                                <select class="form-control select2" id="ojo_maestro" name="ojo_maestro">
+                                    @foreach (Voyager::ojo_maestro() as $ojo_maestro)
+                                        <option value="{{ $ojo_maestro->id }}"
+                                            {{ $ojo_maestro->id == $selected_ojo_maestro ? 'selected' : '' }}>
+                                            {{ $ojo_maestro->ojoMaestro }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label for="medico_tramitante">{{ __('Medico Tratante') }}</label>
                                 <input required="true" type="text" class="form-control" id="medico_tramitante"
@@ -516,6 +507,40 @@
     <script>
         $('document').ready(function() {
             $('.toggleswitch').bootstrapToggle();
+        });
+    </script>
+
+
+
+    <script>
+        var departamentos = $('#departamentos');
+        var municipios = $('#municipios');
+
+        $(document).ready(function() {
+            departamentos.change(function() {
+                var departamentos = $(this).val();
+                // console.log("Cambio en departamentos detectado");
+                if (departamentos) {
+                    $.get('/get-municipios/' + departamentos, function(data) {
+                        $('#municipios').empty();
+
+
+                        $('#municipios').append(
+                            '<option disabled selected>Seleccione un Municipio</option>'
+                        );
+                        $.each(data, function(key, value) {
+                            $('#municipios').append('<option value="' + value.id +
+                                '" name="' + value.id + '">' + value
+                                .municipio + '</option>');
+                        });
+                        // Selecciona automáticamente la primera opción
+                        $('#municipios').val($('#municipios option:first').val());
+                    });
+                } else {
+                    // Si no se selecciona ningun departamento, limpia la lista de municipios
+                    $('#municipios').empty();
+                }
+            });
         });
     </script>
 @stop

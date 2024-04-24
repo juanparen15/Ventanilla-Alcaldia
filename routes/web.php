@@ -39,3 +39,7 @@ Route::middleware([
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+
+// Route::get('/get-municipios/{departamento}', 'AjaxController@obtener_municipios');
+Route::get('/get-municipios/{departamento}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_municipios');

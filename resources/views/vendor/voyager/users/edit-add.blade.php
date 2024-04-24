@@ -152,6 +152,7 @@
                             <div class="form-group">
                                 <label for="departamentos">{{ __('Departamento') }}</label>
                                 <select class="form-control select2" id="departamentos" name="departamentos">
+                                    <option value="" disabled selected>Seleccione un Departamento</option>
                                     @foreach (Voyager::departamentos() as $departamento)
                                         <option value="{{ $departamento->id }}"
                                             {{ $departamento->id == $selected_departamentos ? 'selected' : '' }}>
@@ -170,6 +171,7 @@
                             <div class="form-group">
                                 <label for="municipios">{{ __('Municipio') }}</label>
                                 <select class="form-control select2" id="municipios" name="municipios">
+                                    <option value="" disabled selected>Seleccione un Municipio</option>
                                     @foreach (Voyager::municipios() as $municipio)
                                         <option value="{{ $municipio->id }}"
                                             {{ $municipio->id == $selected_municipios ? 'selected' : '' }}>
@@ -178,24 +180,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
-                            {{-- <div class="form-group">
-                                    <label for="municipios">{{ __('Municipio') }}</label>
-                                    <select class="select2 @error('municipios') is-invalid @enderror" name="municipios"
-                                        id="municipios" style="width: 100%;">
-                                        @foreach (Voyager::municipios() as $municipio)
-                                            <option value="{{ $municipio->id }}"
-                                                {{ old('municipio', $municipio->id) == $municipio->id ? 'selected' : '' }}>
-                                                {{ $municipio->municipio }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('municipio')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div> --}}
 
                             {{-- @php
                                 if (isset($dataTypeContent->lugar_nacimiento)) {
@@ -328,6 +312,48 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            @php
+                                if (isset($dataTypeContent->liga)) {
+                                    $selected_liga = $dataTypeContent->liga;
+                                } else {
+                                    $selected_liga = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="liga">{{ __('Liga') }}</label>
+                                <select class="form-control select2" id="liga" name="liga">
+                                    <option value="" disabled selected>Seleccione una Liga</option>
+                                    @foreach (Voyager::liga() as $liga)
+                                        <option value="{{ $liga->id }}"
+                                            {{ $liga->id == $selected_liga ? 'selected' : '' }}>
+                                            {{ $liga->liga }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @php
+                                if (isset($dataTypeContent->club)) {
+                                    $selected_club = $dataTypeContent->club;
+                                } else {
+                                    $selected_club = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="club">{{ __('Club') }}</label>
+                                <select class="form-control select2" id="club" name="club">
+                                    <option value="" disabled selected>Seleccione un Club</option>
+                                    @foreach (Voyager::club() as $club)
+                                        <option value="{{ $club->id }}"
+                                            {{ $club->id == $selected_club ? 'selected' : '' }}>
+                                            {{ $club->club }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="medico_tramitante">{{ __('Medico Tratante') }}</label>
                                 <input required="true" type="text" class="form-control" id="medico_tramitante"
@@ -341,41 +367,48 @@
                                     value="{{ old('lugar_entrenamiento', $dataTypeContent->lugar_entrenamiento ?? '') }}">
                             </div>
 
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Tipos de Arma') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
 
-                            {{-- @php
-                            if (isset($dataTypeContent->lugar_nacimiento)) {
-                                $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                            } else {
-                                $selected_lugar_nacimiento = config('app.locale', '');
-                            }
-                        @endphp
+                            @php
+                                if (isset($dataTypeContent->tipo_arma)) {
+                                    $selected_tipo_arma = $dataTypeContent->tipo_arma;
+                                } else {
+                                    $selected_tipo_arma = null; // Cambia '' por null
+                                }
+                            @endphp
                             <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Modalidad de Arma') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::getLocales() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento }}"
-                                            {{ $lugar_nacimiento == $lugar_nacimiento ? 'selected' : '' }}>{{ $lugar_nacimiento }}
+                                <label for="tipo_arma">{{ __('Tipo Arma') }}</label>
+                                <select multiple class="form-control select2" id="tipo_arma"
+                                    name="tipo_arma[]">
+                                    {{-- <option value="" disabled selected>Seleccione uno o varios Tipos de Arma</option> --}}
+                                    @foreach (Voyager::tipo_arma() as $tipo_arma)
+                                        <option value="{{ $tipo_arma->id }}"
+                                            {{ $tipo_arma->id == $selected_tipo_arma ? 'selected' : '' }}>
+                                            {{ $tipo_arma->arma }}
                                         </option>
                                     @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
+
+                            @php
+                                if (isset($dataTypeContent->modalidad_arma)) {
+                                    $selected_modalidad_arma = $dataTypeContent->modalidad_arma;
+                                } else {
+                                    $selected_modalidad_arma = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="modalidad_arma">{{ __('Modalidad de Arma') }}</label>
+                                <select multiple class="form-control select2" id="modalidad_arma"
+                                    name="modalidad_arma[]">
+                                    {{-- <option value="" disabled selected>Seleccione uno o varias Modalidades de Arma</option> --}}
+                                    @foreach (Voyager::modalidad_arma() as $modalidad_arma)
+                                        <option value="{{ $modalidad_arma->id }}"
+                                            {{ $modalidad_arma->id == $selected_modalidad_arma ? 'selected' : '' }}>
+                                            {{ $modalidad_arma->modalidad }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
 
 
@@ -539,6 +572,38 @@
                 } else {
                     // Si no se selecciona ningun departamento, limpia la lista de municipios
                     $('#municipios').empty();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        var liga = $('#liga');
+        var club = $('#club');
+
+        $(document).ready(function() {
+            liga.change(function() {
+                var liga = $(this).val();
+                // console.log("Cambio en liga detectado");
+                if (liga) {
+                    $.get('/get-club/' + liga, function(data) {
+                        $('#club').empty();
+
+
+                        $('#club').append(
+                            '<option disabled selected>Seleccione un Club</option>'
+                        );
+                        $.each(data, function(key, value) {
+                            $('#club').append('<option value="' + value.id +
+                                '" name="' + value.id + '">' + value
+                                .club + '</option>');
+                        });
+                        // Selecciona automáticamente la primera opción
+                        $('#club').val($('#club option:first').val());
+                    });
+                } else {
+                    // Si no se selecciona ningun departamento, limpia la lista de municipios
+                    $('#club').empty();
                 }
             });
         });

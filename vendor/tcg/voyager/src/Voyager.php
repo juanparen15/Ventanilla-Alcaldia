@@ -31,11 +31,15 @@ use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use \App\Models\ArmorumappEstadocivil;
 use App\Models\ArmorumappLugar;
+use App\Models\Club;
 use App\Models\Departamentos;
 use App\Models\Genero;
 use App\Models\Lateralidad;
+use App\Models\Liga;
+use App\Models\ModalidadArma;
 use App\Models\Municipios;
 use App\Models\OjoMaestro;
+use App\Models\TipoArma;
 use App\Models\TipoDocumento;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use TCG\Voyager\Traits\Translatable;
@@ -404,6 +408,26 @@ class Voyager
     public function municipios()
     {
         return Municipios::all();
+    }
+
+    public function liga()
+    {
+        return Liga::all();
+    }
+
+    public function club()
+    {
+        return Club::all();
+    }
+
+    public function tipo_arma()
+    {
+        return TipoArma::all();
+    }
+
+    public function modalidad_arma()
+    {
+        return ModalidadArma::all();
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Models;
 
+use App\Models\ModalidadArma;
+use App\Models\TipoArma;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -52,13 +54,4 @@ class User extends Authenticatable implements UserContract
         return UserFactory::new();
     }
 
-    // public function setEstadoCivilAttribute($value)
-    // {
-    //     $this->attributes['estado_civil'] = $value;
-    // }
-
-    // public function getEstadoCivilAttribute()
-    // {
-    //     return $this->attributes['estado_civil'];
-    // }
 }

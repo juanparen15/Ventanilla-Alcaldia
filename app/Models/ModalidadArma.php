@@ -10,20 +10,10 @@ class ModalidadArma extends Model
     use HasFactory;
     protected $table = 'modalidad_arma';
 
-    protected $fillable = ['tipo_arma'];
+    protected $fillable = ['tipo_arma', 'modalidad'];
 
-
-    public function setTipormaAttribute($value)
+    public function tipoArma()
     {
-        $this->attributes['tipo_arma'] = json_encode($value);
-    }
-
-    /**
-     * Get the tipo_arma
-     *
-     */
-    public function getTipormaAttribute($value)
-    {
-        return $this->attributes['tipo_arma'] = json_decode($value);
+        return $this->belongsTo(TipoArma::class, 'tipo_arma');
     }
 }

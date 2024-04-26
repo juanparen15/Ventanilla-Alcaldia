@@ -60,4 +60,15 @@ class User extends \TCG\Voyager\Models\User
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function modalidadesArma()
+    {
+        return $this->belongsToMany(ModalidadArma::class, 'arma_modalidad', 'user_id', 'modalidad_arma_id');
+    }
+
+    public function tiposArma()
+    {
+        return $this->belongsToMany(TipoArma::class, 'arma_modalidad', 'user_id', 'tipo_arma_id');
+    }
+
 }

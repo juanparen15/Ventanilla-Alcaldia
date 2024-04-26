@@ -42,6 +42,7 @@ use App\Models\OjoMaestro;
 use App\Models\TipoArma;
 use App\Models\TipoDocumento;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use TCG\Voyager\Traits\Translatable;
 
 class Voyager

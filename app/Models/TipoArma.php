@@ -9,8 +9,6 @@ class TipoArma extends Model
 {
     use HasFactory;
     protected $table = 'tipo_arma';
-    protected $fillable = ['arma'];
-
 
     // public function setArmaAttribute($value)
     // {

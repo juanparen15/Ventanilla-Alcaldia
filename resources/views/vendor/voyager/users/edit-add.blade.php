@@ -369,46 +369,42 @@
 
 
                             @php
-                                if (isset($dataTypeContent->tipo_arma)) {
-                                    $selected_tipo_arma = $dataTypeContent->tipo_arma;
-                                } else {
-                                    $selected_tipo_arma = null; // Cambia '' por null
-                                }
+                                // Decodificar los datos almacenados en formato JSON
+                                $selected_tipo_arma = isset($dataTypeContent->tipo_arma)
+                                    ? json_decode($dataTypeContent->tipo_arma)
+                                    : [];
+                                $selected_modalidad_arma = isset($dataTypeContent->modalidad_arma)
+                                    ? json_decode($dataTypeContent->modalidad_arma)
+                                    : [];
                             @endphp
+
                             <div class="form-group">
-                                <label for="tipo_arma">{{ __('Tipo Arma') }}</label>
-                                <select multiple class="form-control select2" id="tipo_arma"
-                                    name="tipo_arma[]">
-                                    {{-- <option value="" disabled selected>Seleccione uno o varios Tipos de Arma</option> --}}
-                                    @foreach (Voyager::tipo_arma() as $tipo_arma)
-                                        <option value="{{ $tipo_arma->id }}"
-                                            {{ $tipo_arma->id == $selected_tipo_arma ? 'selected' : '' }}>
-                                            {{ $tipo_arma->arma }}
+                                <label for="tipo_arma">Tipo de Arma</label>
+                                <select multiple class="form-control select2" id="tipo_arma" name="tipo_arma[]">
+                                    @foreach (Voyager::tipo_arma() as $tipoArma)
+                                        <option value="{{ $tipoArma->id }}"
+                                            {{ in_array($tipoArma->id, $selected_tipo_arma) ? 'selected' : '' }}>
+                                            {{ $tipoArma->arma }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            @php
-                                if (isset($dataTypeContent->modalidad_arma)) {
-                                    $selected_modalidad_arma = $dataTypeContent->modalidad_arma;
-                                } else {
-                                    $selected_modalidad_arma = null; // Cambia '' por null
-                                }
-                            @endphp
                             <div class="form-group">
-                                <label for="modalidad_arma">{{ __('Modalidad de Arma') }}</label>
+                                <label for="modalidad_arma">Modalidad de Arma</label>
                                 <select multiple class="form-control select2" id="modalidad_arma"
                                     name="modalidad_arma[]">
-                                    {{-- <option value="" disabled selected>Seleccione uno o varias Modalidades de Arma</option> --}}
-                                    @foreach (Voyager::modalidad_arma() as $modalidad_arma)
-                                        <option value="{{ $modalidad_arma->id }}"
-                                            {{ $modalidad_arma->id == $selected_modalidad_arma ? 'selected' : '' }}>
-                                            {{ $modalidad_arma->modalidad }}
+                                    @foreach (Voyager::modalidad_arma() as $modalidadArma)
+                                        <option value="{{ $modalidadArma->id }}"
+                                            {{ in_array($modalidadArma->id, $selected_modalidad_arma) ? 'selected' : '' }}>
+                                            {{ $modalidadArma->modalidad }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+
+
+
 
 
 
@@ -608,4 +604,34 @@
             });
         });
     </script>
+
+    {{-- <script>
+        $(document).ready(() => []),
+            $('#tipo_arma').selectpicker('val', @json(Voyager::tipo_arma()));
+    </script> --}}
+
+    <script>
+        var tipoArma = $('#tipo_arma');
+        var modalidadArma = $('#modalidad_arma');
+
+        $(document).ready(function() {
+            tipoArma.change(function() {
+                var tipoArmaIds = $(this).val(); // Obtener los IDs de los tipos de arma seleccionados
+                if (tipoArmaIds) {
+                    $.get('/get-modalidades/' + tipoArmaIds.join(','), function(data) {
+                        $('#modalidad_arma').empty();
+                        $.each(data, function(key, value) {
+                            modalidadArma.append('<option value="' + value.id +
+                                '">' + value.modalidad + '</option>');
+                        });
+                    });
+                } else {
+                    modalidadArma.empty();
+                }
+            });
+        });
+    </script>
+
+
+
 @stop

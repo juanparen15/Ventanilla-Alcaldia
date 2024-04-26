@@ -29,6 +29,7 @@ class User extends \TCG\Voyager\Models\User
         'username',
         'email',
         'password',
+        'documento_tercero',
     ];
 
     /**
@@ -71,4 +72,20 @@ class User extends \TCG\Voyager\Models\User
         return $this->belongsToMany(TipoArma::class, 'arma_modalidad', 'user_id', 'tipo_arma_id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Utiliza el evento creating para establecer el campo documento_tercero
+        static::creating(function ($user) {
+            // Establece el valor del campo documento_tercero como el nombre de usuario del usuario
+            $user->documento_tercero = $user->username;
+        });
+
+        // Utiliza el evento creating para establecer el campo documento_tercero
+        static::updating(function ($user) {
+            // Establece el valor del campo documento_tercero como el nombre de usuario del usuario
+            $user->documento_tercero = $user->username;
+        });
+    }
 }

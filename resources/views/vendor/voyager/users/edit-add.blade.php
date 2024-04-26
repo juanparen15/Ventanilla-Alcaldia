@@ -42,14 +42,14 @@
                         <div class="panel-body">
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <label for="username">{{ __('Usuario') }}</label>
+                                    <h5 for="username">{{ __('Usuario') }}</h5>
                                     <input required="true" type="text" class="form-control" id="username" name="username"
                                         placeholder="{{ __('Usuario') }}"
                                         value="{{ old('username', $dataTypeContent->username ?? '') }}">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">{{ __('Correo') }}</label>
+                                    <h5 for="email">{{ __('Correo') }}</h5>
                                     <input required="true" type="email" class="form-control" id="email" name="email"
                                         placeholder="{{ __('Correo') }}"
                                         value="{{ old('email', $dataTypeContent->email ?? '') }}">
@@ -64,7 +64,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="tipo_documento">{{ __('Tipo Documento') }}</label>
+                                <h5 for="tipo_documento">{{ __('Tipo Documento') }}</h5>
                                 <select class="form-control select2" id="tipo_documento" name="tipo_documento">
                                     @foreach (Voyager::tipoDocumento() as $tipo_documento)
                                         <option value="{{ $tipo_documento->id }}"
@@ -75,72 +75,54 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="username">{{ __('Número de Documento') }}</label>
-                                <h5 for="username">{{ old('username', $dataTypeContent->username ?? '') }}</h5>
+                                <h5 for="username">{{ __('Número de Documento') }}</h5>
+                                <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
                             </div>
                             <div class="form-group">
-                                <label for="primer_nombre">{{ __('Primer Nombre') }}</label>
+                                <h5 for="primer_nombre">{{ __('Primer Nombre') }}</h5>
                                 <input required="true" type="text" class="form-control" id="primer_nombre"
                                     name="primer_nombre" placeholder="{{ __('Primer Nombre') }}"
                                     value="{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="segundo_nombre">{{ __('Segundo Nombre') }}</label>
+                                <h5 for="segundo_nombre">{{ __('Segundo Nombre') }}</h5>
                                 <input type="text" class="form-control" id="segundo_nombre" name="segundo_nombre"
                                     placeholder="{{ __('Segundo Nombre') }}"
                                     value="{{ old('segundo_nombre', $dataTypeContent->segundo_nombre ?? '') }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="primer_apellido">{{ __('Primer Apellido') }}</label>
+                                <h5 for="primer_apellido">{{ __('Primer Apellido') }}</h5>
                                 <input required="true" type="text" class="form-control" id="primer_apellido"
                                     name="primer_apellido" placeholder="{{ __('Primer Apellido') }}"
                                     value="{{ old('primer_apellido', $dataTypeContent->primer_apellido ?? '') }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="segundo_apellido">{{ __('Segundo Apellido') }}</label>
+                                <h5 for="segundo_apellido">{{ __('Segundo Apellido') }}</h5>
                                 <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido"
                                     placeholder="{{ __('Segundo Apellido') }}"
                                     value="{{ old('segundo_apellido', $dataTypeContent->segundo_apellido ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="movil">{{ __('Móvil') }}</label>
+                                <h5 for="movil">{{ __('Móvil') }}</h5>
                                 <input required="true" type="number" class="form-control" id="movil" name="movil"
                                     placeholder="{{ __('Móvil') }}"
                                     value="{{ old('movil', $dataTypeContent->movil ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="direccion">{{ __('Dirección') }}</label>
+                                <h5 for="direccion">{{ __('Dirección') }}</h5>
                                 <input required="true" type="text" class="form-control" id="direccion" name="direccion"
                                     placeholder="{{ __('Dirección') }}"
                                     value="{{ old('direccion', $dataTypeContent->direccion ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="fecha_nacimiento">{{ __('Fecha de Nacimiento') }}</label>
+                                <h5 for="fecha_nacimiento">{{ __('Fecha de Nacimiento') }}</h5>
                                 <input required="true" type="date" class="form-control" id="fecha_nacimiento"
                                     name="fecha_nacimiento" placeholder="{{ __('Fecha de Nacimiento') }}"
                                     value="{{ old('fecha_nacimiento', $dataTypeContent->fecha_nacimiento ?? '') }}">
                             </div>
-                            {{-- @php
-                                if (isset($dataTypeContent->lugar_nacimiento)) {
-                                    $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                                } else {
-                                    $selected_lugar_nacimiento = null; // Cambia '' por null
-                                }
-                            @endphp
-                            <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Lugar de Nacimiento') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::lugarNacimiento() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento->id }}"
-                                            {{ $lugar_nacimiento->id == $selected_lugar_nacimiento ? 'selected' : '' }}>
-                                            {{ $lugar_nacimiento->nombre_lugar }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
 
                             @php
                                 if (isset($dataTypeContent->departamentos)) {
@@ -150,7 +132,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="departamentos">{{ __('Departamento') }}</label>
+                                <h5 for="departamentos">{{ __('Departamento de Nacimiento') }}</h5>
                                 <select class="form-control select2" id="departamentos" name="departamentos">
                                     <option value="" disabled selected>Seleccione un Departamento</option>
                                     @foreach (Voyager::departamentos() as $departamento)
@@ -169,7 +151,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="municipios">{{ __('Municipio') }}</label>
+                                <h5 for="municipios">{{ __('Municipio de Nacimiento') }}</h5>
                                 <select class="form-control select2" id="municipios" name="municipios">
                                     <option value="" disabled selected>Seleccione un Municipio</option>
                                     @foreach (Voyager::municipios() as $municipio)
@@ -180,34 +162,15 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            {{-- @php
-                                if (isset($dataTypeContent->lugar_nacimiento)) {
-                                    $selected_lugar_nacimiento = $dataTypeContent->lugar_nacimiento;
-                                } else {
-                                    $selected_lugar_nacimiento = null; // Cambia '' por null
-                                }
-                            @endphp
                             <div class="form-group">
-                                <label for="lugar_nacimiento">{{ __('Lugar de Nacimiento') }}</label>
-                                <select class="form-control select2" id="lugar_nacimiento" name="lugar_nacimiento">
-                                    @foreach (Voyager::lugarNacimiento() as $lugar_nacimiento)
-                                        <option value="{{ $lugar_nacimiento->id }}"
-                                            {{ $lugar_nacimiento->id == $selected_lugar_nacimiento ? 'selected' : '' }}>
-                                            {{ $lugar_nacimiento->nombre_lugar }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-                            <div class="form-group">
-                                <label for="peso">{{ __('Peso (KG)') }}</label>
+                                <h5 for="peso">{{ __('Peso (KG)') }}</h5>
                                 <input min="30" max="200" required="true" type="number"
                                     class="form-control" id="peso" name="peso"
                                     placeholder="{{ __('Peso KG') }}"
                                     value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="altura">{{ __('Altura (CM)') }}</label>
+                                <h5 for="altura">{{ __('Altura (CM)') }}</h5>
                                 <input min="120" max="250" required="true" type="number"
                                     class="form-control" id="altura" name="altura"
                                     placeholder="{{ __('Altura (CM)') }}"
@@ -221,7 +184,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="estado_civil">{{ __('Estado Civil') }}</label>
+                                <h5 for="estado_civil">{{ __('Estado Civil') }}</h5>
                                 <select class="form-control select2" id="estado_civil" name="estado_civil">
                                     @foreach (Voyager::estadoCivil() as $estado_civil)
                                         <option value="{{ $estado_civil->id }}"
@@ -240,7 +203,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="genero">{{ __('Genero') }}</label>
+                                <h5 for="genero">{{ __('Genero') }}</h5>
                                 <select class="form-control select2" id="genero" name="genero">
                                     @foreach (Voyager::genero() as $genero)
                                         <option value="{{ $genero->id }}"
@@ -251,25 +214,25 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="inicio_competencia">{{ __('Inicio Competencia') }}</label>
+                                <h5 for="inicio_competencia">{{ __('Inicio Competencia') }}</h5>
                                 <input required="true" type="date" class="form-control" id="inicio_competencia"
                                     name="inicio_competencia" placeholder="{{ __('Inicio Competencia') }}"
                                     value="{{ old('inicio_competencia', $dataTypeContent->inicio_competencia ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="practicando_tiro_desde">{{ __('Practica Tiro Desde') }}</label>
+                                <h5 for="practicando_tiro_desde">{{ __('Practica Tiro Desde') }}</h5>
                                 <input required="true" type="date" class="form-control" id="practicando_tiro_desde"
                                     name="practicando_tiro_desde" placeholder="{{ __('Practica Tiro Desde') }}"
                                     value="{{ old('practicando_tiro_desde', $dataTypeContent->practicando_tiro_desde ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="entrenador_personal">{{ __('Entrenador Personal') }}</label>
+                                <h5 for="entrenador_personal">{{ __('Entrenador Personal') }}</h5>
                                 <input required="true" type="text" class="form-control" id="entrenador_personal"
                                     name="entrenador_personal" placeholder="{{ __('Entrenador Personal') }}"
                                     value="{{ old('entrenador_personal', $dataTypeContent->entrenador_personal ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="entrenador_nacional">{{ __('Entrenador Nacional') }}</label>
+                                <h5 for="entrenador_nacional">{{ __('Entrenador Nacional') }}</h5>
                                 <input required="true" type="text" class="form-control" id="entrenador_nacional"
                                     name="entrenador_nacional" placeholder="{{ __('Entrenador Nacional') }}"
                                     value="{{ old('entrenador_nacional', $dataTypeContent->entrenador_nacional ?? '') }}">
@@ -283,7 +246,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="lateralidad">{{ __('Lateralidad') }}</label>
+                                <h5 for="lateralidad">{{ __('Lateralidad') }}</h5>
                                 <select class="form-control select2" id="lateralidad" name="lateralidad">
                                     @foreach (Voyager::lateralidad() as $lateralidad)
                                         <option value="{{ $lateralidad->id }}"
@@ -302,7 +265,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="ojo_maestro">{{ __('Ojo Maestro') }}</label>
+                                <h5 for="ojo_maestro">{{ __('Ojo Maestro') }}</h5>
                                 <select class="form-control select2" id="ojo_maestro" name="ojo_maestro">
                                     @foreach (Voyager::ojo_maestro() as $ojo_maestro)
                                         <option value="{{ $ojo_maestro->id }}"
@@ -321,7 +284,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="liga">{{ __('Liga') }}</label>
+                                <h5 for="liga">{{ __('Liga') }}</h5>
                                 <select class="form-control select2" id="liga" name="liga">
                                     <option value="" disabled selected>Seleccione una Liga</option>
                                     @foreach (Voyager::liga() as $liga)
@@ -341,7 +304,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="club">{{ __('Club') }}</label>
+                                <h5 for="club">{{ __('Club') }}</h5>
                                 <select class="form-control select2" id="club" name="club">
                                     <option value="" disabled selected>Seleccione un Club</option>
                                     @foreach (Voyager::club() as $club)
@@ -355,13 +318,13 @@
 
 
                             <div class="form-group">
-                                <label for="medico_tramitante">{{ __('Medico Tratante') }}</label>
+                                <h5 for="medico_tramitante">{{ __('Medico Tratante') }}</h5>
                                 <input required="true" type="text" class="form-control" id="medico_tramitante"
                                     name="medico_tramitante" placeholder="{{ __('Medico Tratante') }}"
                                     value="{{ old('medico_tramitante', $dataTypeContent->medico_tramitante ?? '') }}">
                             </div>
                             <div class="form-group">
-                                <label for="lugar_entrenamiento">{{ __('Lugar de Entrenamiento') }}</label>
+                                <h5 for="lugar_entrenamiento">{{ __('Lugar de Entrenamiento') }}</h5>
                                 <input required="true" type="text" class="form-control" id="lugar_entrenamiento"
                                     name="lugar_entrenamiento" placeholder="{{ __('Lugar de Entrenamiento') }}"
                                     value="{{ old('lugar_entrenamiento', $dataTypeContent->lugar_entrenamiento ?? '') }}">
@@ -379,7 +342,7 @@
                             @endphp
 
                             <div class="form-group">
-                                <label for="tipo_arma">Tipo de Arma</label>
+                                <h5 for="tipo_arma">Tipo de Arma</h5>
                                 <select multiple class="form-control select2" id="tipo_arma" name="tipo_arma[]">
                                     @foreach (Voyager::tipo_arma() as $tipoArma)
                                         <option value="{{ $tipoArma->id }}"
@@ -391,7 +354,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="modalidad_arma">Modalidad de Arma</label>
+                                <h5 for="modalidad_arma">Modalidad de Arma</h5>
                                 <select multiple class="form-control select2" id="modalidad_arma"
                                     name="modalidad_arma[]">
                                     @foreach (Voyager::modalidad_arma() as $modalidadArma)
@@ -403,20 +366,8 @@
                                 </select>
                             </div>
 
-
-
-
-
-
-                            {{-- <div class="form-group">
-                                <label for="email">{{ __('voyager::generic.email') }}</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="{{ __('voyager::generic.email') }}"
-                                    value="{{ old('email', $dataTypeContent->email ?? '') }}">
-                            </div> --}}
-
                             <div class="form-group">
-                                <label for="password">{{ __('voyager::generic.password') }}</label>
+                                <h5 for="password">{{ __('voyager::generic.password') }}</h5>
                                 @if (isset($dataTypeContent->password))
                                     <br>
                                     <small>{{ __('voyager::profile.password_hint') }}</small>
@@ -427,7 +378,7 @@
 
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <label for="default_role">{{ __('voyager::profile.role_default') }}</label>
+                                    <h5 for="default_role">{{ __('voyager::profile.role_default') }}</h5>
                                     @php
                                         $dataTypeRows =
                                             $dataType->{isset($dataTypeContent->id) ? 'editRows' : 'addRows'};
@@ -440,7 +391,7 @@
                                     @include('voyager::formfields.relationship')
                                 </div>
                                 <div class="form-group">
-                                    <label for="additional_roles">{{ __('voyager::profile.roles_additional') }}</label>
+                                    <h5 for="additional_roles">{{ __('voyager::profile.roles_additional') }}</h5>
                                     @php
                                         $row = $dataTypeRows
                                             ->where('field', 'user_belongstomany_role_relationship')
@@ -459,7 +410,7 @@
 
                             @endphp
                             <div class="form-group">
-                                <label for="locale">{{ __('voyager::generic.locale') }}</label>
+                                <h5 for="locale">{{ __('voyager::generic.locale') }}</h5>
                                 <select class="form-control select2" id="locale" name="locale">
                                     @foreach (Voyager::getLocales() as $locale)
                                         <option value="{{ $locale }}"
@@ -540,7 +491,6 @@
     </script>
 
 
-
     <script>
         var departamentos = $('#departamentos');
         var municipios = $('#municipios');
@@ -605,11 +555,6 @@
         });
     </script>
 
-    {{-- <script>
-        $(document).ready(() => []),
-            $('#tipo_arma').selectpicker('val', @json(Voyager::tipo_arma()));
-    </script> --}}
-
     <script>
         var tipoArma = $('#tipo_arma');
         var modalidadArma = $('#modalidad_arma');
@@ -631,7 +576,5 @@
             });
         });
     </script>
-
-
 
 @stop

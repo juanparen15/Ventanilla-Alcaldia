@@ -22,6 +22,22 @@ class VoyagerUserController extends VoyagerBaseController
         return Voyager::view('voyager::profile', compact('route'));
     }
 
+
+    public function store(Request $request)
+    {
+        // Guardar el usuario
+        $user = new User();
+        $user->fill($request->all());
+        $user->save();
+
+        // Establecer el campo documento_tercero como el nombre de usuario
+        $user->documento_tercero = $user->username;
+        $user->save();
+
+        // Resto del código de almacenamiento...
+    }
+
+
     // public function store(Request $request)
     // {
     //     // Validar los datos del formulario aquí si es necesario
@@ -51,6 +67,7 @@ class VoyagerUserController extends VoyagerBaseController
             $request->merge([
                 'role_id'                              => Auth::user()->role_id,
                 'user_belongstomany_role_relationship' => Auth::user()->roles->pluck('id')->toArray(),
+                // 'documento_tercero' => Auth::user()->username,
             ]);
         }
 
@@ -58,10 +75,11 @@ class VoyagerUserController extends VoyagerBaseController
         $user = User::findOrFail($id);
 
         // Actualizar los datos del usuario
-        // $user->save();
         // $user->update($request->all());
         // Obtener los datos del formulario
+        $user->documento_tercero = $user->username;
         $formData = $request->all();
+        $user->save();
 
         // Verificar si se proporcionó una nueva contraseña en el formulario
         if (!empty($formData['password'])) {
@@ -72,17 +90,6 @@ class VoyagerUserController extends VoyagerBaseController
             unset($formData['password']);
             $user->update($formData);
         }
-
-        // // Sincronizar los tipos de arma seleccionados
-        // if ($request->has('tipo_arma')) {
-        //     $user->tiposArma()->detach(); // Eliminar todas las asociaciones existentes
-        //     foreach ($request->input('tipo_arma') as $tipoArmaID) {
-        //         $user->tiposArma()->attach($tipoArmaID);
-        //     }
-        // } else {
-        //     // Si no se seleccionaron tipos de arma, eliminar todas las asociaciones existentes
-        //     $user->tiposArma()->detach();
-        // }
 
         // Sincronizar las modalidades de arma seleccionadas
         if ($request->has('modalidad_arma') || $request->has('tipo_arma')) {
@@ -99,7 +106,6 @@ class VoyagerUserController extends VoyagerBaseController
             $user->tiposArma()->detach();
             $user->modalidadesArma()->detach();
         }
-
 
         // Redirigir a la página de perfil con un mensaje de éxito
         return parent::update($request, $id);

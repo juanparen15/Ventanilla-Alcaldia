@@ -15,6 +15,7 @@
 @stop
 
 @section('content')
+
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
             action="@if (!is_null($dataTypeContent->getKey())) {{ route('voyager.' . $dataType->slug . '.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.' . $dataType->slug . '.store') }} @endif"
@@ -40,6 +41,10 @@
                         @endif
 
                         <div class="panel-body">
+                            <div class="form-group">
+                                <a target="blank" type="button" class="btn btn-primary"
+                                    href="https://checkout.wompi.co/l/0vsdUZ">PAGOS EN LINEA</a>
+                            </div>
                             @php
                                 if (isset($dataTypeContent->tipo_peticion)) {
                                     $selected_tipo_peticion = $dataTypeContent->tipo_peticion;
@@ -79,9 +84,17 @@
                                             style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
                                     @endforeach
                                 @endif
-                                <input type="file" data-name="imagen[]" accept="image/*" name="imagen[]" multiple>
+                                <div class="custom-file">
+                                    <!-- Botón personalizado -->
+                                    <label class="btn btn-primary" for="fileInput">Seleccionar imágenes</label>
+                                    <!-- Input de archivo oculto -->
+                                    <input type="file" class="custom-file-input" id="fileInput" data-name="imagen[]"
+                                        accept="image/*" name="imagen[]" multiple style="display: none;">
+                                    <!-- Visualización del nombre del archivo seleccionado (opcional) -->
+                                    <span id="fileLabel"></span>
+                                </div>
                             </div>
-                            
+
 
                             <div class="form-group">
                                 <h5 for="asunto">{{ __('Asunto') }}</h5>
@@ -95,7 +108,7 @@
                                 {{-- <textarea required="true" class="form-control" id="mensaje" name="mensaje"></textarea> --}}
                                 <textarea class="form-control richTextBox" id="richtext mensaje" name="mensaje"></textarea>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -150,7 +163,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary pull-right save">
-        {{ __('voyager::generic.save') }}
+        {{-- {{ __('voyager::generic.save') }} --}}
+        Enviar
     </button>
     </form>
     <div style="display:none">
@@ -243,7 +257,7 @@
             // Función para mostrar u ocultar la opción de imagen según el tipo de petición seleccionado
             function toggleImagenOption() {
                 var tipoPeticion = $('#tipo_peticion').val();
-    
+
                 // Si el tipo de petición seleccionado es igual a 1, mostrar la opción de imagen
                 if (tipoPeticion == 'solicitud credencial FEDETIRO') {
                     $('#imagen_option').show();
@@ -252,30 +266,29 @@
                     $('#imagen_option').hide();
                 }
             }
-    
+
             // Ejecutar la función toggleImagenOption() cuando el valor del campo tipo_peticion cambie
             $('#tipo_peticion').change(function() {
                 toggleImagenOption();
             });
-    
+
             // Ejecutar la función toggleImagenOption() al cargar la página para inicializar la visibilidad de la opción de imagen
             toggleImagenOption();
         });
     </script>
 
-<script>
-    $(document).ready(function() {
-        var additionalConfig = {
-            selector: 'textarea.richTextBox[name="mensaje"]',
-        }
+    <script>
+        $(document).ready(function() {
+            var additionalConfig = {
+                selector: 'textarea.richTextBox[name="mensaje"]',
+            }
 
-        $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object)[]) !!})
+            $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object) []) !!})
 
-        tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
-    });
-</script>
+            tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
+        });
+    </script>
 
-    
-    
+
+
 @stop
-

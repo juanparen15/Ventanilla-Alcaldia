@@ -40,22 +40,6 @@
                         @endif
 
                         <div class="panel-body">
-                            @can('editRoles', $dataTypeContent)
-                                <div class="form-group">
-                                    <h5 for="username">{{ __('Usuario') }}</h5>
-                                    <input required="true" type="text" class="form-control" id="username" name="username"
-                                        placeholder="{{ __('Usuario') }}"
-                                        value="{{ old('username', $dataTypeContent->username ?? '') }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <h5 for="email">{{ __('Correo') }}</h5>
-                                    <input required="true" type="email" class="form-control" id="email" name="email"
-                                        placeholder="{{ __('Correo') }}"
-                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
-                                </div>
-                            @endcan
-
                             @php
                                 if (isset($dataTypeContent->tipo_documento)) {
                                     $selected_tipo_documento = $dataTypeContent->tipo_documento;
@@ -74,10 +58,29 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <h5 for="username">{{ __('Número de Documento') }}</h5>
-                                <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
-                            </div>
+                            @can('editRoles', $dataTypeContent)
+                                <div class="form-group">
+                                    <h5 for="username">{{ __('Usuario') }}</h5>
+                                    <input required="true" type="text" class="form-control" id="username" name="username"
+                                        placeholder="{{ __('Numero de Documento') }}"
+                                        value="{{ old('username', $dataTypeContent->username ?? '') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <h5 for="email">{{ __('Correo') }}</h5>
+                                    <input required="true" type="email" class="form-control" id="email" name="email"
+                                        placeholder="{{ __('Correo') }}"
+                                        value="{{ old('email', $dataTypeContent->email ?? '') }}">
+                                </div>
+                            @endcan
+
+
+                            @if (Auth::user()->role_id == '2')
+                                <div class="form-group">
+                                    <h5 for="username">{{ __('Número de Documento') }}</h5>
+                                    <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <h5 for="primer_nombre">{{ __('Primer Nombre') }}</h5>
                                 <input required="true" type="text" class="form-control" id="primer_nombre"
@@ -270,7 +273,7 @@
                                     @foreach (Voyager::ojo_maestro() as $ojo_maestro)
                                         <option value="{{ $ojo_maestro->id }}"
                                             {{ $ojo_maestro->id == $selected_ojo_maestro ? 'selected' : '' }}>
-                                            {{ $ojo_maestro->ojoMaestro }}
+                                            {{ $ojo_maestro->ojo_maestro }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -505,7 +508,7 @@
 
 
                         $('#municipios').append(
-                            '<option disabled selected>Seleccione un Municipio</option>'
+                            '<option disabled selected>Seleccione un Municipio</option>'    
                         );
                         $.each(data, function(key, value) {
                             $('#municipios').append('<option value="' + value.id +

@@ -31,6 +31,7 @@ use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use \App\Models\ArmorumappEstadocivil;
 use App\Models\ArmorumappLugar;
+use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
 use App\Models\Departamentos;
 use App\Models\Genero;
@@ -431,4 +432,8 @@ class Voyager
         return ModalidadArma::all();
     }
 
+    public function tipo_peticion()
+    {
+        return ArmorumappTipopeticion::all();
+    }
 }

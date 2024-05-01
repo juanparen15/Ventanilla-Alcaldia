@@ -13,9 +13,8 @@ class ArmorumappSolicitud extends Model
     protected $table = 'armorumapp_solicitud';
     protected $fillable = [
         // Otros campos fillable que puedas tener
-        'documento_tercero', 'tipo_peticion', 'imagen',
+        'documento_tercero', 'tipo_peticion',
     ];
-
 
     public function scopeCurrentUser($query)
     {

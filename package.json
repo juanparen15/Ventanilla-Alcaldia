@@ -41,7 +41,8 @@
 		"tiny-slider": "^2.9.4",
 		"swiper": "4.5.0",
 		"tobii": "^2.0.0-alpha",
-		"wow.js": "^1.2.2"
+		"wow.js": "^1.2.2",
+		"tinymce": "^6.2.0"
 	}
 
 }

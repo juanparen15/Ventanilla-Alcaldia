@@ -1,272 +1,281 @@
-@php
-    $edit = !is_null($dataTypeContent->getKey());
-    $add = is_null($dataTypeContent->getKey());
-@endphp
-
 @extends('voyager::master')
+
+@section('page_title', __('voyager::generic.' . (isset($dataTypeContent->id) ? 'edit' : 'add')) . ' ' .
+    $dataType->getTranslatedAttribute('display_name_singular'))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
-@section('page_title', __('voyager::generic.' . ($edit ? 'edit' : 'add')) . ' ' .
-    $dataType->getTranslatedAttribute('display_name_singular'))
-
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager::generic.' . ($edit ? 'edit' : 'add')) . ' ' . $dataType->getTranslatedAttribute('display_name_singular') }}
+        {{ __('voyager::generic.' . (isset($dataTypeContent->id) ? 'edit' : 'add')) . ' ' . $dataType->getTranslatedAttribute('display_name_singular') }}
     </h1>
-    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
-    <div class="page-content edit-add container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+    <div class="page-content container-fluid">
+        <form class="form-edit-add" role="form"
+            action="@if (!is_null($dataTypeContent->getKey())) {{ route('voyager.' . $dataType->slug . '.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.' . $dataType->slug . '.store') }} @endif"
+            method="POST" enctype="multipart/form-data" autocomplete="off">
+            <!-- PUT Method if we are editing -->
+            @if (isset($dataTypeContent->id))
+                {{ method_field('PUT') }}
+            @endif
+            {{ csrf_field() }}
 
-                <div class="panel panel-bordered">
-                    <!-- form start -->
-                    <form role="form" class="form-edit-add"
-                        action="{{ $edit ? route('voyager.' . $dataType->slug . '.update', $dataTypeContent->getKey()) : route('voyager.' . $dataType->slug . '.store') }}"
-                        method="POST" enctype="multipart/form-data">
-                        <!-- PUT Method if we are editing -->
-                        @if ($edit)
-                            {{ method_field('PUT') }}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-bordered">
+                        {{-- <div class="panel"> --}}
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
 
-                        <!-- CSRF TOKEN -->
-                        {{ csrf_field() }}
-
                         <div class="panel-body">
-
-                            @if (count($errors) > 0)
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-                            <!-- Adding / Editing -->
                             @php
-                                $dataTypeRows = $dataType->{$edit ? 'editRows' : 'addRows'};
+                                if (isset($dataTypeContent->tipo_peticion)) {
+                                    $selected_tipo_peticion = $dataTypeContent->tipo_peticion;
+                                } else {
+                                    $selected_tipo_peticion = null; // Cambia '' por null
+                                }
                             @endphp
-                            <!-- Agregar este código dentro del formulario -->
-                            {{-- <div class="form-group">
-                                <label for="documento_tercero">{{ __('Documento Tercero') }}</label>
-                                <input type="text" class="form-control" id="documento_tercero" name="documento_tercero"
-                                    value="{{ old('documento_tercero', $dataTypeContent->documento_tercero ?? '') }}">
+                            <div class="form-group">
+                                <h5 for="tipo_peticion">{{ __('Tipo de Petición') }}</h5>
+                                <select class="form-control select2" id="tipo_peticion" name="tipo_peticion">
+                                    <option value="" disabled selected>Seleccione un Tipo de Petición</option>
+                                    @foreach (Voyager::tipo_peticion() as $tipo_peticion)
+                                        <option value="{{ $tipo_peticion->tipo_peticion }}"
+                                            {{ $tipo_peticion->tipo_peticion == $selected_tipo_peticion ? 'selected' : '' }}>
+                                            {{ $tipo_peticion->tipo_peticion }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Cargar Una Sola Imagen
+                            <div class="form-group" id="imagen_option">
+                                <h5 for="imagen">{{ __('Imagen') }}</h5>
+                                @if (isset($dataTypeContent->imagen))
+                                    <img src="{{ filter_var($dataTypeContent->imagen, FILTER_VALIDATE_URL) ? $dataTypeContent->imagen : Voyager::image($dataTypeContent->imagen) }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+                                <input type="file" data-name="imagen" accept="image/*" name="imagen">
                             </div> --}}
 
-                            @foreach ($dataTypeRows as $row)
-                                <!-- GET THE DISPLAY OPTIONS -->
-                                @php
-                                    $display_options = $row->details->display ?? null;
-                                    if ($dataTypeContent->{$row->field . '_' . ($edit ? 'edit' : 'add')}) {
-                                        $dataTypeContent->{$row->field} =
-                                            $dataTypeContent->{$row->field . '_' . ($edit ? 'edit' : 'add')};
-                                    }
-                                @endphp
-                                @if (isset($row->details->legend) && isset($row->details->legend->text))
-                                    <legend class="text-{{ $row->details->legend->align ?? 'center' }}"
-                                        style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">
-                                        {{ $row->details->legend->text }}</legend>
-                                @endif
-
-                                <div class="form-group @if ($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}"
-                                    @if (isset($display_options->id)) {{ "id=$display_options->id" }} @endif>
-                                    {{ $row->slugify }}
-                                    <label class="control-label"
-                                        for="name">{{ $row->getTranslatedAttribute('display_name') }}</label>
-                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
-                                    @if ($add && isset($row->details->view_add))
-                                        @include($row->details->view_add, [
-                                            'row' => $row,
-                                            'dataType' => $dataType,
-                                            'dataTypeContent' => $dataTypeContent,
-                                            'content' => $dataTypeContent->{$row->field},
-                                            'view' => 'add',
-                                            'options' => $row->details,
-                                        ])
-                                    @elseif ($edit && isset($row->details->view_edit))
-                                        @include($row->details->view_edit, [
-                                            'row' => $row,
-                                            'dataType' => $dataType,
-                                            'dataTypeContent' => $dataTypeContent,
-                                            'content' => $dataTypeContent->{$row->field},
-                                            'view' => 'edit',
-                                            'options' => $row->details,
-                                        ])
-                                    @elseif (isset($row->details->view))
-                                        @include($row->details->view, [
-                                            'row' => $row,
-                                            'dataType' => $dataType,
-                                            'dataTypeContent' => $dataTypeContent,
-                                            'content' => $dataTypeContent->{$row->field},
-                                            'action' => $edit ? 'edit' : 'add',
-                                            'view' => $edit ? 'edit' : 'add',
-                                            'options' => $row->details,
-                                        ])
-                                    @elseif ($row->type == 'relationship')
-                                        @include('voyager::formfields.relationship', [
-                                            'options' => $row->details,
-                                        ])
-                                        @else
-                                        {{-- <div class="form-group">
-                                            <label for="imagen">{{ __('Imagen') }}</label>
-                                            <input type="file" accept="image/*" class="form-control" id="imagen" name="imagen"
-                                                value="{{ old('imagen', $dataTypeContent->imagen ?? '') }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="asunto">{{ __('Asunto') }}</label>
-                                            <input type="text" class="form-control" id="asunto"
-                                                name="asunto"
-                                                value="{{ old('asunto', $dataTypeContent->asunto ?? '') }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="mensaje">{{ __('Mensaje') }}</label>
-                                            <textarea class="form-control" id="mensaje"
-                                                name="mensaje"
-                                                value="{{ old('mensaje', $dataTypeContent->mensaje ?? '') }}"></textarea>
-                                        </div> --}}
-
-
-                                        {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
-                                    @endif
-                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
-                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                            {{-- Cargar Multiples Imagenes  --}}
+                            <div class="form-group" id="imagen_option">
+                                <h5 for="imagen">{{ __('Imágenes') }}</h5>
+                                @if (isset($dataTypeContent->imagen))
+                                    @foreach (json_decode($dataTypeContent->imagen) as $imagen)
+                                        <img src="{{ filter_var($imagen, FILTER_VALIDATE_URL) ? $imagen : Voyager::image($imagen) }}"
+                                            style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
                                     @endforeach
-                                    @if ($errors->has($row->field))
-                                        @foreach ($errors->get($row->field) as $error)
-                                            <span class="help-block">{{ $error }}</span>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            @endforeach
+                                @endif
+                                <input type="file" data-name="imagen[]" accept="image/*" name="imagen[]" multiple>
+                            </div>
+                            
 
-                        </div><!-- panel-body -->
+                            <div class="form-group">
+                                <h5 for="asunto">{{ __('Asunto') }}</h5>
+                                <input required="true" type="text" class="form-control" id="asunto" name="asunto"
+                                    placeholder="{{ __('Asunto') }}"
+                                    value="{{ old('asunto', $dataTypeContent->asunto ?? '') }}">
+                            </div>
 
-                        <div class="panel-footer">
-                        @section('submit-buttons')
-                            <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
-                        @stop
-                        @yield('submit-buttons')
+                            <div class="form-group">
+                                <h5 for="mensaje">{{ __('Mensaje') }}</h5>
+                                {{-- <textarea required="true" class="form-control" id="mensaje" name="mensaje"></textarea> --}}
+                                <textarea class="form-control richTextBox" id="richtext mensaje" name="mensaje"></textarea>
+                            </div>
+                            
+                        </div>
                     </div>
-                </form>
-
-                <div style="display:none">
-                    <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
-                    <input type="hidden" id="upload_type_slug" value="{{ $dataType->slug }}">
                 </div>
+
+                {{-- <div class="col-md-4">
+                    <div class="panel panel panel-bordered panel-warning">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                @if (isset($dataTypeContent->avatar))
+                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image($dataTypeContent->avatar) }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+                                <input type="file" data-name="avatar" accept="image/*" name="avatar">
+                            </div>
+                            <div class="form-group">
+                                <h5 for="username">{{ __('Número de Documento') }}</h5>
+                            </div>
+                            <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="primer_nombre">{{ __('Nombre Completo') }}</h5>
+                            </div>
+                            <label for="primer_nombre">{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}
+                                {{ old('segundo_nombre', $dataTypeContent->segundo_nombre ?? '') }}
+                                {{ old('primer_apellido', $dataTypeContent->primer_apellido ?? '') }}
+                                {{ old('segundo_apellido', $dataTypeContent->segundo_apellido ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="direccion">{{ __('Dirección') }}</h5>
+                            </div>
+                            <label for="direccion">{{ old('direccion', $dataTypeContent->direccion ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="movil">{{ __('Móvil') }}</h5>
+                            </div>
+                            <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="">{{ __('Porcentaje de Descuento') }}</h5>
+                            </div>
+                            <label>{{ Voyager::setting('admin.descuento', '0%') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="">{{ __('Valor Credencial') }}</h5>
+                            </div>
+                            <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
+                        </div>
+                    </div>
+
+                </div> --}}
             </div>
-        </div>
     </div>
-</div>
 
-<div class="modal fade modal-danger" id="confirm_delete_modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
-            </div>
-
-            <div class="modal-body">
-                <h4>{{ __('voyager::generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
-                <button type="button" class="btn btn-danger"
-                    id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}</button>
-            </div>
-        </div>
+    <button type="submit" class="btn btn-primary pull-right save">
+        {{ __('voyager::generic.save') }}
+    </button>
+    </form>
+    <div style="display:none">
+        <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
+        <input type="hidden" id="upload_type_slug" value="{{ $dataType->slug }}">
     </div>
-</div>
-<!-- End Delete File Modal -->
+    </div>
 @stop
 
 @section('javascript')
-<script>
-    var params = {};
-    var $file;
+    <script>
+        var params = {};
+        var $file;
 
-    function deleteHandler(tag, isMulti) {
-        return function() {
-            $file = $(this).siblings(tag);
+        function deleteHandler(tag, isMulti) {
+            return function() {
+                $file = $(this).siblings(tag);
 
-            params = {
-                slug: '{{ $dataType->slug }}',
-                filename: $file.data('file-name'),
-                id: $file.data('id'),
-                field: $file.parent().data('field-name'),
-                multi: isMulti,
-                _token: '{{ csrf_token() }}'
-            }
+                params = {
+                    slug: '{{ $dataType->slug }}',
+                    filename: $file.data('file-name'),
+                    id: $file.data('id'),
+                    field: $file.parent().data('field-name'),
+                    multi: isMulti,
+                    _token: '{{ csrf_token() }}'
+                }
 
-            $('.confirm_delete_name').text(params.filename);
-            $('#confirm_delete_modal').modal('show');
-        };
-    }
+                $('.confirm_delete_name').text(params.filename);
+                $('#confirm_delete_modal').modal('show');
+            };
+        }
 
-    $('document').ready(function() {
-        $('.toggleswitch').bootstrapToggle();
+        $('document').ready(function() {
+            $('.toggleswitch').bootstrapToggle();
 
-        //Init datepicker for date fields if data-datepicker attribute defined
-        //or if browser does not handle date inputs
-        $('.form-group input[type=date]').each(function(idx, elt) {
-            if (elt.hasAttribute('data-datepicker')) {
-                elt.type = 'text';
-                $(elt).datetimepicker($(elt).data('datepicker'));
-            } else if (elt.type != 'date') {
-                elt.type = 'text';
-                $(elt).datetimepicker({
-                    format: 'L',
-                    extraFormats: ['YYYY-MM-DD']
-                }).datetimepicker($(elt).data('datepicker'));
-            }
-        });
-
-        @if ($isModelTranslatable)
-            $('.side-body').multilingual({
-                "editing": true
-            });
-        @endif
-
-        $('.side-body input[data-slug-origin]').each(function(i, el) {
-            $(el).slugify();
-        });
-
-        $('.form-group').on('click', '.remove-multi-image', deleteHandler('img', true));
-        $('.form-group').on('click', '.remove-single-image', deleteHandler('img', false));
-        $('.form-group').on('click', '.remove-multi-file', deleteHandler('a', true));
-        $('.form-group').on('click', '.remove-single-file', deleteHandler('a', false));
-
-        $('#confirm_delete').on('click', function() {
-            $.post('{{ route('voyager.' . $dataType->slug . '.media.remove') }}', params, function(
-                response) {
-                if (response &&
-                    response.data &&
-                    response.data.status &&
-                    response.data.status == 200) {
-
-                    toastr.success(response.data.message);
-                    $file.parent().fadeOut(300, function() {
-                        $(this).remove();
-                    })
-                } else {
-                    toastr.error("Error removing file.");
+            //Init datepicker for date fields if data-datepicker attribute defined
+            //or if browser does not handle date inputs
+            $('.form-group input[type=date]').each(function(idx, elt) {
+                if (elt.hasAttribute('data-datepicker')) {
+                    elt.type = 'text';
+                    $(elt).datetimepicker($(elt).data('datepicker'));
+                } else if (elt.type != 'date') {
+                    elt.type = 'text';
+                    $(elt).datetimepicker({
+                        format: 'L',
+                        extraFormats: ['YYYY-MM-DD']
+                    }).datetimepicker($(elt).data('datepicker'));
                 }
             });
 
-            $('#confirm_delete_modal').modal('hide');
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({
+                    "editing": true
+                });
+            @endif
+
+            $('.side-body input[data-slug-origin]').each(function(i, el) {
+                $(el).slugify();
+            });
+
+            $('.form-group').on('click', '.remove-multi-image', deleteHandler('img', true));
+            $('.form-group').on('click', '.remove-single-image', deleteHandler('img', false));
+            $('.form-group').on('click', '.remove-multi-file', deleteHandler('a', true));
+            $('.form-group').on('click', '.remove-single-file', deleteHandler('a', false));
+
+            $('#confirm_delete').on('click', function() {
+                $.post('{{ route('voyager.' . $dataType->slug . '.media.remove') }}', params, function(
+                    response) {
+                    if (response &&
+                        response.data &&
+                        response.data.status &&
+                        response.data.status == 200) {
+
+                        toastr.success(response.data.message);
+                        $file.parent().fadeOut(300, function() {
+                            $(this).remove();
+                        })
+                    } else {
+                        toastr.error("Error removing file.");
+                    }
+                });
+
+                $('#confirm_delete_modal').modal('hide');
+            });
+            $('[data-toggle="tooltip"]').tooltip();
         });
-        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Función para mostrar u ocultar la opción de imagen según el tipo de petición seleccionado
+            function toggleImagenOption() {
+                var tipoPeticion = $('#tipo_peticion').val();
+    
+                // Si el tipo de petición seleccionado es igual a 1, mostrar la opción de imagen
+                if (tipoPeticion == 'solicitud credencial FEDETIRO') {
+                    $('#imagen_option').show();
+                } else {
+                    // De lo contrario, ocultar la opción de imagen
+                    $('#imagen_option').hide();
+                }
+            }
+    
+            // Ejecutar la función toggleImagenOption() cuando el valor del campo tipo_peticion cambie
+            $('#tipo_peticion').change(function() {
+                toggleImagenOption();
+            });
+    
+            // Ejecutar la función toggleImagenOption() al cargar la página para inicializar la visibilidad de la opción de imagen
+            toggleImagenOption();
+        });
+    </script>
+
+<script>
+    $(document).ready(function() {
+        var additionalConfig = {
+            selector: 'textarea.richTextBox[name="mensaje"]',
+        }
+
+        $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object)[]) !!})
+
+        tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
     });
 </script>
+
+    
+    
 @stop
+

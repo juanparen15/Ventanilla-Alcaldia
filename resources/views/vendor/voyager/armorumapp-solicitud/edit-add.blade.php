@@ -42,8 +42,10 @@
 
                         <div class="panel-body">
                             <div class="form-group">
+
                                 <a target="blank" type="button" class="btn btn-primary"
-                                    href="https://checkout.wompi.co/l/0vsdUZ">PAGOS EN LINEA</a>
+                                    href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN
+                                    LINEA</a>
                             </div>
                             @php
                                 if (isset($dataTypeContent->tipo_peticion)) {
@@ -55,7 +57,7 @@
                             <div class="form-group">
                                 <h5 for="tipo_peticion">{{ __('Tipo de Petición') }}</h5>
                                 <select class="form-control select2" id="tipo_peticion" name="tipo_peticion">
-                                    <option value="" disabled selected>Seleccione un Tipo de Petición</option>
+                                    {{-- <option value="" disabled selected>Seleccione un Tipo de Petición</option> --}}
                                     @foreach (Voyager::tipo_peticion() as $tipo_peticion)
                                         <option value="{{ $tipo_peticion->tipo_peticion }}"
                                             {{ $tipo_peticion->tipo_peticion == $selected_tipo_peticion ? 'selected' : '' }}>
@@ -86,12 +88,15 @@
                                 @endif
                                 <div class="custom-file">
                                     <!-- Botón personalizado -->
-                                    <label class="btn btn-primary" for="fileInput">Seleccionar imágenes</label>
+                                    <label class="btn btn-primary" for="fileInput"><i class="voyager-images"></i>
+                                        Seleccionar imágenes</label>
                                     <!-- Input de archivo oculto -->
                                     <input type="file" class="custom-file-input" id="fileInput" data-name="imagen[]"
                                         accept="image/*" name="imagen[]" multiple style="display: none;">
-                                    <!-- Visualización del nombre del archivo seleccionado (opcional) -->
-                                    <span id="fileLabel"></span>
+                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
+                                        imagen.</label>
+                                    {{-- <span id="fileLabel"></span> --}}
+
                                 </div>
                             </div>
 
@@ -254,16 +259,31 @@
     </script>
     <script>
         $(document).ready(function() {
+            // Función para mostrar u ocultar el mensaje de validación cuando se cambia el campo de imagen
+            $('#fileInput').change(function() {
+                // Verificar si hay algún archivo seleccionado
+                if ($(this).get(0).files.length === 0) {
+                    // Si no hay archivos seleccionados, mostrar el mensaje de validación
+                    $(this).next('.invalid-feedback').show();
+                } else {
+                    // Si hay archivos seleccionados, ocultar el mensaje de validación
+                    $(this).next('.invalid-feedback').hide();
+                }
+            });
+
             // Función para mostrar u ocultar la opción de imagen según el tipo de petición seleccionado
             function toggleImagenOption() {
                 var tipoPeticion = $('#tipo_peticion').val();
 
-                // Si el tipo de petición seleccionado es igual a 1, mostrar la opción de imagen
+                // Si el tipo de petición seleccionado es igual a 'solicitud credencial FEDETIRO', mostrar la opción de imagen y hacerla requerida
                 if (tipoPeticion == 'solicitud credencial FEDETIRO') {
                     $('#imagen_option').show();
+                    $('#fileInput').attr('required', 'required');
                 } else {
-                    // De lo contrario, ocultar la opción de imagen
+                    // De lo contrario, ocultar la opción de imagen, quitar el atributo required y ocultar el mensaje de validación
                     $('#imagen_option').hide();
+                    $('#fileInput').removeAttr('required');
+                    $('#fileInput').next('.invalid-feedback').hide();
                 }
             }
 
@@ -277,6 +297,8 @@
         });
     </script>
 
+
+
     <script>
         $(document).ready(function() {
             var additionalConfig = {
@@ -288,7 +310,4 @@
             tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
         });
     </script>
-
-
-
 @stop

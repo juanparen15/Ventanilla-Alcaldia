@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -477,6 +477,32 @@
                                 <h5 for="">{{ __('Valor Credencial') }}</h5>
                             </div>
                             <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
+                            <br></br>
+                            <div class="form-group">
+                                <h5 for="tipo_arma">{{ __('Tipos de Arma') }}</h5>
+                                @foreach ($selected_tipo_arma as $tipoArmaId)
+                                    @php
+                                        $tipoArma = \App\Models\TipoArma::find($tipoArmaId);
+                                    @endphp
+                                    @if ($tipoArma)
+                                        <label>• {{ $tipoArma->arma }}</label><br>
+                                    @endif
+                                @endforeach
+                            </div>
+
+                            <div class="form-group">
+                                <h5 for="modalidad_arma">{{ __('Modalidades de Arma') }}</h5>
+                                @foreach ($selected_modalidad_arma as $modalidadArmaId)
+                                    @php
+                                        $modalidadArma = \App\Models\ModalidadArma::find($modalidadArmaId);
+                                    @endphp
+                                    @if ($modalidadArma)
+                                        <label>• {{ $modalidadArma->modalidad }}</label><br>
+                                    @endif
+                                @endforeach
+                            </div>
+
+
                         </div>
                     </div>
 

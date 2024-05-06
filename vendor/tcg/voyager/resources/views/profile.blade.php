@@ -17,8 +17,8 @@
     <div style="position:relative; z-index:9; text-align:center;">
         <img src="@if (!filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL)) {{ Voyager::image(Auth::user()->avatar) }}@else{{ Auth::user()->avatar }} @endif"
             class="avatar" style="border-radius:50%; width:150px; height:150px; border:5px solid #fff;"
-            alt="{{ Auth::user()->name }} avatar">
-        <h4>{{ ucwords(Auth::user()->name) }}</h4>
+            alt="{{ Auth::user()->primer_nombre }} avatar">
+        <h4>{{ ucwords(Auth::user()->primer_nombre) . ' ' . ucwords(Auth::user()->segundo_nombre) }}</h4>
         <div class="user-email text-muted">{{ ucwords(Auth::user()->email) }}</div>
         <p>{{ Auth::user()->bio }}</p>
         @if ($route != '')

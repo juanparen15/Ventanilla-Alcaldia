@@ -23,41 +23,18 @@ class VoyagerUserController extends VoyagerBaseController
     }
 
 
-    public function store(Request $request)
-    {
-        // Guardar el usuario
-        $user = new User();
-        $user->fill($request->all());
-        $user->save();
-
-        // Establecer el campo documento_tercero como el nombre de usuario
-        $user->documento_tercero = $user->username;
-        $user->save();
-
-        // Resto del código de almacenamiento...
-    }
-
-
     // public function store(Request $request)
     // {
-    //     // Validar los datos del formulario aquí si es necesario
-
     //     // Guardar el usuario
     //     $user = new User();
+    //     $user->fill($request->all());
     //     $user->save();
 
-    //     // Sincronizar los tipos de arma seleccionados
-    //     if ($request->has('tipo_arma')) {
-    //         $user->tiposArma()->sync($request->input('tipo_arma'));
-    //     }
+    //     // Establecer el campo documento_tercero como el nombre de usuario
+    //     $user->documento_tercero = $user->username;
+    //     $user->save();
 
-    //     // Sincronizar las modalidades de arma seleccionadas
-    //     if ($request->has('modalidad_arma')) {
-    //         $user->modalidadesArma()->sync($request->input('modalidad_arma'));
-    //     }
-
-    //     // Redirigir a la página de perfil con un mensaje de éxito
-    //     return redirect()->route('voyager.profile')->with('success', 'Perfil registrado correctamente.');
+    //     // Resto del código de almacenamiento...
     // }
 
     // POST BR(E)AD

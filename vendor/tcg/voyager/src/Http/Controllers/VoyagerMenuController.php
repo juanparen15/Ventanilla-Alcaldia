@@ -159,4 +159,11 @@ class VoyagerMenuController extends Controller
 
         return $trans;
     }
+
+    public function edit_user()
+    {
+        $user = Voyager::model('User')->findOrFail(auth()->id());
+
+        return redirect()->route('voyager.users.edit', $user->id);
+    }
 }

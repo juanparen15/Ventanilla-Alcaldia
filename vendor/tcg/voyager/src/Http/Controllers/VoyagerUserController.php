@@ -9,6 +9,7 @@ use TCG\Voyager\Facades\Voyager;
 
 class VoyagerUserController extends VoyagerBaseController
 {
+
     public function profile(Request $request)
     {
         $route = '';
@@ -22,7 +23,16 @@ class VoyagerUserController extends VoyagerBaseController
         return Voyager::view('voyager::profile', compact('route'));
     }
 
+    public function editProfile(Request $request)
+    {
+        // Obtiene el ID del usuario autenticado
+        $userId = Auth::id();
+    
+        // Redireccionar a la página de edición del usuario autenticado
+        return redirect()->route('voyager.users.edit', $userId);
+    }
 
+    
     // public function store(Request $request)
     // {
     //     // Guardar el usuario

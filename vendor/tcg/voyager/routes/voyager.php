@@ -34,6 +34,7 @@ Route::group(['as' => 'voyager.'], function () {
         Route::post('upload', ['uses' => $namespacePrefix . 'VoyagerController@upload',  'as' => 'upload']);
 
         Route::get('profile', ['uses' => $namespacePrefix . 'VoyagerUserController@profile', 'as' => 'profile']);
+        Route::get('edit-profile', ['uses' => $namespacePrefix . 'VoyagerUserController@editProfile', 'as' => 'edit-profile']);
 
         try {
             foreach (Voyager::model('DataType')::all() as $dataType) {
@@ -132,7 +133,7 @@ Route::group(['as' => 'voyager.'], function () {
         event(new RoutingAdminAfter());
     });
 
-    //Asset Routes
+    // Asset Routes
     Route::get('voyager-assets', ['uses' => $namespacePrefix . 'VoyagerController@assets', 'as' => 'voyager_assets']);
 
     event(new RoutingAfter());

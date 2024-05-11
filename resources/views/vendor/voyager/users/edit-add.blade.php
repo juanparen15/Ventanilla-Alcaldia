@@ -501,8 +501,6 @@
                                     @endif
                                 @endforeach
                             </div>
-
-
                         </div>
                     </div>
 

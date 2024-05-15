@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
 use App\Models\ModalidadArma;
 use App\Models\Municipios;

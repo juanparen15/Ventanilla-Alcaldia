@@ -33,9 +33,13 @@
                     @csrf
 
                     <div class="block">
-                        <x-label for="email" value="{{ __('Email') }}" />
+                        {{-- <x-label for="email" value="{{ __('Email') }}" />
                         <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                            required autofocus autocomplete="username" />
+                            required autofocus autocomplete="username" /> --}}
+                        <x-label for="username" value="{{ __('Numero de Identificación') }}" />
+                        <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
+                            required autofocus />
+
                     </div>
 
                     <div class="mt-4">

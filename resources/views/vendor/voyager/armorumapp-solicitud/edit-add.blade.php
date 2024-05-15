@@ -41,12 +41,9 @@
                         @endif
 
                         <div class="panel-body">
-                            <div class="form-group">
-
-                                <a target="blank" type="button" class="btn btn-primary"
-                                    href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN
-                                    LINEA</a>
-                            </div>
+                            @php
+                                $tipoPeticiones = Voyager::tipo_peticion();
+                            @endphp
                             @php
                                 if (isset($dataTypeContent->tipo_peticion)) {
                                     $selected_tipo_peticion = $dataTypeContent->tipo_peticion;
@@ -57,8 +54,7 @@
                             <div class="form-group">
                                 <h5 for="tipo_peticion">{{ __('Tipo de Petición') }}</h5>
                                 <select class="form-control select2" id="tipo_peticion" name="tipo_peticion">
-                                    {{-- <option value="" disabled selected>Seleccione un Tipo de Petición</option> --}}
-                                    @foreach (Voyager::tipo_peticion() as $tipo_peticion)
+                                    @foreach ($tipoPeticiones as $tipo_peticion)
                                         <option value="{{ $tipo_peticion->tipo_peticion }}"
                                             {{ $tipo_peticion->tipo_peticion == $selected_tipo_peticion ? 'selected' : '' }}>
                                             {{ $tipo_peticion->tipo_peticion }}
@@ -66,27 +62,88 @@
                                     @endforeach
                                 </select>
                             </div>
-
-                            {{-- Cargar Una Sola Imagen
+                            {{-- Cargar Una Sola Imagen --}}
                             <div class="form-group" id="imagen_option">
+                                <h5 for="foto">{{ __('Imagen') }}</h5>
+                                @if (isset($dataTypeContent->foto))
+                                    <img src="{{ filter_var($dataTypeContent->foto, FILTER_VALIDATE_URL) ? $dataTypeContent->foto : Voyager::image($dataTypeContent->foto) }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+
+                                <div class="custom-file">
+                                    <!-- Botón personalizado -->
+                                    <label class="btn btn-primary" for="fileInput"><i class="voyager-images"></i>
+                                        Seleccionar imagen</label>
+                                    <!-- Input de archivo oculto -->
+                                    <input type="file" class="custom-file-input" id="fileInput" data-name="foto"
+                                        accept="image/*, .pdf" name="foto" style="display: none;">
+                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
+                                        imagen.</label>
+                                    <span id="fileLabel"></span>
+                                </div>
+                            </div>
+
+
+                            {{-- Opción de carga de cédula --}}
+                            <div class="form-group" id="cedula_option">
+                                <h5 for="cedula">{{ __('Cédula') }}</h5>
+                                @if (isset($dataTypeContent->cedula))
+                                    <img src="{{ filter_var($dataTypeContent->cedula, FILTER_VALIDATE_URL) ? $dataTypeContent->cedula : Voyager::image($dataTypeContent->cedula) }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+                                <div class="custom-file">
+                                    <!-- Botón personalizado -->
+                                    <label class="btn btn-primary" for="fileInputCedula"><i class="voyager-credit-card"></i>
+                                        Seleccionar imagen</label>
+                                    <!-- Input de archivo oculto -->
+                                    <input type="file" class="custom-file-input" id="fileInputCedula" data-name="cedula"
+                                        accept="image/*, .pdf" name="cedula" style="display: none;">
+                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
+                                        imagen.</label>
+                                    <span id="fileLabel"></span>
+                                </div>
+                            </div>
+
+                            {{-- Opción de carga de pago --}}
+                            <div class="form-group" id="pago_option">
+                                <h5 for="pago">{{ __('Pago') }}</h5>
+                                @if (isset($dataTypeContent->pago))
+                                    <img src="{{ filter_var($dataTypeContent->pago, FILTER_VALIDATE_URL) ? $dataTypeContent->pago : Voyager::image($dataTypeContent->pago) }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+                                <div class="custom-file">
+                                    <!-- Botón personalizado -->
+                                    <label class="btn btn-primary" for="fileInputPago"><i class="voyager-images"></i>
+                                        Seleccionar Imagen de Pago</label>
+                                    <!-- Input de archivo oculto -->
+                                    <input type="file" class="custom-file-input" id="fileInputPago" data-name="pago"
+                                        accept="image/*, .pdf" name="pago" style="display: none;">
+                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
+                                        imagen.</label>
+                                    <span id="fileLabel"></span>
+                                </div>
+                            </div>
+
+
+                            {{-- Cargar Una Sola Imagen --}}
+                            {{-- <div class="form-group" id="imagen_option">
                                 <h5 for="imagen">{{ __('Imagen') }}</h5>
                                 @if (isset($dataTypeContent->imagen))
                                     <img src="{{ filter_var($dataTypeContent->imagen, FILTER_VALIDATE_URL) ? $dataTypeContent->imagen : Voyager::image($dataTypeContent->imagen) }}"
                                         style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
-                                @endif
-                                <input type="file" data-name="imagen" accept="image/*" name="imagen">
-                            </div> --}}
+                                @endif --}}
 
                             {{-- Cargar Multiples Imagenes  --}}
-                            <div class="form-group" id="imagen_option">
+                            {{-- <div class="form-group" id="imagen_option">
                                 <h5 for="imagen">{{ __('Imágenes') }}</h5>
                                 @if (isset($dataTypeContent->imagen))
                                     @foreach (json_decode($dataTypeContent->imagen) as $imagen)
                                         <img src="{{ filter_var($imagen, FILTER_VALIDATE_URL) ? $imagen : Voyager::image($imagen) }}"
                                             style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
                                     @endforeach
-                                @endif
-                                <div class="custom-file">
+                                @endif --}}
+
+                            {{-- <div class="custom-file">
                                     <!-- Botón personalizado -->
                                     <label class="btn btn-primary" for="fileInput"><i class="voyager-images"></i>
                                         Seleccionar imágenes</label>
@@ -95,10 +152,10 @@
                                         accept="image/*" name="imagen[]" multiple style="display: none;">
                                     <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
                                         imagen.</label>
-                                    {{-- <span id="fileLabel"></span> --}}
+                                    <span id="fileLabel"></span>
 
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                             <div class="form-group">
@@ -113,57 +170,14 @@
                                 {{-- <textarea required="true" class="form-control" id="mensaje" name="mensaje"></textarea> --}}
                                 <textarea class="form-control richTextBox" id="richtext mensaje" name="mensaje"></textarea>
                             </div>
-
+                            <div class="form-group">
+                                <a target="blank" type="button" class="btn btn-primary float-right"
+                                    href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN
+                                    LINEA</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                {{-- <div class="col-md-4">
-                    <div class="panel panel panel-bordered panel-warning">
-                        <div class="panel-body">
-                            <div class="form-group">
-                                @if (isset($dataTypeContent->avatar))
-                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image($dataTypeContent->avatar) }}"
-                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
-                                @endif
-                                <input type="file" data-name="avatar" accept="image/*" name="avatar">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="username">{{ __('Número de Documento') }}</h5>
-                            </div>
-                            <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
-                            <br></br>
-                            <div class="form-group">
-                                <h5 for="primer_nombre">{{ __('Nombre Completo') }}</h5>
-                            </div>
-                            <label for="primer_nombre">{{ old('primer_nombre', $dataTypeContent->primer_nombre ?? '') }}
-                                {{ old('segundo_nombre', $dataTypeContent->segundo_nombre ?? '') }}
-                                {{ old('primer_apellido', $dataTypeContent->primer_apellido ?? '') }}
-                                {{ old('segundo_apellido', $dataTypeContent->segundo_apellido ?? '') }}</label>
-                            <br></br>
-                            <div class="form-group">
-                                <h5 for="direccion">{{ __('Dirección') }}</h5>
-                            </div>
-                            <label for="direccion">{{ old('direccion', $dataTypeContent->direccion ?? '') }}</label>
-                            <br></br>
-                            <div class="form-group">
-                                <h5 for="movil">{{ __('Móvil') }}</h5>
-                            </div>
-                            <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
-                            <br></br>
-                            <div class="form-group">
-                                <h5 for="">{{ __('Porcentaje de Descuento') }}</h5>
-                            </div>
-                            <label>{{ Voyager::setting('admin.descuento', '0%') }}</label>
-                            <br></br>
-                            <div class="form-group">
-                                <h5 for="">{{ __('Valor Credencial') }}</h5>
-                            </div>
-                            <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
-                        </div>
-                    </div>
-
-                </div> --}}
             </div>
     </div>
 
@@ -259,46 +273,87 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Función para mostrar u ocultar el mensaje de validación cuando se cambia el campo de imagen
-            $('#fileInput').change(function() {
-                // Verificar si hay algún archivo seleccionado
-                if ($(this).get(0).files.length === 0) {
-                    // Si no hay archivos seleccionados, mostrar el mensaje de validación
-                    $(this).next('.invalid-feedback').show();
+            $('form').submit(function(event) {
+                // Validar campo de imagen solo si está visible
+                if ($('#imagen_option').is(':visible') && $('#fileInput').get(0).files.length === 0) {
+                    // Mostrar mensaje de error
+                    $('#fileInput').siblings('.invalid-feedback').show();
+                    // Detener el envío del formulario
+                    event.preventDefault();
                 } else {
-                    // Si hay archivos seleccionados, ocultar el mensaje de validación
-                    $(this).next('.invalid-feedback').hide();
+                    // Ocultar mensaje de error si hay archivos seleccionados o el campo no está visible
+                    $('#fileInput').siblings('.invalid-feedback').hide();
+                }
+
+                // Validar campo de cédula solo si está visible
+                if ($('#cedula_option').is(':visible') && $('#fileInputCedula').get(0).files.length === 0) {
+                    // Mostrar mensaje de error
+                    $('#fileInputCedula').siblings('.invalid-feedback').show();
+                    // Detener el envío del formulario
+                    event.preventDefault();
+                } else {
+                    // Ocultar mensaje de error si hay archivos seleccionados o el campo no está visible
+                    $('#fileInputCedula').siblings('.invalid-feedback').hide();
+                }
+
+                // Validar campo de pago solo si está visible
+                if ($('#pago_option').is(':visible') && $('#fileInputPago').get(0).files.length === 0) {
+                    // Mostrar mensaje de error
+                    $('#fileInputPago').siblings('.invalid-feedback').show();
+                    // Detener el envío del formulario
+                    event.preventDefault();
+                } else {
+                    // Ocultar mensaje de error si hay archivos seleccionados o el campo no está visible
+                    $('#fileInputPago').siblings('.invalid-feedback').hide();
                 }
             });
-
-            // Función para mostrar u ocultar la opción de imagen según el tipo de petición seleccionado
-            function toggleImagenOption() {
-                var tipoPeticion = $('#tipo_peticion').val();
-
-                // Si el tipo de petición seleccionado es igual a 'solicitud credencial FEDETIRO', mostrar la opción de imagen y hacerla requerida
-                if (tipoPeticion == 'solicitud credencial FEDETIRO') {
-                    $('#imagen_option').show();
-                    $('#fileInput').attr('required', 'required');
-                } else {
-                    // De lo contrario, ocultar la opción de imagen, quitar el atributo required y ocultar el mensaje de validación
-                    $('#imagen_option').hide();
-                    $('#fileInput').removeAttr('required');
-                    $('#fileInput').next('.invalid-feedback').hide();
-                }
-            }
-
-            // Ejecutar la función toggleImagenOption() cuando el valor del campo tipo_peticion cambie
-            $('#tipo_peticion').change(function() {
-                toggleImagenOption();
-            });
-
-            // Ejecutar la función toggleImagenOption() al cargar la página para inicializar la visibilidad de la opción de imagen
-            toggleImagenOption();
         });
     </script>
+    <script>
+        var tipoPeticiones = @json($tipoPeticiones);
 
+        $(document).ready(function() {
+            var tipoPeticionSelect = $('#tipo_peticion');
+            var imagenOption = $('#imagen_option');
+            var cedulaOption = $('#cedula_option');
+            var pagoOption = $('#pago_option');
 
+            tipoPeticionSelect.change(function() {
+                var selectedTipoPeticion = $(this).val();
+                var selectedPeticion = tipoPeticiones.find(function(peticion) {
+                    return peticion.tipo_peticion === selectedTipoPeticion;
+                });
 
+                if (selectedPeticion) {
+                    if (selectedPeticion.foto === 1) {
+                        imagenOption.show();
+                    } else {
+                        imagenOption.hide();
+                    }
+
+                    if (selectedPeticion.cedula === 1) {
+                        cedulaOption.show();
+                    } else {
+                        cedulaOption.hide();
+                    }
+
+                    if (selectedPeticion.pago === 1) {
+                        pagoOption.show();
+                    } else {
+                        pagoOption.hide();
+                    }
+                } else {
+                    // Si no se encuentra la petición seleccionada, ocultar todas las opciones
+                    imagenOption.hide();
+                    cedulaOption.hide();
+                    pagoOption.hide();
+                }
+            });
+
+            // Ejecutar el cambio inicialmente para configurar el estado según el valor seleccionado inicialmente
+            tipoPeticionSelect.trigger('change');
+        });
+    </script>
     <script>
         $(document).ready(function() {
             var additionalConfig = {

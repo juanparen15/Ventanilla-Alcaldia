@@ -26,7 +26,7 @@
             {{ csrf_field() }}
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-5">
                     <div class="panel panel-bordered">
                         {{-- <div class="panel"> --}}
                         @if (count($errors) > 0)
@@ -60,7 +60,7 @@
                             </div>
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <h5 for="username">{{ __('Usuario') }}</h5>
+                                    <h5 for="documento_tercero">{{ __('Usuario') }}</h5>
                                     <input required="true" type="text" class="form-control" id="username" name="username"
                                         placeholder="{{ __('Numero de Documento') }}"
                                         value="{{ old('username', $dataTypeContent->username ?? '') }}">
@@ -77,8 +77,8 @@
 
                             @if (Auth::user()->role_id == '2')
                                 <div class="form-group">
-                                    <h5 for="username">{{ __('Número de Documento') }}</h5>
-                                    <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                                    <h5 for="documento_tercero">{{ __('Número de Documento') }}</h5>
+                                    <label for="documento_tercero">{{ old('username', $dataTypeContent->username ?? '') }}</label>
                                 </div>
                             @endif
                             <div class="form-group">
@@ -198,6 +198,24 @@
                                 </select>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="panel panel-bordered">
+                        {{-- <div class="panel"> --}}
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="panel-body">
                             @php
                                 if (isset($dataTypeContent->genero)) {
                                     $selected_genero = $dataTypeContent->genero;
@@ -369,17 +387,17 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <h5 for="password">{{ __('voyager::generic.password') }}</h5>
-                                @if (isset($dataTypeContent->password))
-                                    <br>
-                                    <small>{{ __('voyager::profile.password_hint') }}</small>
-                                @endif
-                                <input type="password" class="form-control" id="password" name="password"
-                                    value="" autocomplete="new-password">
-                            </div>
-
                             @can('editRoles', $dataTypeContent)
+                                <div class="form-group">
+                                    <h5 for="password">{{ __('voyager::generic.password') }}</h5>
+                                    @if (isset($dataTypeContent->password))
+                                        <br>
+                                        <small>{{ __('voyager::profile.password_hint') }}</small>
+                                    @endif
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        value="" autocomplete="new-password">
+                                </div>
+
                                 <div class="form-group">
                                     <h5 for="default_role">{{ __('voyager::profile.role_default') }}</h5>
                                     @php
@@ -410,9 +428,8 @@
                                 } else {
                                     $selected_locale = config('app.locale', 'es');
                                 }
-
                             @endphp
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="locale">{{ __('voyager::generic.locale') }}</h5>
                                 <select class="form-control select2" id="locale" name="locale">
                                     @foreach (Voyager::getLocales() as $locale)
@@ -421,12 +438,12 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="panel panel panel-bordered panel-warning">
                         <div class="panel-body">
                             <div class="form-group">
@@ -446,9 +463,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <h5 for="username">{{ __('Número de Documento') }}</h5>
+                                <h5 for="documento_tercero">{{ __('Número de Documento') }}</h5>
                             </div>
-                            <label for="username">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                            <label for="documento_tercero">{{ old('username', $dataTypeContent->username ?? '') }}</label>
                             <br></br>
                             <div class="form-group">
                                 <h5 for="primer_nombre">{{ __('Nombre Completo') }}</h5>

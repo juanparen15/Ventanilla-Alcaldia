@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Voyager\TipoPeticionController;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 

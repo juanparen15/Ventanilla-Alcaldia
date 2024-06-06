@@ -18,7 +18,7 @@
                 </x-slot> --}}
 
                 <div class="mb-4 text-sm text-gray-600">
-                    {{ __('Antes de continuar, ¿podría verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar por correo electrónico? si no lo hicieras\Si no recibes el correo electrónico, con gusto te enviaremos otro.') }}
+                    {{ __('Antes de continuar, ¿Podría verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar por correo electrónico?. Si no recibes el correo electrónico, con gusto te enviaremos otro.') }}
                 </div>
 
                 @if (session('status') == 'verification-link-sent')

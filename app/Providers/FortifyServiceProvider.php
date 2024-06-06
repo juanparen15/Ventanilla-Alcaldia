@@ -9,11 +9,13 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use App\Http\Responses\LoginResponse;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Illuminate\Validation\ValidationException;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -46,5 +48,54 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
+        Fortify::authenticateUsing(function (Request $request) {
+            // Validar el input antes de intentar autenticarse
+            $request->validate([
+                'username' => ['required', 'regex:/^[0-9]+$/'],
+                'password' => ['required'],
+            ]);
+
+            $user = \App\Models\User::where('username', $request->username)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
+                if ($user->hasVerifiedEmail()) {
+                    return $user;
+                }
+
+                // Lanzar excepción si el correo no está verificado
+                throw ValidationException::withMessages([
+                    'email' => [trans('auth.email_not_verified')],
+                ]);
+            }
+
+            throw ValidationException::withMessages([
+                'username' => [trans('auth.failed')],
+            ]);
+        });
+
+        Fortify::loginView(function () {
+            return view('auth.login');
+        });
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
+
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+
+        Fortify::resetPasswordView(function ($request) {
+            return view('auth.reset-password', ['request' => $request]);
+        });
+
+        Fortify::confirmPasswordView(function () {
+            return view('auth.confirm-password');
+        });
     }
 }

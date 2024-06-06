@@ -6,7 +6,7 @@
             @if ($admin_logo_img == '')
                 <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
             @else
-                <img src="{{ Voyager::image($admin_logo_img) }}"  alt="Logo Icon">
+                <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
             @endif
         </div>
     </a>
@@ -18,15 +18,30 @@
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
 
-                    <div>
+                    {{-- <div>
                         <x-label for="primer_nombre" value="{{ __('Primer Nombre') }}" />
-                        <x-input id="primer_nombre" class="block mt-1 w-full" type="text" name="primer_nombre" :value="old('primer_nombre')"
-                            required autofocus autocomplete="primer_nombre" />
+                        <x-input id="primer_nombre" class="block mt-1 w-full" type="text" name="primer_nombre"
+                            :value="old('primer_nombre')" required autofocus autocomplete="primer_nombre" />
+                    </div> --}}
+                    @php
+                        $selected_tipo_documento = old('tipo_documento') ?? null;
+                    @endphp
+                    <div>
+                        <x-label for="tipo_documento" value="{{ __('Tipo Documento') }}" />
+                        <select class="form-control block mt-1 w-full" id="tipo_documento" name="tipo_documento" required>
+                            @foreach (Voyager::tipoDocumento() as $tipo_documento)
+                                <option value="{{ $tipo_documento->id }}"
+                                    {{ $tipo_documento->id == $selected_tipo_documento ? 'selected' : '' }}>
+                                    {{ $tipo_documento->tipo_documento }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div>
                         <x-label for="username" value="{{ __('Numero de Identificación') }}" />
                         <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
-                            required autofocus autocomplete="username" />
+                            required autofocus autocomplete="username" pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                     </div>
 
                     <div>
@@ -57,8 +72,8 @@
                                         {!! __('Acepto los :terms_of_service', [
                                             'terms_of_service' =>
                                                 '<a target="_blank" href="
-                                                https://www.fedetirocol.com/politica-tratamiento-de-datos/
-                                                " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                        https://www.fedetirocol.com/politica-tratamiento-de-datos/
+                                                                                                                                                                                                                                                        " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                                 __('Términos de servicio') .
                                                 '</a>',
                                             // 'terms_of_service' =>
@@ -69,15 +84,15 @@
                                             //     '</a>',
                                             'privacy_policy' =>
                                                 '<a target="_blank" href="
-                                                https://www.fedetirocol.com/politica-tratamiento-de-datos/
-                                                " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                                                                                                                                                                                                                        https://www.fedetirocol.com/politica-tratamiento-de-datos/
+                                                                                                                                                                                                                                                        " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                                 __('Política de privacidad') .
                                                 '</a>',
-                                                // '<a target="_blank" href="
-                                                // ' . route('policy.show') .'
-                                                // " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
-                                                // __('Política de privacidad') .
-                                                // '</a>',
+                                            // '<a target="_blank" href="
+                                            // ' . route('policy.show') .'
+                                            // " class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                            // __('Política de privacidad') .
+                                            // '</a>',
                                         ]) !!}
                                     </div>
                                 </div>

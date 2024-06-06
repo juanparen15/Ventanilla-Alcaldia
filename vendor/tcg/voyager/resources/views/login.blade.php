@@ -1,15 +1,15 @@
 @extends('voyager::auth.master')
 @section('content')
-<a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
-    <div class="logo-icon-container">
-        <?php $admin_logo_img = Voyager::setting('admin.icon_image', ''); ?>
-        @if($admin_logo_img == '')
-            <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
-        @else
-            <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-        @endif
-    </div>
-</a>
+    <a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
+        <div class="logo-icon-container">
+            <?php $admin_logo_img = Voyager::setting('admin.icon_image', ''); ?>
+            @if ($admin_logo_img == '')
+                <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
+            @else
+                <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+            @endif
+        </div>
+    </a>
     <div class="login-container">
         <p>{{ __('voyager::login.signin_below') }}</p>
 
@@ -33,7 +33,8 @@
                     <div>
                         <x-label for="username" value="{{ __('Numero de Identificación') }}" />
                         <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
-                            required autofocus autocomplete="username" />
+                            required autofocus autocomplete="username" pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                     </div>
 
                     <div class="mt-4">
@@ -51,7 +52,7 @@
                     <x-button class="items-center justify-end mt-4">
                         {{ __('Iniciar Sesión') }}
                     </x-button>
-                    
+
                     <div class="items-center justify-end mt-4">
                         @if (Route::has('password.request'))
                             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

@@ -112,9 +112,9 @@
                     {{-- <li class="nav-item">
                         <a class="nav-link" href="#blog">Blogs</a>
                     </li> --}}
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" href="#contact">Contactanos</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -126,7 +126,7 @@
         <div class="swiper-container absolute end-0 top-0 w-full h-full">
             <div class="swiper-wrapper">
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <?php $slider1 = Voyager::setting('site.slider1', ''); ?>
+                    <?php $slider1 = Voyager::setting('home.slider1'); ?>
                     <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
                         data-background="{{ Voyager::image($slider1) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
@@ -135,9 +135,9 @@
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        BIENVENIDO A LA VENTANILLA <br> UNICA VIRTUAL DE FEDETIRO</h1>
-                                    {{-- <p class="text-white/70 text-lg max-w-xl">This is just a simple text made for this
-                                        unique and awesome template, you can replace it with any text.</p> --}}
+                                        {{ Voyager::setting('home.titulo1') }}</h1>
+                                    <p class="text-white/70 text-lg max-w-xl">
+                                        {{ Voyager::setting('home.subtitulo1') }}</p>
                                     <div class="mt-6">
                                         <a href=""
                                             class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
@@ -150,7 +150,7 @@
                 </div> <!-- end swiper-slide -->
 
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <?php $slider2 = Voyager::setting('site.slider2', ''); ?>
+                    <?php $slider2 = Voyager::setting('home.slider2'); ?>
                     <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
                         data-background="{{ Voyager::image($slider2) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
@@ -159,9 +159,9 @@
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        PENSADO EN NUESTROS DEPORTISTAS</h1>
-                                    <p class="text-white/70 text-lg max-w-xl">HEMOS CREADO ESTA VENTANILLA UNICA QUE
-                                        LES PERMITE HACER LOS TRAMITES Y SERVICIOS DESDE CUALQUIER DISPOSITIVO.</p>
+                                        {{ Voyager::setting('home.titulo2') }}</h1>
+                                    <p class="text-white/70 text-lg max-w-xl">{{ Voyager::setting('home.subtitulo2') }}
+                                    </p>
 
                                     <div class="mt-6">
                                         <a href=""
@@ -175,7 +175,7 @@
                 </div> <!-- end swiper-slide -->
 
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <?php $slider3 = Voyager::setting('site.slider3', ''); ?>
+                    <?php $slider3 = Voyager::setting('home.slider3', ''); ?>
                     <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
                         data-background="{{ Voyager::image($slider3) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
@@ -184,10 +184,9 @@
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        INFORMATE SOBRE LOS REQUISITOS <br> PARA CADA UNO DE LOS TRAMITES <br> QUE
-                                        PUEDES REALIZAR AQUI.</h1>
-                                    {{-- <p class="text-white/70 text-lg max-w-xl"></p> --}}
-
+                                        {{ Voyager::setting('home.titulo3') }}</h1>
+                                    <p class="text-white/70 text-lg max-w-xl">
+                                        {{ Voyager::setting('home.subtitulo3') }}</p>
                                     <div class="mt-6">
                                         <a href=""
                                             class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
@@ -200,7 +199,7 @@
                 </div> <!-- end swiper-slide -->
 
                 <div class="swiper-slide flex items-center overflow-hidden">
-                    <?php $slider4 = Voyager::setting('site.slider4', ''); ?>
+                    <?php $slider4 = Voyager::setting('home.slider4', ''); ?>
                     <div class="slide-inner absolute end-0 top-0 w-full h-full slide-bg-image flex items-center bg-center bg-opacity-0;"
                         data-background="{{ Voyager::image($slider4) }}">
                         <div class="absolute inset-0 bg-black/70"></div>
@@ -209,10 +208,9 @@
                                 <div class="">
                                     <h1
                                         class="font-bold lg:leading-normal leading-normal tracking-wide text-4xl lg:text-5xl capitalize text-white mb-5">
-                                        CONOCE LOS DISTINTOS PUNTOS <br> DE ATENCIÓN PRESENCIAL <br> ESTAMOS PARA
-                                        SERVIRTE</h1>
-                                    {{-- <p class="text-white/70 text-lg max-w-xl"></p> --}}
-
+                                        {{ Voyager::setting('home.titulo4') }}</h1>
+                                    <p class="text-white/70 text-lg max-w-xl">
+                                        {{ Voyager::setting('home.subtitulo4') }}</p>
                                     <div class="mt-6">
                                         <a href=""
                                             class="h-10 px-6 tracking-wide inline-flex items-center justify-center font-medium rounded-md bg-teal-500 text-white">Ver
@@ -245,7 +243,7 @@
                 <div class="md:col-span-6">
                     <div class="lg:me-8">
                         <div class="relative">
-                            <?php $bg_politicas = Voyager::setting('site.bg_politicas', ''); ?>
+                            <?php $bg_politicas = Voyager::setting('home.bg_politicas', ''); ?>
                             <img src="{{ Voyager::image($bg_politicas) }}"
                                 class="rounded-full shadow dark:shadow-gray-700" alt="Logo Icon">
                             {{-- <img src="assets/images/about.jpg" class="rounded-full shadow dark:shadow-gray-700"
@@ -266,18 +264,15 @@
                 <div class="md:col-span-6">
                     <div class="lg:ms-8">
                         {{-- <h6 class="text-teal-500 text-sm font-semibold uppercase mb-2">Who Are We ?</h6> --}}
-                        <h1 class="font-semibold text-2xl leading-normal mb-4">CONOCE NUESTRAS POLÍTICAS DE SERVICIO.
-                        </h1>
+                        <h1 class="font-semibold text-2xl leading-normal mb-4">
+                            {{ Voyager::setting('home.titulo_politicas') }}</h1>
 
-                        <p class="text-slate-400 max-w-xl mb-6">Antes de dirigirse a un punto de atención presencial de
-                            La Ventanilla Única de Servicios, por favor lea las siguientes instrucciones y
-                            recomendaciones que deberá tener en cuenta para que pueda realizar su trámite de manera
-                            eficiente, ágil y segura, y obtener el resultado esperado a su solicitud:</p>
+                        <p class="text-slate-400 max-w-xl mb-6">{{ Voyager::setting('home.text_politicas') }}</p>
 
                         <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <?php $bg_politica1 = Voyager::setting('site.politica1', ''); ?>
+                                    <?php $bg_politica1 = Voyager::setting('home.bg_politica1', ''); ?>
                                     <img src="{{ Voyager::image($bg_politica1) }}"
                                         class="group-hover:scale-110 duration-500" alt="Logo Icon">
                                     {{-- <img src="assets/images/blog/01.jpg" class="group-hover:scale-110 duration-500"
@@ -288,8 +283,7 @@
                                     {{-- <a href=""
                                         class="title text-lg font-semibold hover:text-teal-500 duration-500 ease-in-out">La
                                         Ventanilla Única de Servicios no tiene intermediarios.</a> --}}
-                                    <h2 class="text-slate-400 mt-2">La Ventanilla Única de Servicios no tiene
-                                        intermediarios.</h2>
+                                    <h2 class="text-slate-400 mt-2">{{ Voyager::setting('home.text_politica1') }}</h2>
 
 
                                 </div>
@@ -297,7 +291,7 @@
 
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <?php $bg_politica2 = Voyager::setting('site.politica2', ''); ?>
+                                    <?php $bg_politica2 = Voyager::setting('home.bg_politica2', ''); ?>
                                     <img src="{{ Voyager::image($bg_politica2) }}"
                                         class="group-hover:scale-110 duration-500" alt="Logo Icon">
                                     {{-- <img src="assets/images/blog/02.jpg" class="group-hover:scale-110 duration-500"
@@ -305,25 +299,20 @@
                                 </div>
 
                                 <div class="mt-6">
-                                    <p class="text-slate-400 mt-2">
-                                        Algunos de nuestros trámites y servicios tienen una tarifa establecida por
-                                        norma.</p>
+                                    <p class="text-slate-400 mt-2">{{ Voyager::setting('home.text_politica2') }}</p>
                                 </div>
                             </div><!--end content-->
 
                             <div class="group relative overflow-hidden">
                                 <div class="relative overflow-hidden rounded-md shadow dark:shadow-gray-800">
-                                    <?php $bg_politica3 = Voyager::setting('site.politica3', ''); ?>
+                                    <?php $bg_politica3 = Voyager::setting('home.bg_politica3', ''); ?>
                                     <img src="{{ Voyager::image($bg_politica3) }}"
                                         class="group-hover:scale-110 duration-500" alt="Logo Icon">
                                     {{-- <img src="assets/images/blog/03.jpg" class="group-hover:scale-110 duration-500"
                                         alt=""> --}}
                                 </div>
                                 <div class="mt-6">
-                                    <p class="text-slate-400 mt-2">Es posible que deba agendar su cita con
-                                        anterioridad.</p>
-
-
+                                    <p class="text-slate-400 mt-2">{{ Voyager::setting('home.text_politica3') }}</p>
                                 </div>
                             </div><!--end content-->
                         </div><!--end grid-->
@@ -563,9 +552,10 @@
     <section class="realtive md:py-24 py-16">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
-                <h3 class="font-semibold text-2xl leading-normal mb-4">Lo que debes saber para usar</h3>
+                <h3 class="font-semibold text-2xl leading-normal mb-4">{{ Voyager::setting('home.title_tramites') }}
+                </h3>
 
-                <p class="text-slate-400 max-w-xl mx-auto">Nuestros Trámites y Servicios.</p>
+                <p class="text-slate-400 max-w-xl mx-auto">{{ Voyager::setting('home.text_tramites') }}</p>
             </div><!--end grid-->
 
             <div class="grid md:grid-cols-12 grid-cols-1 mt-6 gap-6">
@@ -579,10 +569,9 @@
                                     id="profile-tab" data-tabs-target="#profile" type="button" role="tab"
                                     aria-controls="profile" aria-selected="true">
                                     {{-- <h1 class="block">1</h1> --}}
-                                    <span class="text-lg mt-2 block">CATALOGO</span>
-                                    <span class="block mt-2">Listado de todos los Trámites y Servicios, documentos y
-                                        demás requisitos, tiempos máximos de respuesta, costos (si aplicaran), puntos de
-                                        atención presencial.</span>
+                                    <span
+                                        class="text-lg mt-2 block">{{ Voyager::setting('home.title_servicio1') }}</span>
+                                    <span class="block mt-2">{{ Voyager::setting('home.text_servicio1') }}</span>
                                 </button>
                             </li>
                             <li role="presentation">
@@ -591,10 +580,9 @@
                                     id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
                                     aria-controls="dashboard" aria-selected="false">
                                     {{-- <span class="block">Step 2</span> --}}
-                                    <span class="text-lg mt-2 block">REGISTRO Y SOLICITUD EN LÍNEA</span>
-                                    <span class="block mt-2">Puedes hacer cualquiera de los Trámites y Servicios en
-                                        Línea previo registro y validación del mismo a cualquier hora y desde cualquier
-                                        lugar, solo necesitas una computadora.</span>
+                                    <span
+                                        class="text-lg mt-2 block">{{ Voyager::setting('home.title_servicio2') }}</span>
+                                    <span class="block mt-2">{{ Voyager::setting('home.text_servicio2') }}</span>
                                 </button>
                             </li>
                             <li role="presentation">
@@ -603,23 +591,21 @@
                                     id="settings-tab" data-tabs-target="#settings" type="button" role="tab"
                                     aria-controls="settings" aria-selected="false">
                                     {{-- <span class="block">Step 3</span> --}}
-                                    <span class="text-lg mt-2 block">CONSULTA Y RESPUESTA EN LÍNEA</span>
-                                    <span class="block mt-2">Desde una computadora puedes consultar a cualquier hora y
-                                        desde cualquier lugar el estado de tus solicitudes de Trámites y Servicios; el
-                                        recibido y la respuesta le es remitido siempre por correo electrónico.</span>
+                                    <span
+                                        class="text-lg mt-2 block">{{ Voyager::setting('home.title_servicio3') }}</span>
+                                    <span class="block mt-2">{{ Voyager::setting('home.text_servicio3') }}</span>
                                 </button>
                             </li>
                         </ul>
                     </div>
                 </div>
-
                 <div class="lg:col-span-8 md:col-span-7">
                     <div id="myTabContent"
                         class="p-6 bg-white dark:bg-slate-900 shadow dark:shadow-gray-700 rounded-md">
                         <div class="" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <?php $bg_catalogo = Voyager::setting('site.bg_catalogo', ''); ?>
-                            <img src="{{ Voyager::image($bg_catalogo) }}"
-                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            <?php $bg_servicio1 = Voyager::setting('home.bg_servicio1', ''); ?>
+                            <img src="{{ Voyager::image($bg_servicio1) }}"
+                                class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
                             {{-- <img src="assets/images/blog/01.jpg" class="shadow dark:shadow-gray-700 rounded-md"
                                 alt=""> --}}
 
@@ -635,9 +621,9 @@
                             </div> --}}
                         </div>
                         <div class="hidden " id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <?php $bg_registro = Voyager::setting('site.bg_registro', ''); ?>
-                            <img src="{{ Voyager::image($bg_registro) }}"
-                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            <?php $bg_servicio2 = Voyager::setting('home.bg_servicio2', ''); ?>
+                            <img src="{{ Voyager::image($bg_servicio2) }}"
+                                class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
                             {{-- <img src="assets/images/blog/02.jpg" class="shadow dark:shadow-gray-700 rounded-md"
                                 alt=""> --}}
 
@@ -653,9 +639,9 @@
                             </div> --}}
                         </div>
                         <div class="hidden " id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                            <?php $bg_consulta = Voyager::setting('site.bg_consulta', ''); ?>
-                            <img src="{{ Voyager::image($bg_consulta) }}"
-                            class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
+                            <?php $bg_servicio3 = Voyager::setting('home.bg_servicio3', ''); ?>
+                            <img src="{{ Voyager::image($bg_servicio3) }}"
+                                class="shadow dark:shadow-gray-700 rounded-md" alt="Logo Icon">
                             {{-- <img src="assets/images/blog/03.jpg" class="shadow dark:shadow-gray-700 rounded-md"
                                 alt=""> --}}
 
@@ -1122,13 +1108,13 @@
     </section><!--end section-->
     <!-- End Blog --> --}}
 
-    <section class="relative lg:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="contact">
+    {{-- <section class="relative lg:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="contact">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
-                <h3 class="font-semibold text-2xl leading-normal mb-4">CONTACTANOS</h3>
+                <h3 class="font-semibold text-2xl leading-normal mb-4">CONTÁCTANOS</h3>
 
-                {{-- <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
-                    template, you can replace it with any text.</p> --}}
+                <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
+                    template, you can replace it with any text.</p>
             </div><!--end grid-->
 
             <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6">
@@ -1185,7 +1171,7 @@
                 </div>
             </div>
         </div><!--end container-->
-    </section><!--end section-->
+    </section> --}}
 
     <!-- Footer Start -->
     <footer class="footer bg-dark-footer relative text-gray-200 dark:text-gray-200">

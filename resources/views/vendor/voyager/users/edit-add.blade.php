@@ -485,16 +485,16 @@
                             </div>
                             <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
                             <br></br>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="">{{ __('Porcentaje de Descuento') }}</h5>
                             </div>
                             <label>{{ Voyager::setting('admin.descuento', '0%') }}</label>
-                            <br></br>
-                            <div class="form-group">
+                            <br></br> --}}
+                            {{-- <div class="form-group">
                                 <h5 for="">{{ __('Valor Credencial') }}</h5>
                             </div>
                             <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
-                            <br></br>
+                            <br></br> --}}
                             <div class="form-group">
                                 <h5 for="tipo_arma">{{ __('Tipos de Arma') }}</h5>
                                 @foreach ($selected_tipo_arma as $tipoArmaId)

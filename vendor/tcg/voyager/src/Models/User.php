@@ -5,15 +5,21 @@ namespace TCG\Voyager\Models;
 use App\Models\ModalidadArma;
 use App\Models\TipoArma;
 use Carbon\Carbon;
+use Database\Factories\UserFactory as FactoriesUserFactory;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Sanctum\HasApiTokens;
 use TCG\Voyager\Contracts\User as UserContract;
 use TCG\Voyager\Tests\Database\Factories\UserFactory;
 use TCG\Voyager\Traits\VoyagerUser;
 
 class User extends Authenticatable implements UserContract
 {
-    use VoyagerUser, HasFactory;
+    use VoyagerUser, HasFactory, MustVerifyEmail, TwoFactorAuthenticatable, Notifiable, HasProfilePhoto, HasApiTokens;
 
     protected $guarded = [];
 
@@ -51,7 +57,6 @@ class User extends Authenticatable implements UserContract
 
     protected static function newFactory()
     {
-        return UserFactory::new();
+        return FactoriesUserFactory::new();
     }
-
 }

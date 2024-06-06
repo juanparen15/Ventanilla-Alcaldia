@@ -19,6 +19,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
 
+    protected function redirectTo($request)
+    {
+        if (!$request->expectsJson()) {
+            return route('verification.notice');
+        }
+    }
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */

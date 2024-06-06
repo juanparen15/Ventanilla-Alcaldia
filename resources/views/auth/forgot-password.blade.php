@@ -18,7 +18,7 @@
                 </x-slot> --}}
 
                 <div class="mb-4 text-sm text-gray-600">
-                    {{ __('¿Olvidaste tu contraseña? Simplemente háganos saber tu dirección de correo electrónico y le enviaremos un enlace para restablecer su contraseña que le permitirá elegir una nueva.') }}
+                    {{ __('¿Olvidaste tu contraseña? Simplemente háganos saber tu número de identificación y le enviaremos un enlace para restablecer su contraseña que le permitirá elegir una nueva.') }}
                 </div>
 
                 @if (session('status'))
@@ -38,7 +38,8 @@
                             required autofocus autocomplete="username" /> --}}
                         <x-label for="username" value="{{ __('Numero de Identificación') }}" />
                         <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')"
-                            required autofocus />
+                            required autofocus autocomplete="username" pattern="[0-9]*"
+                            oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
 
                     </div>
 

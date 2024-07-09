@@ -1,6 +1,6 @@
 @php
     $edit = !is_null($dataTypeContent->getKey());
-    $add  = is_null($dataTypeContent->getKey());
+    $add = is_null($dataTypeContent->getKey());
 @endphp
 
 @extends('voyager::master')
@@ -9,7 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
-@section('page_title', __('voyager::generic.'.($edit ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular'))
+@section('page_title', __('voyager::generic.' . ($edit ? 'edit' : 'add')) . ' ' .
+    $dataType->getTranslatedAttribute('display_name_singular'))
 
 @section('page_header')
     <h1 class="page-title">
@@ -80,7 +81,11 @@
                                     @elseif ($row->type == 'relationship')
                                         @include('voyager::formfields.relationship', ['options' => $row->details])
                                     @else
-                                        {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        @if($row->type == 'text')
+                                            <input type="text" class="form-control formatted-number" name="{{ $row->field }}" value="{{ $dataTypeContent->{$row->field} ? number_format($dataTypeContent->{$row->field}, 0, ',', '.') : '' }}">
+                                        @else
+                                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        @endif
                                     @endif
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
@@ -160,11 +165,24 @@
           };
         }
 
-        $('document').ready(function () {
+        function formatNumberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        $(document).ready(function () {
+            // Select all input fields of type text that are formatted numbers
+            $('input.formatted-number').each(function () {
+                var $input = $(this);
+                $input.on('input', function () {
+                    // Remove any non-digit characters, format with commas, and update the value
+                    var value = $input.val().replace(/\D/g, '');
+                    $input.val(formatNumberWithCommas(value));
+                });
+            });
+
+            // Existing initialization scripts
             $('.toggleswitch').bootstrapToggle();
 
-            //Init datepicker for date fields if data-datepicker attribute defined
-            //or if browser does not handle date inputs
             $('.form-group input[type=date]').each(function (idx, elt) {
                 if (elt.hasAttribute('data-datepicker')) {
                     elt.type = 'text';
@@ -173,7 +191,7 @@
                     elt.type = 'text';
                     $(elt).datetimepicker({
                         format: 'L',
-                        extraFormats: [ 'YYYY-MM-DD' ]
+                        extraFormats: ['YYYY-MM-DD']
                     }).datetimepicker($(elt).data('datepicker'));
                 }
             });
@@ -193,13 +211,9 @@
 
             $('#confirm_delete').on('click', function(){
                 $.post('{{ route('voyager.'.$dataType->slug.'.media.remove') }}', params, function (response) {
-                    if ( response
-                        && response.data
-                        && response.data.status
-                        && response.data.status == 200 ) {
-
+                    if (response && response.data && response.data.status && response.data.status == 200 ) {
                         toastr.success(response.data.message);
-                        $file.parent().fadeOut(300, function() { $(this).remove(); })
+                        $file.parent().fadeOut(300, function() { $(this).remove(); });
                     } else {
                         toastr.error("Error removing file.");
                     }
@@ -207,6 +221,7 @@
 
                 $('#confirm_delete_modal').modal('hide');
             });
+
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

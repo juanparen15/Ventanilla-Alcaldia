@@ -53,6 +53,17 @@ class Inscripcion extends Model
                 $inscripcion->codigo_tipo_estado_inscripcion = 1;
             }
         });
+        static::updating(function ($inscripcion) {
+            // Verifica si hay un usuario autenticado
+            if (Auth::check()) {
+                $user = Auth::user();
+                $inscripcion->documento_tercero = $user->username;
+                $inscripcion->user_id = $user->id;
+
+                // Establecer el estado predeterminado como 'Borrador'
+                $inscripcion->codigo_tipo_estado_inscripcion = 1;
+            }
+        });
         static::saving(function ($model) {
             if (is_array($model->codigo_tipo_arma_evento)) {
                 $model->codigo_tipo_arma_evento = json_encode($model->codigo_tipo_arma_evento);

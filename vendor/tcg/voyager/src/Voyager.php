@@ -490,4 +490,15 @@ class Voyager
             ->get();
     }
 
+    public function edad()
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Calcular la edad del usuario a partir de su fecha de nacimiento
+        $fechaNacimiento = Carbon::parse($user->fecha_nacimiento);
+        $edad = $fechaNacimiento->age;
+
+        return $edad;
+    }
 }

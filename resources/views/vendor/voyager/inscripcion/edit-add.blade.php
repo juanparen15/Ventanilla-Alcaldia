@@ -248,13 +248,13 @@
                                     value="{{ old('comprobante_pago', $dataTypeContent->comprobante_pago ?? '') }}">
                             </div>
                             <div class="form-group">
-                                @if (isset($dataTypeContent->pdf_comprobante_pago))
-                                    {{-- Mostrar imágenes o archivos previamente cargados --}}
+                                @if (!empty($dataTypeContent->pdf_comprobante_pago))
+                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->pdf_comprobante_pago) as $pdf)
                                         <div class="file-preview">
-                                            <a href="{{ filter_var($pdf, FILTER_VALIDATE_URL) ? $pdf : Voyager::image($pdf) }}"
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
                                                 target="_blank">
-                                                {{ basename($pdf) }}
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
                                             </a>
                                         </div>
                                     @endforeach
@@ -314,20 +314,20 @@
                                     name="titular_permiso_porte" placeholder="{{ __('Titular de Permiso de Porte') }}"
                                     value="{{ old('titular_permiso_porte', $dataTypeContent->titular_permiso_porte ?? '') }}">
                             </div>
-                          
-                            <div class="form-group" id="consentimientoPadresGroup" style="display: none;">
-                                @if (isset($dataTypeContent->consentimiento_padres))
-                                    {{-- Mostrar imágenes o archivos previamente cargados --}}
+
+                            <div class="form-group" id="consentimientoPadresGroup" style="display: block;">
+                                @if (!empty($dataTypeContent->consentimiento_padres))
+                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->consentimiento_padres) as $pdf)
                                         <div class="file-preview">
-                                            <a href="{{ filter_var($pdf, FILTER_VALIDATE_URL) ? $pdf : Voyager::image($pdf) }}"
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
                                                 target="_blank">
-                                                {{ basename($pdf) }}
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
                                             </a>
                                         </div>
                                     @endforeach
                                 @endif
-                                
+
                                 <div class="custom-file">
                                     <!-- Botón personalizado para seleccionar archivos de consentimiento de padres -->
                                     <label class="btn btn-primary" for="fileInputPadres">Seleccionar Consentimiento de
@@ -342,13 +342,13 @@
                             </div>
 
                             <div class="form-group">
-                                @if (isset($dataTypeContent->pdf_permiso_porte))
-                                    {{-- Mostrar imágenes o archivos previamente cargados --}}
+                                @if (!empty($dataTypeContent->pdf_permiso_porte))
+                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->pdf_permiso_porte) as $pdf)
                                         <div class="file-preview">
-                                            <a href="{{ filter_var($pdf, FILTER_VALIDATE_URL) ? $pdf : Voyager::image($pdf) }}"
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
                                                 target="_blank">
-                                                {{ basename($pdf) }}
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
                                             </a>
                                         </div>
                                     @endforeach
@@ -567,96 +567,96 @@
     });
 </script>
 
+
+<script>
+    $(document).ready(function() {
+        // Función para actualizar el nombre de los archivos seleccionados
+        function updateFileLabel(inputId, labelId) {
+            $('#' + inputId).on('change', function() {
+                var files = $(this)[0].files;
+                var fileNames = [];
+                for (var i = 0; i < files.length; i++) {
+                    fileNames.push(files[i].name);
+                }
+                $('#' + labelId).text(fileNames.join(', '));
+            });
+        }
+
+        // Llamar a la función para cada grupo de archivos
+        updateFileLabel('fileInput', 'fileLabel');
+        updateFileLabel('fileInputPadres', 'fileLabelPadres');
+        updateFileLabel('fileInputPermisoPorte', 'fileLabelPermisoPorte');
+    });
+</script>
 <script>
     $(document).ready(function() {
 
-        var userAge = @json($edad); // Edad del usuario autenticado
+        var userAge = {{ voyager::edad() }}; // Edad del usuario autenticado
 
         // Mostrar/ocultar el campo de consentimiento de padres según la edad del usuario
-        if (userAge > 18) {
+        if (userAge < 18) {
             $('#consentimientoPadresGroup').show();
         } else {
             $('#consentimientoPadresGroup').hide();
         }
-
-        // Función para actualizar el nombre de los archivos seleccionados
-        function updateFileLabel(inputId, labelId) {
-            $('#' + inputId).on('change', function() {
-                var files = $(this)[0].files;
-                var fileNames = [];
-                for (var i = 0; i < files.length; i++) {
-                    fileNames.push(files[i].name);
-                }
-                $('#' + labelId).text(fileNames.join(', '));
-            });
-        }
-
-        // Llamar a la función para cada grupo de archivos
-        updateFileLabel('fileInputPago', 'fileLabelPago');
-        updateFileLabel('fileInputPadres', 'fileLabelPadres');
-        updateFileLabel('fileInputPorte', 'fileLabelPorte');
     });
 </script>
-<script>
-    $(document).ready(function() {
-        // Función para actualizar el nombre de los archivos seleccionados
-        function updateFileLabel(inputId, labelId) {
-            $('#' + inputId).on('change', function() {
-                var files = $(this)[0].files;
-                var fileNames = [];
-                for (var i = 0; i < files.length; i++) {
-                    fileNames.push(files[i].name);
-                }
-                $('#' + labelId).text(fileNames.join(', '));
-            });
-        }
-
-        // Llamar a la función para cada grupo de archivos
-        updateFileLabel('fileInputPago', 'fileLabelPago');
-        updateFileLabel('fileInputPadres', 'fileLabelPadres');
-        updateFileLabel('fileInputPorte', 'fileLabelPorte');
-    });
-</script>
-
-{{-- <script>
-    $(document).ready(function() {
-        // Mostrar el nombre de los archivos seleccionados al cambiar el valor del input de archivo
-        $('.custom-file-input').on('change', function() {
-            var files = $(this)[0].files;
-            var fileNames = [];
-            for (var i = 0; i < files.length; i++) {
-                fileNames.push(files[i].name);
-            }
-            $('#fileLabel').text(fileNames.join(', '));
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        // Mostrar el nombre de los archivos seleccionados al cambiar el valor del input de archivo de Consentimiento de Padres
-        $('#fileInputConsentimientoPadres').on('change', function() {
-            var files = $(this)[0].files;
-            var fileNames = [];
-            for (var i = 0; i < files.length; i++) {
-                fileNames.push(files[i].name);
-            }
-            $('#fileLabelConsentimientoPadres').text(fileNames.join(', '));
-        });
-
-        // Mostrar el nombre de los archivos seleccionados al cambiar el valor del input de archivo de Permiso de Porte
-        $('#fileInputPermisoPorte').on('change', function() {
-            var files = $(this)[0].files;
-            var fileNames = [];
-            for (var i = 0; i < files.length; i++) {
-                fileNames.push(files[i].name);
-            }
-            $('#fileLabelPermisoPorte').text(fileNames.join(', '));
-        });
-    });
-</script> --}}
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            var isValid = true; // Variable para verificar la validez del formulario
+
+            // Validar campo de Comprobantes de Pago
+            if ($('#fileInput').get(0).files.length === 0) {
+                // Mostrar SweetAlert2 para el mensaje de error
+                Swal.fire({
+                    title: 'Debe seleccionar al menos un archivo para Comprobantes de Pago',
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+                isValid = false; // Marcar el formulario como inválido
+            }
+
+            // Validar campo de Permiso de Porte si es visible
+            if ($('#fileInputPermisoPorte').get(0).files
+                .length === 0) {
+                // Mostrar SweetAlert2 para el mensaje de error
+                Swal.fire({
+                    title: 'Debe seleccionar al menos un archivo para Permiso de Porte',
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+                isValid = false; // Marcar el formulario como inválido
+            }
+
+            var edad = {{ voyager::edad() }};
+
+            // Validar campo de Consentimiento de Padres si es visible
+            if (edad < 18 && $('#fileInputPadres').get(0).files.length ===
+                0) {
+                // Mostrar SweetAlert2 para el mensaje de error
+                Swal.fire({
+                    title: 'Debe seleccionar al menos un archivo para Consentimiento de Padres',
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+                isValid = false; // Marcar el formulario como inválido
+            }
+
+
+
+            // Si el formulario no es válido, detener el envío del formulario
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+
+
 <script>
     $(document).ready(function() {
         // Intercepta el envío del formulario
@@ -818,97 +818,4 @@
         });
     });
 </script>
-
-
-
-{{-- <script>
-    $(document).ready(function() {
-        // Función para obtener el valor según el número de modalidades seleccionadas
-        function actualizarValor() {
-            let selectedModalidades = $('#modalidad_arma').val();
-            let cantidadModalidades = selectedModalidades.length;
-
-            if (cantidadModalidades > 0) {
-                // Realizar la solicitud AJAX
-                $.ajax({
-                    url: '{{ route('obtenerValorModalidades') }}',
-                    method: 'POST',
-                    data: {
-                        modalidades: selectedModalidades,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#valor').val(response.valor);
-                        } else {
-                            Swal.fire({
-                                title: 'Error',
-                                text: response.message,
-                                icon: 'error',
-                                confirmButtonText: 'Entendido'
-                            });
-                        }
-                    },
-                    error: function() {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se pudo obtener el valor. Inténtelo nuevamente.',
-                            icon: 'error',
-                            confirmButtonText: 'Entendido'
-                        });
-                    }
-                });
-            } else {
-                $('#valor').val('');
-            }
-        }
-
-        // Evento de cambio para el selector de modalidades
-        $('#modalidad_arma').change(actualizarValor);
-    });
-</script> --}}
-{{-- <script>
-    $(document).ready(function() {
-        // Intercepta el envío del formulario
-        $('.form-edit-add').on('submit', function(event) {
-            // Verifica si no se ha aceptado las políticas
-            if ($('input[name="acepta_politicas"]').length > 0 && !$('input[name="acepta_politicas"]')
-                .is(':checked')) {
-                // Evita el envío del formulario
-                event.preventDefault();
-
-                // Muestra SweetAlert2 para confirmar la acción
-                Swal.fire({
-                    title: 'Debe aceptar las políticas',
-                    text: 'Por favor, acepte las políticas antes de continuar.',
-                    icon: 'warning',
-                    showCancelButton: false,
-                    confirmButtonText: 'Entendido'
-                });
-            }
-        });
-    });
-</script> --}}
-{{-- <script>
-    $(document).ready(function() {
-        // Intercepta el envío del formulario
-        $('.form-edit-add').on('submit', function(event) {
-            // Verifica si se ha seleccionado al menos un tipo de arma
-            if ($('select[name="codigo_arma[]"]').val().length === 0) {
-                // Evita el envío del formulario
-                event.preventDefault();
-
-                // Muestra SweetAlert2 para informar al usuario
-                Swal.fire({
-                    title: 'Debe seleccionar un tipo de arma',
-                    text: 'Por favor, seleccione al menos un tipo de arma antes de continuar.',
-                    icon: 'warning',
-                    showCancelButton: false,
-                    confirmButtonText: 'Entendido'
-                });
-            }
-        });
-    });
-</script> --}}
-
 @stop

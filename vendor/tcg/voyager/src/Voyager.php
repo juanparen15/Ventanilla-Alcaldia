@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use App\Models\Arma;
 use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -34,16 +35,22 @@ use App\Models\ArmorumappLugar;
 use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
 use App\Models\Departamentos;
+use App\Models\Evento;
+use App\Models\EventoDetalleModalidadesArma;
 use App\Models\Genero;
+use App\Models\Inscripcion;
 use App\Models\Lateralidad;
 use App\Models\Liga;
 use App\Models\ModalidadArma;
 use App\Models\Municipios;
 use App\Models\OjoMaestro;
 use App\Models\TipoArma;
+use App\Models\TipoCategoria;
 use App\Models\TipoDocumento;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Traits\Translatable;
 
 class Voyager
@@ -436,4 +443,51 @@ class Voyager
     {
         return ArmorumappTipopeticion::all();
     }
+    public function categoria()
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Obtener la fecha de nacimiento y calcular la edad
+        $fechaNacimiento = Carbon::parse($user->fecha_nacimiento);
+        $edad = $fechaNacimiento->age;
+
+        // Filtrar las categorías por el rango de edad del usuario
+        $categorias = TipoCategoria::where('edad_minima', '<=', $edad)
+            ->where('edad_maxima', '>=', $edad)
+            ->get();
+
+        // Formatear las categorías para mostrar nombre + uso_categoria
+        $formattedCategorias = $categorias->map(function ($categoria) {
+            return [
+                'codigo_tipo_categoria' => $categoria->codigo_tipo_categoria,
+                'nombre_completo' => $categoria->nombre . ' ' . $categoria->uso_categoria,
+            ];
+        });
+
+        return $formattedCategorias;
+    }
+
+    public function eventos()
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        return Evento::where('fecha_inicio_inscripcion_ordinaria', '<=', $currentDate)
+            ->where('fecha_fin_inscripcion_extraordinaria', '>=', $currentDate)
+            ->get();
+    }
+
+    public function evento_detalle()
+    {
+        return EventoDetalleModalidadesArma::all();
+    }
+
+    public function armas()
+    {
+        $user = Auth::user(); // Obtener el usuario autenticado
+        return Arma::with(['metodoPropulsion', 'tipoArma', 'calibre', 'tipoPropiedad'])
+            ->where('user_id', $user->id) // Filtrar por el usuario autenticado
+            ->get();
+    }
+
 }

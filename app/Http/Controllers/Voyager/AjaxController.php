@@ -4,6 +4,8 @@ namespace TCG\Voyager\Http\Controllers;
 
 use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
+use App\Models\Evento;
+use App\Models\EventoDetalleModalidadesArma;
 use App\Models\ModalidadArma;
 use App\Models\Municipios;
 use Illuminate\Http\Request;
@@ -48,4 +50,29 @@ class AjaxController extends Controller
             }
         }
     }
+
+    public function getModalidadesByEvento($codigo_evento)
+    {
+        try {
+            $modalidades = EventoDetalleModalidadesArma::with(['evento','tipoArma', 'tipoModalidadArma'])
+                ->where('codigo_evento', $codigo_evento)
+                ->get();
+            return response()->json($modalidades);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // public function getModalidadesByEvento(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         try {
+    //             $eventoId = $request->nombre_evento;
+    //             $modalidades = ModalidadArma::where('codigo_evento', $eventoId)->get();
+    //             return response()->json($modalidades);
+    //         } catch (\Exception $e) {
+    //             return response()->json(['error' => $e->getMessage()], 500);
+    //         }
+    //     }
+    // }
 }

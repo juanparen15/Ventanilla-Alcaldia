@@ -13,8 +13,18 @@ class Inscripcion extends Model
     use HasFactory;
     protected $table = 'inscripcion';
     protected $primaryKey = 'codigo_inscripcion';
-    protected $fillable = ['codigo_tipo_estado_inscripcion', 'categoria'];
-
+    protected $fillable = [
+        'documento_tercero',
+        'acepta_politicas',
+        'codigo_tipo_categoria',
+        'codigo_tipo_arma_evento',
+        'codigo_evento',
+        'comprobante_pago',
+        'codigo_tipo_estado_inscripcion',
+        'codigo_arma',
+        'valor',
+        'user_id',
+    ];
     public function scopeCurrentUser($query)
     {
         if (Auth::user()->role_id == 2) {
@@ -24,6 +34,8 @@ class Inscripcion extends Model
             // return $query->where('id', '=', null);
         }
     }
+
+
 
     protected static function boot()
     {
@@ -37,17 +49,16 @@ class Inscripcion extends Model
                 $inscripcion->documento_tercero = $user->username;
                 $inscripcion->user_id = $user->id;
 
-                // Calcular la categoría basada en la fecha de nacimiento del usuario
-                $birthdate = new Carbon($user->fecha_nacimiento);
-                $age = $birthdate->age;
-
-                if ($age < 18) {
-                    $inscripcion->categoria = 'Juvenil';
-                } elseif ($age <= 35) {
-                    $inscripcion->categoria = 'Mayores';
-                } else {
-                    $inscripcion->categoria = 'Senior';
-                }
+                // Establecer el estado predeterminado como 'Borrador'
+                $inscripcion->codigo_tipo_estado_inscripcion = 1;
+            }
+        });
+        static::saving(function ($model) {
+            if (is_array($model->codigo_tipo_arma_evento)) {
+                $model->codigo_tipo_arma_evento = json_encode($model->codigo_tipo_arma_evento);
+            }
+            if (is_array($model->codigo_arma)) {
+                $model->codigo_arma = json_encode($model->codigo_arma);
             }
         });
     }

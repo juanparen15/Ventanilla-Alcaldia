@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Voyager\InscripcionController;
 use App\Http\Controllers\Voyager\TipoPeticionController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Notification;
@@ -51,3 +52,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], functi
 Route::get('/get-municipios/{departamento}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_municipios');
 Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_club');
 Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
+Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
+// Route::post('/obtenerValorModalidades', [InscripcionController::class, 'obtenerValorModalidades'])->name('obtenerValorModalidades');
+Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);

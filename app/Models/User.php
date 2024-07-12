@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,6 +28,7 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         'email',
         'password',
         'documento_tercero',
+        'fecha_nacimiento',
     ];
 
     /**
@@ -86,13 +88,9 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         });
     }
 
-    // /**
-    //  * Send the email verification notification.
-    //  *
-    //  * @return void
-    //  */
-    // public function sendEmailVerificationNotification()
-    // {
-    //     $this->notify(new NotificationsVerifyEmail);
-    // }
+    public function getAgeAttribute()
+    {
+        return Carbon::parse($this->fecha_nacimiento)->age;
+    }
+
 }

@@ -10,4 +10,9 @@ class Evento extends Model
     use HasFactory;
     protected $table = 'evento';
     protected $primaryKey = 'codigo_evento';
+
+    public function modalidades()
+    {
+        return $this->hasMany(EventoDetalleModalidadesArma::class, 'codigo_evento', 'codigo_evento');
+    }
 }

@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
+use App\Models\EventoDetalleModalidadesArma;
 use App\Models\ModalidadArma;
 use App\Models\Municipios;
 use Illuminate\Http\Request;
@@ -35,25 +36,17 @@ class AjaxController extends Controller
             }
         }
     }
-
-    // public function obtener_opciones_archivo(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         try {
-    //             $tipoPeticionId = $request->tipo_peticion;
-    //             $tipo_peticion = ArmorumappTipopeticion::findOrFail($tipoPeticionId);
-
-    //             // Devolver las opciones de carga de archivo en formato JSON
-    //             return response()->json([
-    //                 'foto' => $tipo_peticion->foto,
-    //                 'cedula' => $tipo_peticion->cedula,
-    //                 'pago' => $tipo_peticion->pago,
-    //             ]);
-    //         } catch (\Exception $e) {
-    //             return response()->json(['error' => $e->getMessage()], 500);
-    //         }
-    //     }
-    // }
+    public function getModalidadesByEvento($codigo_evento)
+    {
+        try {
+            $modalidades = EventoDetalleModalidadesArma::with(['evento','tipoArma', 'tipoModalidadArma'])
+                ->where('codigo_evento', $codigo_evento)
+                ->get();
+            return response()->json($modalidades);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
     public function obtener_modalidades(Request $request)

@@ -304,7 +304,7 @@
 
                             <div class="form-group">
                                 <h5 for="numero_permiso_porte">{{ __('Número de Permiso de Porte') }}</h5>
-                                <input type="number" class="form-control" id="numero_permiso_porte"
+                                <input type="text" class="form-control" id="numero_permiso_porte"
                                     name="numero_permiso_porte" placeholder="{{ __('Numero de Permiso de Porte') }}"
                                     value="{{ old('numero_permiso_porte', $dataTypeContent->numero_permiso_porte ?? '') }}">
                             </div>

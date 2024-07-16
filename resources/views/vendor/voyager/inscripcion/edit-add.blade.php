@@ -236,7 +236,7 @@
                             </div>
 
                             <div class="form-group">
-                                <a target="blank" type="button" class="btn btn-primary"
+                                <a target="blank" type="button" class="btn btn-primary float-right"
                                     href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN
                                     LINEA</a>
                             </div>
@@ -249,7 +249,6 @@
                             </div>
                             <div class="form-group">
                                 @if (!empty($dataTypeContent->pdf_comprobante_pago))
-                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->pdf_comprobante_pago) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -260,13 +259,10 @@
                                     @endforeach
                                 @endif
                                 <div class="custom-file">
-                                    <!-- Botón personalizado para seleccionar archivos -->
                                     <label class="btn btn-primary" for="fileInput">Seleccionar Comprobantes de Pago</label>
-                                    <!-- Input de archivo oculto que permite múltiples archivos PDF -->
                                     <input type="file" class="custom-file-input" id="fileInput"
-                                        data-name="pdf_comprobante_pago" accept=".pdf" name="pdf_comprobante_pago[]"
-                                        multiple style="display: none;">
-                                    <!-- Visualización del nombre de los archivos seleccionados (opcional) -->
+                                        data-name="pdf_comprobante_pago" accept=".pdf" name="pdf_comprobante_pago"
+                                        style="display: none;">
                                     <span id="fileLabel"></span>
                                 </div>
                             </div>
@@ -284,40 +280,42 @@
                                 <select multiple class="form-control select2" id="codigo_arma" name="codigo_arma[]">
                                     @foreach (Voyager::armas() as $arma)
                                         <option value="{{ $arma->codigo_arma }}"
-                                            {{ in_array($arma->codigo_arma, $selected_arma) ? 'selected' : '' }}>
-                                            {{ $arma->metodoPropulsion->metodo_propulsion }} -
-                                            {{ $arma->numero_serie }} -
-                                            {{ $arma->tipoArma->arma }} -
-                                            {{ $arma->calibre->nombre_comun }} -
+                                            {{ in_array($arma->codigo_arma, $selected_arma) ? 'selected' : '' }}
+                                            data-metodo-propulsion="{{ $arma->metodoPropulsion->metodo_propulsion }}">
+                                            {{ $arma->metodoPropulsion->metodo_propulsion }} - {{ $arma->numero_serie }} -
+                                            {{ $arma->tipoArma->arma }} - {{ $arma->calibre->nombre_comun }} -
                                             {{ $arma->tipoPropiedad->tipo_propiedad }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <h5 for="fecha_permiso_porte">{{ __('Fecha de Permiso de Porte') }}</h5>
-                                <input type="text" class="form-control datepicker" id="fecha_permiso_porte"
-                                    name="fecha_permiso_porte" placeholder="{{ __('Fecha de Permiso de Porte') }}"
-                                    value="{{ old('fecha_permiso_porte', $dataTypeContent->fecha_permiso_porte ?? '') }}">
-                            </div>
+                            <div id="permisoPorteFields" style="display: none;">
+                                <div class="form-group">
+                                    <h5 for="fecha_permiso_porte">{{ __('Fecha de Permiso de Porte') }}</h5>
+                                    <input type="text" class="form-control datepicker" id="fecha_permiso_porte"
+                                        name="fecha_permiso_porte" placeholder="{{ __('Fecha de Permiso de Porte') }}"
+                                        value="{{ old('fecha_permiso_porte', $dataTypeContent->fecha_permiso_porte ?? '') }}">
+                                </div>
 
-                            <div class="form-group">
-                                <h5 for="numero_permiso_porte">{{ __('Número de Permiso de Porte') }}</h5>
-                                <input type="text" class="form-control" id="numero_permiso_porte"
-                                    name="numero_permiso_porte" placeholder="{{ __('Numero de Permiso de Porte') }}"
-                                    value="{{ old('numero_permiso_porte', $dataTypeContent->numero_permiso_porte ?? '') }}">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="titular_permiso_porte">{{ __('Titular de Permiso de Porte') }}</h5>
-                                <input type="text" class="form-control" id="titular_permiso_porte"
-                                    name="titular_permiso_porte" placeholder="{{ __('Titular de Permiso de Porte') }}"
-                                    value="{{ old('titular_permiso_porte', $dataTypeContent->titular_permiso_porte ?? '') }}">
+                                <div class="form-group">
+                                    <h5 for="numero_permiso_porte">{{ __('Número de Permiso de Porte') }}</h5>
+                                    <input type="text" class="form-control" id="numero_permiso_porte"
+                                        name="numero_permiso_porte" placeholder="{{ __('Numero de Permiso de Porte') }}"
+                                        value="{{ old('numero_permiso_porte', $dataTypeContent->numero_permiso_porte ?? '') }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <h5 for="titular_permiso_porte">{{ __('Titular de Permiso de Porte') }}</h5>
+                                    <input type="text" class="form-control" id="titular_permiso_porte"
+                                        name="titular_permiso_porte"
+                                        placeholder="{{ __('Titular de Permiso de Porte') }}"
+                                        value="{{ old('titular_permiso_porte', $dataTypeContent->titular_permiso_porte ?? '') }}">
+                                </div>
                             </div>
 
                             <div class="form-group" id="consentimientoPadresGroup" style="display: block;">
                                 @if (!empty($dataTypeContent->consentimiento_padres))
-                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->consentimiento_padres) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -329,21 +327,18 @@
                                 @endif
 
                                 <div class="custom-file">
-                                    <!-- Botón personalizado para seleccionar archivos de consentimiento de padres -->
                                     <label class="btn btn-primary" for="fileInputPadres">Seleccionar Consentimiento de
                                         Padres</label>
-                                    <!-- Input de archivo oculto que permite múltiples archivos PDF -->
                                     <input type="file" class="custom-file-input" id="fileInputPadres"
-                                        data-name="consentimiento_padres" accept=".pdf" name="consentimiento_padres[]"
-                                        multiple style="display: none;">
-                                    <!-- Visualización del nombre de los archivos seleccionados (opcional) -->
+                                        data-name="consentimiento_padres" accept=".pdf" name="consentimiento_padres"
+                                        style="display: none;">
                                     <span id="fileLabelPadres"></span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <!-- Campo de archivo de Permiso de Porte -->
+                            <div class="form-group" id="permisoPorteFileGroup" style="display: none;">
                                 @if (!empty($dataTypeContent->pdf_permiso_porte))
-                                    {{-- Mostrar enlaces a los archivos PDF previamente cargados --}}
                                     @foreach (json_decode($dataTypeContent->pdf_permiso_porte) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -354,17 +349,15 @@
                                     @endforeach
                                 @endif
                                 <div class="custom-file">
-                                    <!-- Botón personalizado para seleccionar archivos -->
                                     <label class="btn btn-primary" for="fileInputPermisoPorte">Seleccionar Permiso de
                                         Porte</label>
-                                    <!-- Input de archivo oculto que permite múltiples archivos PDF -->
                                     <input type="file" class="custom-file-input" id="fileInputPermisoPorte"
-                                        data-name="pdf_permiso_porte" accept=".pdf" name="pdf_permiso_porte[]" multiple
+                                        data-name="pdf_permiso_porte" accept=".pdf" name="pdf_permiso_porte"
                                         style="display: none;">
-                                    <!-- Visualización del nombre de los archivos seleccionados (opcional) -->
                                     <span id="fileLabelPermisoPorte"></span>
                                 </div>
                             </div>
+
 
                         </div><!-- panel-body -->
 
@@ -436,23 +429,56 @@
     }
 
     $(document).ready(function() {
-        // Función para formatear números con puntos como separadores de miles
-        function formatNumberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        function formatNumberWithDecimals(x) {
+            if (x === "") return "";
+
+            // Convertir a número de punto flotante y luego a cadena con 2 decimales
+            var number = parseFloat(x).toFixed(2);
+
+            // Asegurarse de que el número no tenga más de 15 dígitos enteros
+            var parts = number.split('.');
+            if (parts[0].length > 15) {
+                parts[0] = parts[0].slice(-15); // Mantener solo los últimos 15 dígitos si hay más
+            }
+
+            return parts.join('.');
         }
 
         // Formatear todos los campos de entrada al cargar la página
         $('input.formatted-number').each(function() {
             var $input = $(this);
-            var value = $input.val().replace(/\D/g, ''); // Eliminar caracteres no numéricos
-            $input.val(formatNumberWithCommas(value)); // Formatear con puntos
+            var value = $input.val().replace(/[^0-9.]/g,
+            ''); // Eliminar caracteres no numéricos excepto el punto
+            $input.val(formatNumberWithDecimals(value)); // Formatear con decimales
         });
 
         // Formatear el campo de entrada en tiempo real mientras el usuario escribe
         $('input.formatted-number').on('input', function() {
             var $input = $(this);
-            var value = $input.val().replace(/\D/g, ''); // Eliminar caracteres no numéricos
-            $input.val(formatNumberWithCommas(value)); // Formatear con puntos
+            var value = $input.val();
+
+            // Permitir solo caracteres numéricos y el punto
+            var sanitizedValue = value.replace(/[^0-9.]/g, '');
+
+            // Prevenir múltiples puntos decimales
+            var parts = sanitizedValue.split('.');
+            if (parts.length > 2) {
+                sanitizedValue = parts[0] + '.' + parts[1];
+            }
+
+            // Limitar a 2 decimales
+            if (parts.length == 2) {
+                parts[1] = parts[1].slice(0, 2);
+                sanitizedValue = parts.join('.');
+            }
+
+            // Asegurarse de que la parte entera no tenga más de 15 dígitos
+            if (parts[0].length > 15) {
+                parts[0] = parts[0].slice(-15); // Mantener solo los últimos 15 dígitos si hay más
+                sanitizedValue = parts.join('.');
+            }
+
+            $input.val(sanitizedValue);
         });
 
         // Existing initialization scripts
@@ -567,27 +593,81 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Función para comprobar la selección y mostrar/ocultar campos
+        function checkArmaSelection() {
+            var selectedArmas = $('#codigo_arma').val();
+            var showFields = false;
+
+            // Obtener las armas y sus métodos de propulsión
+            @foreach (Voyager::armas() as $arma)
+                if (selectedArmas.includes('{{ $arma->codigo_arma }}') &&
+                    '{{ strtolower($arma->metodoPropulsion->metodo_propulsion) }}' === 'fuego') {
+                    showFields = true;
+                }
+            @endforeach
+
+            // Mostrar u ocultar los campos de permiso de porte
+            if (showFields) {
+                $('#permisoPorteFields').show();
+                $('#permisoPorteFileGroup').show();
+                // Hacer obligatorios los campos si se muestran
+                $('#fecha_permiso_porte').attr('required', true);
+                $('#numero_permiso_porte').attr('required', true);
+                $('#titular_permiso_porte').attr('required', true);
+                $('#fileInputPermisoPorte').attr('required', true);
+            } else {
+                $('#permisoPorteFields').hide();
+                $('#permisoPorteFileGroup').hide();
+                // Eliminar el atributo requerido si se ocultan
+                $('#fecha_permiso_porte').removeAttr('required');
+                $('#numero_permiso_porte').removeAttr('required');
+                $('#titular_permiso_porte').removeAttr('required');
+                $('#fileInputPermisoPorte').removeAttr('required');
+            }
+        }
+
+        // Ejecutar la función al cargar la página y al cambiar la selección
+        checkArmaSelection();
+        $('#codigo_arma').change(checkArmaSelection);
+    });
+</script>
+
 
 <script>
     $(document).ready(function() {
         // Función para actualizar el nombre de los archivos seleccionados
-        function updateFileLabel(inputId, labelId) {
+        function updateFileLabel(inputId, labelId, newFileName) {
             $('#' + inputId).on('change', function() {
                 var files = $(this)[0].files;
-                var fileNames = [];
-                for (var i = 0; i < files.length; i++) {
-                    fileNames.push(files[i].name);
+                if (files.length > 0) {
+                    // Crear un nuevo archivo con el nombre deseado
+                    var file = files[0];
+                    var renamedFile = new File([file], newFileName, {
+                        type: file.type
+                    });
+
+                    // Crear un nuevo objeto FileList con el archivo renombrado
+                    var dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(renamedFile);
+
+                    // Asignar el nuevo objeto FileList al input de archivo
+                    $('#' + inputId)[0].files = dataTransfer.files;
+
+                    // Actualizar la etiqueta del archivo
+                    $('#' + labelId).text(newFileName);
                 }
-                $('#' + labelId).text(fileNames.join(', '));
             });
         }
 
-        // Llamar a la función para cada grupo de archivos
-        updateFileLabel('fileInput', 'fileLabel');
-        updateFileLabel('fileInputPadres', 'fileLabelPadres');
-        updateFileLabel('fileInputPermisoPorte', 'fileLabelPermisoPorte');
+        // Llamar a la función para cada grupo de archivos con el nuevo nombre deseado
+        updateFileLabel('fileInput', 'fileLabel', 'consignación.pdf');
+        updateFileLabel('fileInputPadres', 'fileLabelPadres', 'cpadres.pdf');
+        updateFileLabel('fileInputPermisoPorte', 'fileLabelPermisoPorte', 'porte.pdf');
     });
 </script>
+
 <script>
     $(document).ready(function() {
 
@@ -620,7 +700,7 @@
             }
 
             // Validar campo de Permiso de Porte si es visible
-            if ($('#fileInputPermisoPorte').get(0).files
+            if ($('#permisoPorteFileGroup').is(':visible') && $('#fileInputPermisoPorte').get(0).files
                 .length === 0) {
                 // Mostrar SweetAlert2 para el mensaje de error
                 Swal.fire({
@@ -634,8 +714,7 @@
             var edad = {{ voyager::edad() }};
 
             // Validar campo de Consentimiento de Padres si es visible
-            if (edad < 18 && $('#fileInputPadres').get(0).files.length ===
-                0) {
+            if (edad < 18 && $('#fileInputPadres').get(0).files.length === 0) {
                 // Mostrar SweetAlert2 para el mensaje de error
                 Swal.fire({
                     title: 'Debe seleccionar al menos un archivo para Consentimiento de Padres',
@@ -644,8 +723,6 @@
                 });
                 isValid = false; // Marcar el formulario como inválido
             }
-
-
 
             // Si el formulario no es válido, detener el envío del formulario
             if (!isValid) {

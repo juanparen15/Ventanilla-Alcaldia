@@ -14,7 +14,7 @@ return [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
         'default_avatar'               => 'users/default.png',
-        'redirect'                     => '/admin/profile',
+        'redirect'                     => '/admin',
     ],
 
     /*
@@ -42,7 +42,7 @@ return [
     */
 
     'models' => [
-        //'namespace' => 'App\\Models\\',
+        'namespace' => 'App\\Models\\',
     ],
 
     /*
@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'hidden_files' => false,
+    'hidden_files' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -191,11 +191,11 @@ return [
 
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
-        //'css/custom.css',
+        // 'css/custom.css',
     ],
 
     'additional_js' => [
-        //'js/custom.js',
+        // 'js/custom.js',
     ],
 
     'googlemaps' => [
@@ -208,7 +208,7 @@ return [
     ],
 
     // Activate compass when environment is NOT local
-    'compass_in_production' => true,
+    'compass_in_production' => false,
 
     'media' => [
         // The allowed mimetypes to be uploaded through the media-manager.

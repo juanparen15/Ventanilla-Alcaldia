@@ -16,218 +16,7 @@ use TCG\Voyager\Events\BreadDataAdded;
 
 class InscripcionController extends VoyagerBaseController
 {
-    public function getValorInscripcion(Request $request)
-    {
-        // Obtener los datos del request
-        $modalidadesSeleccionadas = $request->input('modalidades_seleccionadas');
-        $codigoTipoCategoria = $request->input('codigo_tipo_categoria');
-
-        // Obtener el código de tipo de arma desde evento_detalle_modalidades_armas
-        $codigoTipoArma = null;
-        if (!empty($modalidadesSeleccionadas)) {
-            $eventoDetalleModalidadArma = EventoDetalleModalidadesArma::find($modalidadesSeleccionadas[0]);
-            if ($eventoDetalleModalidadArma) {
-                $codigoTipoArma = $eventoDetalleModalidadArma->codigo_tipo_arma;
-            }
-        }
-
-        // Consultar los valores por cantidad de modalidades desde la base de datos
-        $valoresPorModalidades = ValorModalidadesPorTipoArma::where('codigo_tipo_arma', $codigoTipoArma)
-            ->where('codigo_tipo_categoria', $codigoTipoCategoria)
-            ->first();
-
-        if (!$valoresPorModalidades) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontraron valores para las modalidades seleccionadas y la categoría especificada.',
-            ]);
-        }
-
-        // Calcular el valor de la inscripción basado en las modalidades seleccionadas
-
-        $cantidadModalidades = count($modalidadesSeleccionadas);
-        // Mapeo de cantidad de modalidades a nombres de campos
-        $camposValor = [
-            1 => 'valor_una_modalidad',
-            2 => 'valor_dos_modalidades',
-            3 => 'valor_tres_modalidades',
-            4 => 'valor_cuatro_modalidades',
-            5 => 'valor_cinco_modalidades',
-            6 => 'valor_seis_modalidades',
-        ];
-
-        // Verificar si la cantidad de modalidades está en el mapeo
-        if (isset($camposValor[$cantidadModalidades])) {
-            $campoValor = $camposValor[$cantidadModalidades];
-            // Verificar que el campo exista en el modelo antes de acceder a él
-            if (isset($valoresPorModalidades->$campoValor)) {
-                $valor = $valoresPorModalidades->$campoValor;
-            }
-        } else {
-            // Manejar caso donde la cantidad de modalidades no está en el mapeo
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontró un campo correspondiente para la cantidad de modalidades seleccionadas.',
-            ]);
-        }
-        return response()->json([
-            'success' => true,
-            'valor' => $valor,
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-        $slug = $this->getSlug($request);
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Check permission
-        $this->authorize('add', app($dataType->model_name));
-
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
-        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-        // // Asegurarse de que los arrays están en formato JSON con detalles
-        // if (isset($data['codigo_tipo_arma_evento']) && is_array($data['codigo_tipo_arma_evento'])) {
-        //     $detalles = [];
-        //     foreach ($data['codigo_tipo_arma_evento'] as $tipoArmaEventoId) {
-        //         $detalle = [
-        //             'codigo_evento' => Voyager::evento_detalle()->find($tipoArmaEventoId)->evento->nombre_evento,
-        //             'codigo_tipo_arma' => [Voyager::evento_detalle()->find($tipoArmaEventoId)->tipo_arma->arma]
-        //         ];
-        //         $detalles[] = $detalle;
-        //     }
-        //     $data['codigo_tipo_arma_evento'] = json_encode($detalles);
-        // }
-        // if (isset($data['codigo_arma']) && is_array($data['codigo_arma'])) {
-        //     $detalles = [];
-        //     foreach ($data['codigo_arma'] as $codigoArma) {
-        //         $detalle = [
-        //             'codigo_metodo_propulsion' => Voyager::armas()->find($codigoArma)->metodoPropulsion->metodo_propulsion,
-        //             'numero_serie' => Voyager::armas()->find($codigoArma)->numero_serie,
-        //             'codigo_tipo_arma' => Voyager::armas()->find($codigoArma)->tipoArma->arma,
-        //             'codigo_calibre' => Voyager::armas()->find($codigoArma)->calibre->nombre_comun,
-        //             'codigo_tipo_propiedad' => Voyager::armas()->find($codigoArma)->tipoPropiedad->tipo_propiedad,
-        //         ];
-        //         $detalles[] = $detalle;
-        //     }
-        //     $data['codigo_arma'] = json_encode($detalles);
-        // }
-
-        // Crear una nueva inscripción
-        $inscripcion = new Inscripcion();
-        $inscripcion->codigo_evento = $data['codigo_evento'];
-        $inscripcion->codigo_tipo_categoria = $data['codigo_tipo_categoria'];
-        $inscripcion->codigo_tipo_arma_evento = $data['codigo_tipo_arma_evento'];
-        $inscripcion->acepta_politicas = $data['acepta_politicas'];
-        $inscripcion->codigo_arma = $data['codigo_arma'];
-        $inscripcion->valor = $data['valor'];
-        $inscripcion->observaciones = $data['observaciones'];
-        $inscripcion->codigo_tipo_arma_evento = json_encode($data['codigo_tipo_arma_evento']);
-        $inscripcion->codigo_arma = json_encode($data['codigo_arma']);
-
-        // El campo `documento_tercero`, `user_id` y `categoria` se establece automáticamente en el modelo
-
-        // Guardar la inscripción
-        $inscripcion->save();
-
-        // Enviar la notificación al usuario
-        $usuario = $request->user();
-        try {
-            $usuario->notify(new InscripcionRecibida($inscripcion, $usuario));
-        } catch (\Exception $e) {
-            return back()->with([
-                'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-                'alert-type' => 'danger',
-            ]);
-        }
-
-        // Redireccionar después de guardar la inscripción
-        if (!$request->has('_tagging')) {
-            if (auth()->user()->can('browse', $data)) {
-                $redirect = redirect()->route("voyager.{$dataType->slug}.index");
-            } else {
-                $redirect = redirect()->back();
-            }
-
-            return $redirect->with([
-                'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-                'alert-type' => 'success',
-            ]);
-        } else {
-            return response()->json(['success' => true, 'data' => $data]);
-        }
-    }
-
-
-    // public function store(Request $request)
-    // {
-    //     $slug = $this->getSlug($request);
-    //     $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-    //     // Check permission
-    //     $this->authorize('add', app($dataType->model_name));
-
-    //     // Validate fields with ajax
-    //     $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
-
-    //     // Prepare data for insertion
-    //     $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-    //     // Asegurarse de que los arrays están en formato JSON
-    //     if (isset($data['codigo_tipo_arma_evento']) && is_array($data['codigo_tipo_arma_evento'])) {
-    //         $data['codigo_tipo_arma_evento'] = json_encode($data['codigo_tipo_arma_evento']);
-    //     }
-    //     if (isset($data['codigo_arma']) && is_array($data['codigo_arma'])) {
-    //         $data['codigo_arma'] = json_encode($data['codigo_arma']);
-    //     }
-
-    //     // Crear una nueva inscripción
-    //     $inscripcion = new Inscripcion();
-    //     $inscripcion->codigo_evento = $data['codigo_evento'];
-    //     $inscripcion->codigo_tipo_categoria = $data['codigo_tipo_categoria'];
-    //     $inscripcion->codigo_tipo_arma_evento = $data['codigo_tipo_arma_evento'];
-    //     $inscripcion->acepta_politicas = $data['acepta_politicas'];
-    //     $inscripcion->codigo_arma = $data['codigo_arma'];
-    //     $inscripcion->valor = $data['valor'];
-    //     $inscripcion->observaciones = $data['observaciones'];
-
-    //     // El campo `documento_tercero`, `user_id` y `categoria` se establece automáticamente en el modelo
-
-    //     // Guardar la inscripción
-    //     $inscripcion->save();
-
-    //     // Enviar la notificación al usuario
-    //     $usuario = $request->user();
-    //     try {
-    //         $usuario->notify(new InscripcionRecibida($inscripcion, $usuario));
-    //     } catch (\Exception $e) {
-    //         return back()->with([
-    //             'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-    //             'alert-type' => 'danger',
-    //         ]);
-    //     }
-
-    //     // Redireccionar después de guardar la inscripción
-    //     if (!$request->has('_tagging')) {
-    //         if (auth()->user()->can('browse', $data)) {
-    //             $redirect = redirect()->route("voyager.{$dataType->slug}.index");
-    //         } else {
-    //             $redirect = redirect()->back();
-    //         }
-
-    //         return $redirect->with([
-    //             'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-    //             'alert-type' => 'success',
-    //         ]);
-    //     } else {
-    //         return response()->json(['success' => true, 'data' => $data]);
-    //     }
-    // }
-
-
-
+    
     public function index(Request $request)
     {
         // GET THE SLUG, ex. 'posts', 'pages', etc.
@@ -595,14 +384,6 @@ class InscripcionController extends VoyagerBaseController
 
     public function create(Request $request)
     {
-
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
-        // Calcular la edad del usuario a partir de su fecha de nacimiento
-        $fechaNacimiento = Carbon::parse($user->fecha_nacimiento);
-        $edad = $fechaNacimiento->age;
-
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -633,8 +414,6 @@ class InscripcionController extends VoyagerBaseController
             $view = "voyager::$slug.edit-add";
         }
 
-
-
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'edad'));
     }
 
@@ -646,36 +425,36 @@ class InscripcionController extends VoyagerBaseController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    // public function store(Request $request)
-    // {
-    //     $slug = $this->getSlug($request);
+    public function store(Request $request)
+    {
+        $slug = $this->getSlug($request);
 
-    //     $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-    //     // Check permission
-    //     $this->authorize('add', app($dataType->model_name));
+        // Check permission
+        $this->authorize('add', app($dataType->model_name));
 
-    //     // Validate fields with ajax
-    //     $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
-    //     $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+        // Validate fields with ajax
+        $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
+        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
-    //     event(new BreadDataAdded($dataType, $data));
+        event(new BreadDataAdded($dataType, $data));
 
-    // if (!$request->has('_tagging')) {
-    //     if (auth()->user()->can('browse', $data)) {
-    //         $redirect = redirect()->route("voyager.{$dataType->slug}.index");
-    //     } else {
-    //         $redirect = redirect()->back();
-    //     }
+    if (!$request->has('_tagging')) {
+        if (auth()->user()->can('browse', $data)) {
+            $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+        } else {
+            $redirect = redirect()->back();
+        }
 
-    //     return $redirect->with([
-    //         'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-    //         'alert-type' => 'success',
-    //     ]);
-    // } else {
-    //     return response()->json(['success' => true, 'data' => $data]);
-    // }
-    // }
+        return $redirect->with([
+            'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
+            'alert-type' => 'success',
+        ]);
+    } else {
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+    }
 
     //***************************************
     //                _____

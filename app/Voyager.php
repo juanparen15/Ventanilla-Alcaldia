@@ -1,6 +1,7 @@
 <?php
 
-namespace TCG\Voyager;
+namespace App;
+// namespace TCG\Voyager;
 
 use App\Models\Arma;
 use Arrilot\Widgets\Facade as Widget;
@@ -45,20 +46,15 @@ use App\Models\ModalidadArma;
 use App\Models\Municipios;
 use App\Models\OjoMaestro;
 use App\Models\TipoArma;
-use App\Models\TipoCalibre;
 use App\Models\TipoCategoria;
 use App\Models\TipoDocumento;
-use App\Models\TipoFabricante;
-use App\Models\TipoMetodoPropulsion;
-use App\Models\TipoPropiedad;
-use App\Models\TipoSistemaOperativo;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Traits\Translatable;
+use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Voyager as BaseVoyager;
 
-class Voyager
+class Voyager extends BaseVoyager
 {
     protected $version;
     protected $filesystem;
@@ -385,7 +381,6 @@ class Voyager
         return $allLocales;
     }
 
-
     public function estadoCivil()
     {
         return ArmorumappEstadocivil::all();
@@ -506,30 +501,5 @@ class Voyager
         $edad = $fechaNacimiento->age;
 
         return $edad;
-    }
-
-    public function propulsion()
-    {
-        return TipoMetodoPropulsion::all();
-    }
-
-    public function tipo_calibre()
-    {
-        return TipoCalibre::all();
-    }
-
-    public function tipo_fabricante()
-    {
-        return TipoFabricante::all();
-    }
-
-    public function tipo_sistema_operacion()
-    {
-        return TipoSistemaOperativo::all();
-    }
-
-    public function tipo_propiedad()
-    {
-        return TipoPropiedad::all();
     }
 }

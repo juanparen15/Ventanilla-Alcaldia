@@ -65,9 +65,15 @@
                             {{-- Cargar Una Sola Imagen --}}
                             <div class="form-group" id="imagen_option">
                                 <h5 for="foto">{{ __('Imagen') }}</h5>
-                                @if (isset($dataTypeContent->foto))
-                                    <img src="{{ filter_var($dataTypeContent->foto, FILTER_VALIDATE_URL) ? $dataTypeContent->foto : Voyager::image($dataTypeContent->foto) }}"
-                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @if (!empty($dataTypeContent->foto))
+                                    @foreach (json_decode($dataTypeContent->foto) as $pdf)
+                                        <div class="file-preview">
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
+                                                target="_blank">
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 @endif
 
                                 <div class="custom-file">
@@ -77,39 +83,46 @@
                                     <!-- Input de archivo oculto -->
                                     <input type="file" class="custom-file-input" id="fileInput" data-name="foto"
                                         accept="image/*, .pdf" name="foto" style="display: none;">
-                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
-                                        imagen.</label>
                                     <span id="fileLabel"></span>
                                 </div>
                             </div>
 
-
                             {{-- Opción de carga de cédula --}}
                             <div class="form-group" id="cedula_option">
                                 <h5 for="cedula">{{ __('Cédula') }}</h5>
-                                @if (isset($dataTypeContent->cedula))
-                                    <img src="{{ filter_var($dataTypeContent->cedula, FILTER_VALIDATE_URL) ? $dataTypeContent->cedula : Voyager::image($dataTypeContent->cedula) }}"
-                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @if (!empty($dataTypeContent->cedula))
+                                    @foreach (json_decode($dataTypeContent->cedula) as $pdf)
+                                        <div class="file-preview">
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
+                                                target="_blank">
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 @endif
                                 <div class="custom-file">
                                     <!-- Botón personalizado -->
                                     <label class="btn btn-primary" for="fileInputCedula"><i class="voyager-credit-card"></i>
-                                        Seleccionar imagen</label>
+                                        Seleccionar cédula</label>
                                     <!-- Input de archivo oculto -->
                                     <input type="file" class="custom-file-input" id="fileInputCedula" data-name="cedula"
                                         accept="image/*, .pdf" name="cedula" style="display: none;">
-                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
-                                        imagen.</label>
-                                    <span id="fileLabel"></span>
+                                    <span id="fileLabelCedula"></span>
                                 </div>
                             </div>
 
                             {{-- Opción de carga de pago --}}
                             <div class="form-group" id="pago_option">
                                 <h5 for="pago">{{ __('Pago') }}</h5>
-                                @if (isset($dataTypeContent->pago))
-                                    <img src="{{ filter_var($dataTypeContent->pago, FILTER_VALIDATE_URL) ? $dataTypeContent->pago : Voyager::image($dataTypeContent->pago) }}"
-                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @if (!empty($dataTypeContent->pago))
+                                    @foreach (json_decode($dataTypeContent->pago) as $pdf)
+                                        <div class="file-preview">
+                                            <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
+                                                target="_blank">
+                                                {{ $pdf->original_name ?? basename($pdf->download_link) }}
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 @endif
                                 <div class="custom-file">
                                     <!-- Botón personalizado -->
@@ -118,9 +131,7 @@
                                     <!-- Input de archivo oculto -->
                                     <input type="file" class="custom-file-input" id="fileInputPago" data-name="pago"
                                         accept="image/*, .pdf" name="pago" style="display: none;">
-                                    <label class="invalid-feedback" style="display: none;">Por favor, seleccione una
-                                        imagen.</label>
-                                    <span id="fileLabel"></span>
+                                    <span id="fileLabelPago"></span>
                                 </div>
                             </div>
 
@@ -363,6 +374,39 @@
             $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object) []) !!})
 
             tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Función para actualizar el nombre de los archivos seleccionados
+            function updateFileLabel(inputId, labelId, newFileName) {
+                $('#' + inputId).on('change', function() {
+                    var files = $(this)[0].files;
+                    if (files.length > 0) {
+                        // Crear un nuevo archivo con el nombre deseado
+                        var file = files[0];
+                        var renamedFile = new File([file], newFileName, {
+                            type: file.type
+                        });
+
+                        // Crear un nuevo objeto FileList con el archivo renombrado
+                        var dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(renamedFile);
+
+                        // Asignar el nuevo objeto FileList al input de archivo
+                        $('#' + inputId)[0].files = dataTransfer.files;
+
+                        // Actualizar la etiqueta del archivo
+                        $('#' + labelId).text(newFileName);
+                    }
+                });
+            }
+
+            // Llamar a la función para cada grupo de archivos con el nuevo nombre deseado
+            updateFileLabel('fileInput', 'fileLabel', 'imagen.pdf');
+            updateFileLabel('fileInputCedula', 'fileLabelCedula', 'cedula.pdf');
+            updateFileLabel('fileInputPago', 'fileLabelPago', 'pago.pdf');
         });
     </script>
 @stop

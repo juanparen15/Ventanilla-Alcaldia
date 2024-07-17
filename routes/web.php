@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Voyager\InscripcionController;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,16 +39,26 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     })->name('dashboard');
 });
 
-// Voyager routes with authentication and verification middleware
+
+// // Voyager routes with authentication and verification middleware
+// Route::group(['prefix' => 'admin'], function () {
+//     Voyager::routes();
+// });
+
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
     Voyager::routes();
 });
+
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::middleware(['auth', 'verified'])->group(function () {
+//         Voyager::routes();
+//     });
+// });
+
 
 // Custom routes for Ajax requests
 Route::get('/get-municipios/{departamento}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_municipios');
 Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_club');
 Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
 Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
-
-// Route for getting inscription value
 Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\ArmorumappSolicitud;
+use App\Models\Inscripcion;
 use App\Observers\ArmorumappSolicitudObserver;
+use App\Observers\InscripcionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,6 +32,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         ArmorumappSolicitud::observe(ArmorumappSolicitudObserver::class);
+        Inscripcion::observe(InscripcionObserver::class);
     }
 
     /**

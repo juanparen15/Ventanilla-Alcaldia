@@ -53,7 +53,6 @@ class InscripcionRecibida extends Notification
             ->line('Valor: ' . $this->inscripcion->valor)
             ->line('Fecha Inscripción: ' . $this->inscripcion->fecha_inscripcion_deportista)
             ->line('Fecha Validación de Federación: ' . $this->inscripcion->fecha_validacion_federacion)
-            ->line('Observaciones: ' . $this->inscripcion->observaciones)
             ->line('Recuerde que puede consultar el estado por medio de nuestro portal');
     }
 

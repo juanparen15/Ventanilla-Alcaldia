@@ -88,32 +88,7 @@ class InscripcionController extends VoyagerBaseController
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
         $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
-        // // Asegurarse de que los arrays están en formato JSON con detalles
-        // if (isset($data['codigo_tipo_arma_evento']) && is_array($data['codigo_tipo_arma_evento'])) {
-        //     $detalles = [];
-        //     foreach ($data['codigo_tipo_arma_evento'] as $tipoArmaEventoId) {
-        //         $detalle = [
-        //             'codigo_evento' => Voyager::evento_detalle()->find($tipoArmaEventoId)->evento->nombre_evento,
-        //             'codigo_tipo_arma' => [Voyager::evento_detalle()->find($tipoArmaEventoId)->tipo_arma->arma]
-        //         ];
-        //         $detalles[] = $detalle;
-        //     }
-        //     $data['codigo_tipo_arma_evento'] = json_encode($detalles);
-        // }
-        // if (isset($data['codigo_arma']) && is_array($data['codigo_arma'])) {
-        //     $detalles = [];
-        //     foreach ($data['codigo_arma'] as $codigoArma) {
-        //         $detalle = [
-        //             'codigo_metodo_propulsion' => Voyager::armas()->find($codigoArma)->metodoPropulsion->metodo_propulsion,
-        //             'numero_serie' => Voyager::armas()->find($codigoArma)->numero_serie,
-        //             'codigo_tipo_arma' => Voyager::armas()->find($codigoArma)->tipoArma->arma,
-        //             'codigo_calibre' => Voyager::armas()->find($codigoArma)->calibre->nombre_comun,
-        //             'codigo_tipo_propiedad' => Voyager::armas()->find($codigoArma)->tipoPropiedad->tipo_propiedad,
-        //         ];
-        //         $detalles[] = $detalle;
-        //     }
-        //     $data['codigo_arma'] = json_encode($detalles);
-        // }
+        event(new BreadDataAdded($dataType, $data));
 
         // Crear una nueva inscripción
         $inscripcion = new Inscripcion();
@@ -130,11 +105,13 @@ class InscripcionController extends VoyagerBaseController
         // El campo `documento_tercero`, `user_id` y `categoria` se establece automáticamente en el modelo
 
         // Guardar la inscripción
-        $inscripcion->save();
+        // $inscripcion->save();
 
         // Enviar la notificación al usuario
         $usuario = $request->user();
         try {
+            // Mail::to($usuario->email)->send(new solicitud_recibida($solicitud, $usuario));
+            // Enviar la notificación al usuario
             $usuario->notify(new InscripcionRecibida($inscripcion, $usuario));
         } catch (\Exception $e) {
             return back()->with([

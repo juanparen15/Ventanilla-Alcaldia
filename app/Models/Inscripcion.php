@@ -35,6 +35,25 @@ class Inscripcion extends Model
         }
     }
 
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function evento()
+    {
+        return $this->belongsTo(Evento::class, 'codigo_evento');
+    }
+
+    public function tipoCategoria()
+    {
+        return $this->belongsTo(TipoCategoria::class, 'codigo_tipo_categoria');
+    }
+
+    public function armas()
+    {
+        return $this->hasMany(Arma::class, 'codigo_arma', 'codigo_arma');
+    }
 
 
     protected static function boot()

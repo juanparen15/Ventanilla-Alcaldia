@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use TCG\Voyager\Events\BreadDataAdded;
+use App\Mail\inscripcion_recibida;
+use App\Mail\InscripcionRecibidaMail;
+use App\Models\Evento;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use Exception;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataRestored;
+use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Events\BreadImagesDeleted;
+use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+
 
 class InscripcionController extends VoyagerBaseController
 {
@@ -90,53 +106,56 @@ class InscripcionController extends VoyagerBaseController
 
         event(new BreadDataAdded($dataType, $data));
 
-        // Crear una nueva inscripción
+        // Crear la inscripción
         $inscripcion = new Inscripcion();
-        $inscripcion->codigo_evento = $data['codigo_evento'];
-        $inscripcion->codigo_tipo_categoria = $data['codigo_tipo_categoria'];
-        $inscripcion->codigo_tipo_arma_evento = $data['codigo_tipo_arma_evento'];
-        $inscripcion->acepta_politicas = $data['acepta_politicas'];
-        $inscripcion->codigo_arma = $data['codigo_arma'];
-        $inscripcion->valor = $data['valor'];
-        $inscripcion->observaciones = $data['observaciones'];
-        $inscripcion->codigo_tipo_arma_evento = json_encode($data['codigo_tipo_arma_evento']);
-        $inscripcion->codigo_arma = json_encode($data['codigo_arma']);
-
-        // El campo `documento_tercero`, `user_id` y `categoria` se establece automáticamente en el modelo
-
-        // Guardar la inscripción
+        $inscripcion->codigo_evento = $request->codigo_evento;
+        $inscripcion->codigo_tipo_categoria = $request->codigo_tipo_categoria;
+        $inscripcion->codigo_tipo_arma_evento = json_encode($request->codigo_tipo_arma_evento);
+        $inscripcion->acepta_politicas = $request->acepta_politicas;
+        $inscripcion->codigo_arma = json_encode($request->codigo_arma);
+        $inscripcion->valor = $request->valor;
+        $inscripcion->observaciones = $request->observaciones;
+        $inscripcion->comprobante_pago = $request->comprobante_pago;
+        // $inscripcion->pdf_comprobante_pago = $request->pdf_comprobante_pago;
+        // $inscripcion->pdf_permiso_porte = $request->pdf_permiso_porte;
+        // $inscripcion->consentimiento_padres = $request->consentimiento_padres;
         // $inscripcion->save();
 
-        // Enviar la notificación al usuario
-        $usuario = $request->user();
-        try {
-            // Mail::to($usuario->email)->send(new solicitud_recibida($solicitud, $usuario));
-            // Enviar la notificación al usuario
-            $usuario->notify(new InscripcionRecibida($inscripcion, $usuario));
-        } catch (\Exception $e) {
-            return back()->with([
-                'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-                'alert-type' => 'danger',
-            ]);
-        }
 
-        // Redireccionar después de guardar la inscripción
-        if (!$request->has('_tagging')) {
-            if (auth()->user()->can('browse', $data)) {
-                $redirect = redirect()->route("voyager.{$dataType->slug}.index");
-            } else {
-                $redirect = redirect()->back();
-            }
+         // Cargar relaciones club y liga del usuario
+    $usuario = $request->user()->load('club', 'liga');
 
-            return $redirect->with([
-                'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-                'alert-type' => 'success',
-            ]);
-        } else {
-            return response()->json(['success' => true, 'data' => $data]);
-        }
+    // Enviar el correo al usuario
+    try {
+        Mail::to($usuario->email)->send(new InscripcionRecibidaMail($inscripcion, $usuario));
+
+
+
+        // Enviar el correo al administrador
+        // Mail::to('jprendon9@misena.edu.co')->send(new InscripcionRecibidaMail($inscripcion, $usuario));
+    } catch (\Exception $e) {
+        return back()->with([
+            'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
+            'alert-type' => 'danger',
+        ]);
     }
 
+    // Redireccionar después de guardar la inscripción
+    if (!$request->has('_tagging')) {
+        if (auth()->user()->can('browse', $data)) {
+            $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+        } else {
+            $redirect = redirect()->back();
+        }
+
+        return $redirect->with([
+            'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
+            'alert-type' => 'success',
+        ]);
+    } else {
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+}
 
     // public function store(Request $request)
     // {

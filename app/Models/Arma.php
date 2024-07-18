@@ -68,4 +68,9 @@ class Arma extends Model
     {
         return $this->belongsTo(TipoPropiedad::class, 'codigo_tipo_propiedad');
     }
+
+    public function inscripcion()
+    {
+        return $this->belongsTo(Inscripcion::class, 'codigo_inscripcion', 'codigo_inscripcion');
+    }
 }

@@ -11,4 +11,9 @@ class TipoCategoria extends Model
     protected $table = 'tipo_categoria';
     protected $primaryKey = 'codigo_tipo_categoria';
 
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'codigo_tipo_categoria');
+    }
 }

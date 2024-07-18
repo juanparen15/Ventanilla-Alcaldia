@@ -71,6 +71,16 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         return $this->belongsToMany(TipoArma::class, 'arma_modalidad', 'user_id', 'tipo_arma_id');
     }
 
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'club');
+    }
+
+    public function liga()
+    {
+        return $this->belongsTo(Liga::class, 'liga');
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -92,5 +102,4 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     {
         return Carbon::parse($this->fecha_nacimiento)->age;
     }
-
 }

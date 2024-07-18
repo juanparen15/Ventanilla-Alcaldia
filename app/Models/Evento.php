@@ -15,4 +15,9 @@ class Evento extends Model
     {
         return $this->hasMany(EventoDetalleModalidadesArma::class, 'codigo_evento', 'codigo_evento');
     }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class, 'codigo_evento');
+    }
 }

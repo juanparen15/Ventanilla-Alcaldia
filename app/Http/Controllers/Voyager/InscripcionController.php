@@ -15,12 +15,14 @@ use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use TCG\Voyager\Events\BreadDataAdded;
 use App\Mail\inscripcion_recibida;
 use App\Mail\InscripcionRecibidaMail;
+use App\Models\DetalleInscripcion;
 use App\Models\Evento;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataDeleted;
@@ -106,56 +108,133 @@ class InscripcionController extends VoyagerBaseController
 
         event(new BreadDataAdded($dataType, $data));
 
+        // dd($request->all()); // Verifica todos los datos recibidos en la solicitud
+
+        // Datos del usuario autenticado
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'codigo_evento' => 'required|integer',
+            'codigo_tipo_categoria' => 'required|integer',
+            'acepta_politicas' => 'required|string',
+            'valor' => 'required|numeric',
+            'comprobante_pago' => 'required|string',
+            'codigo_tipo_arma_evento' => 'required|array',
+            'codigo_tipo_arma_evento.*' => 'required|integer',
+            'codigo_arma' => 'required|array',
+            'codigo_arma.*' => 'required|integer',
+            'consentimiento_padres' => 'nullable|file',
+            'pdf_comprobante_pago' => 'nullable|file',
+            'pdf_permiso_porte' => 'nullable|file',
+            'codigo_tipo_estado_inscripcion' => 'nullable|integer',
+            'fecha_validacion_federacion' => 'nullable|date',
+            'observaciones' => 'nullable|string',
+        ]);
+
+
+        try {
+            DB::transaction(function () use ($request, $user) {
+                // Verificar si ya existe una inscripción para el usuario y el evento
+                $existingInscripcion = Inscripcion::where('user_id', $user->id)
+                    ->where('codigo_evento', $request->codigo_evento)
+                    ->first();
+
+                if ($existingInscripcion) {
+                    // Si ya existe, usar el registro existente
+                    $inscripcion = $existingInscripcion;
+                } else {
+                    // Crear nuevo registro en la tabla inscripcion
+                    $inscripcion = Inscripcion::create([
+                        'user_id' => $user->id,
+                        'documento_tercero' => $user->username, // Suponiendo que username es el documento
+                        'codigo_evento' => $request->codigo_evento,
+                        'codigo_tipo_categoria' => $request->codigo_tipo_categoria,
+                        // 'acepta_politicas' => $request->acepta_politicas,
+                        'acepta_politicas' => $request->acepta_politicas === 'SI' ? 'SI' : 'NO', // Guardar como "SI" o "NO"
+                        'valor' => $request->valor,
+                        'comprobante_pago' => $request->comprobante_pago,
+                        'codigo_tipo_estado_inscripcion' => $request->codigo_tipo_estado_inscripcion ?? null,
+                        'fecha_validacion_federacion' => $request->fecha_validacion_federacion ?? null,
+                        'observaciones' => $request->observaciones ?? null,
+                        'pdf_comprobante_pago' => $request->pdf_comprobante_pago ? $request->pdf_comprobante_pago->store('inscripcion') : null,
+                        'pdf_permiso_porte' => $request->pdf_permiso_porte ? $request->pdf_permiso_porte->store('inscripcion') : null,
+                        'consentimiento_padres' => $request->consentimiento_padres ? $request->consentimiento_padres->store('inscripcion') : null,
+                    ]);
+                }
+
+                // Crear registros en la tabla detalle_inscripcion
+                foreach ($request->codigo_tipo_arma_evento as $key => $codigo_evento_detalle) {
+                    DetalleInscripcion::create([
+                        'user_id' => $user->id,
+                        'documento_tercero' => $user->username, // Suponiendo que username es el documento
+                        'codigo_inscripcion' => $inscripcion->codigo_inscripcion,
+                        'codigo_evento_detalle' => $codigo_evento_detalle,
+                        'codigo_arma' => $request->codigo_arma ? json_encode($request->codigo_arma) : null, // Guardar como JSON si hay múltiples valores
+                        'puntaje' => null,
+                        'observaciones' => null,
+                    ]);
+                }
+            });
+
+            // dd($request->acepta_politicas);
+
+            // return response()->json(['message' => 'Inscripción creada con éxito'], 201);
+        } catch (\Exception $e) {
+            Log::error('Error al crear la inscripción: ' . $e->getMessage());
+            // return response()->json(['message' => 'Error al crear la inscripción'], 500);
+        }
+
+
         // Crear la inscripción
-        $inscripcion = new Inscripcion();
-        $inscripcion->codigo_evento = $request->codigo_evento;
-        $inscripcion->codigo_tipo_categoria = $request->codigo_tipo_categoria;
-        $inscripcion->codigo_tipo_arma_evento = json_encode($request->codigo_tipo_arma_evento);
-        $inscripcion->acepta_politicas = $request->acepta_politicas;
-        $inscripcion->codigo_arma = json_encode($request->codigo_arma);
-        $inscripcion->valor = $request->valor;
-        $inscripcion->observaciones = $request->observaciones;
-        $inscripcion->comprobante_pago = $request->comprobante_pago;
+        // $inscripcion = new Inscripcion();
+        // $inscripcion->codigo_evento = $request->codigo_evento;
+        // $inscripcion->codigo_tipo_categoria = $request->codigo_tipo_categoria;
+        // $inscripcion->codigo_tipo_arma_evento = json_encode($request->codigo_tipo_arma_evento);
+        // $inscripcion->acepta_politicas = $request->acepta_politicas;
+        // $inscripcion->codigo_arma = json_encode($request->codigo_arma);
+        // $inscripcion->valor = $request->valor;
+        // $inscripcion->observaciones = $request->observaciones;
+        // $inscripcion->comprobante_pago = $request->comprobante_pago;
         // $inscripcion->pdf_comprobante_pago = $request->pdf_comprobante_pago;
         // $inscripcion->pdf_permiso_porte = $request->pdf_permiso_porte;
         // $inscripcion->consentimiento_padres = $request->consentimiento_padres;
         // $inscripcion->save();
 
 
-         // Cargar relaciones club y liga del usuario
-    $usuario = $request->user()->load('club', 'liga');
+        // Cargar relaciones club y liga del usuario
+        $usuario = $request->user()->load('club', 'liga');
 
-    // Enviar el correo al usuario
-    try {
-        Mail::to($usuario->email)->send(new InscripcionRecibidaMail($inscripcion, $usuario));
+        // Enviar el correo al usuario
+        try {
+            // Mail::to($usuario->email)->send(new InscripcionRecibidaMail($inscripcion, $usuario));
 
 
 
-        // Enviar el correo al administrador
-        // Mail::to('jprendon9@misena.edu.co')->send(new InscripcionRecibidaMail($inscripcion, $usuario));
-    } catch (\Exception $e) {
-        return back()->with([
-            'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-            'alert-type' => 'danger',
-        ]);
-    }
-
-    // Redireccionar después de guardar la inscripción
-    if (!$request->has('_tagging')) {
-        if (auth()->user()->can('browse', $data)) {
-            $redirect = redirect()->route("voyager.{$dataType->slug}.index");
-        } else {
-            $redirect = redirect()->back();
+            // Enviar el correo al administrador
+            // Mail::to('jprendon9@misena.edu.co')->send(new InscripcionRecibidaMail($inscripcion, $usuario));
+        } catch (\Exception $e) {
+            return back()->with([
+                'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'alert-type' => 'danger',
+            ]);
         }
 
-        return $redirect->with([
-            'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
-            'alert-type' => 'success',
-        ]);
-    } else {
-        return response()->json(['success' => true, 'data' => $data]);
+        // Redireccionar después de guardar la inscripción
+        if (!$request->has('_tagging')) {
+            if (auth()->user()->can('browse', $data)) {
+                $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+            } else {
+                $redirect = redirect()->back();
+            }
+
+            return $redirect->with([
+                'message'    => __('voyager::generic.successfully_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'alert-type' => 'success',
+            ]);
+        } else {
+            return response()->json(['success' => true, 'data' => $data]);
+        }
     }
-}
 
     // public function store(Request $request)
     // {

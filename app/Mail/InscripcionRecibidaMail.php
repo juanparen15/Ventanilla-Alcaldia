@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Support\Facades\Log;
 
 class InscripcionRecibidaMail extends Mailable
 {
@@ -63,36 +64,145 @@ class InscripcionRecibidaMail extends Mailable
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
+
+    // public function attachments()
+    // {
+    //     return [
+    //         Attachment::fromStorageDisk('public', '/inscripcion\\July2024\\4MaZYD4r7j7w8GWZ2meH.pdf')
+    //             ->as('cpadres.pdf')
+    //             ->withMime('application/pdf'),
+    //     ];
+    // }
+
+
     public function attachments(): array
     {
         $attachments = [];
-
+    
+        // Comprobante de pago
         if (!empty($this->inscripcion->pdf_comprobante_pago)) {
-            $comprobantePago = json_decode($this->inscripcion->pdf_comprobante_pago, true);
-            if (isset($comprobantePago[0]['download_link'])) {
-                $downloadLink = $comprobantePago[0]['download_link'];
-                $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+            $pdfComprobantePago = json_decode($this->inscripcion->pdf_comprobante_pago, true);
+            if (is_array($pdfComprobantePago)) {
+                foreach ($pdfComprobantePago as $archivo) {
+                    $attachments[] = Attachment::fromStorageDisk('public', $archivo['download_link'])
+                        ->as($archivo['original_name']);
+                }
+            } else {
+                $attachments[] = Attachment::fromStorageDisk('public', $this->inscripcion->pdf_comprobante_pago)
+                    ->as('comprobante_pago.pdf');
             }
         }
-
+    
+        // Permiso de porte
         if (!empty($this->inscripcion->pdf_permiso_porte)) {
-            $permisoPorte = json_decode($this->inscripcion->pdf_permiso_porte, true);
-            if (isset($permisoPorte[0]['download_link'])) {
-                $downloadLink = $permisoPorte[0]['download_link'];
-                $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+            $pdfPermisoPorte = json_decode($this->inscripcion->pdf_permiso_porte, true);
+            if (is_array($pdfPermisoPorte)) {
+                foreach ($pdfPermisoPorte as $archivo) {
+                    $attachments[] = Attachment::fromStorageDisk('public', $archivo['download_link'])
+                        ->as($archivo['original_name']);
+                }
+            } else {
+                $attachments[] = Attachment::fromStorageDisk('public', $this->inscripcion->pdf_permiso_porte)
+                    ->as('permiso_porte.pdf');
             }
         }
-
+    
+        // Consentimiento de padres
         if (!empty($this->inscripcion->consentimiento_padres)) {
             $consentimientoPadres = json_decode($this->inscripcion->consentimiento_padres, true);
-            if (isset($consentimientoPadres[0]['download_link'])) {
-                $downloadLink = $consentimientoPadres[0]['download_link'];
-                $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+            foreach ($consentimientoPadres as $archivo) {
+                $attachments[] = Attachment::fromStorageDisk('public', $archivo['download_link'])
+                    ->as($archivo['original_name']);
             }
         }
-
+    
         return $attachments;
     }
+    
+
+
+    // public function attachments(): array
+    // {
+    //     $attachments = [];
+
+    //     if (!empty($this->inscripcion->pdf_comprobante_pago)) {
+    //         $comprobantePago = json_decode($this->inscripcion->pdf_comprobante_pago);
+    //         if (isset($comprobantePago[0]->download_link)) {
+    //             $downloadLink = $comprobantePago[0]->download_link;
+    //             $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+    //             $attachments[] = Attachment::fromStorageDisk('public', $downloadLink);
+    //             $attachments[] = Attachment::fromPath(storage_path('app/public/' . $downloadLink));
+    //         }
+    //     }
+
+    //     if (!empty($this->inscripcion->pdf_permiso_porte)) {
+    //         $permisoPorte = json_decode($this->inscripcion->pdf_permiso_porte);
+    //         if (isset($permisoPorte[0]->download_link)) {
+    //             $downloadLink = $permisoPorte[0]->download_link;
+    //             $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+    //             $attachments[] = Attachment::fromStorageDisk('public', $downloadLink);
+    //             $attachments[] = Attachment::fromPath(storage_path('app/public/' . $downloadLink));
+    //         }
+    //     }
+
+    //     if (!empty($this->inscripcion->consentimiento_padres)) {
+    //         $consentimientoPadres = json_decode($this->inscripcion->consentimiento_padres);
+    //         if (isset($consentimientoPadres[0]->download_link)) {
+    //             $downloadLink = $consentimientoPadres[0]->download_link;
+    //             $attachments[] = Attachment::fromPath(storage_path('public/storage/' . $downloadLink));
+    //             $attachments[] = Attachment::fromStorageDisk('public', $downloadLink);
+    //             $attachments[] = Attachment::fromPath(storage_path('app/public/' . $downloadLink));
+    //         }
+    //     }
+
+    //     return $attachments;
+    // }
+
+    // public function attachments(): array
+    // {
+    //     $attachments = [];
+
+    //     // Helper function to add attachments
+    //     $attachments = array_merge($attachments, $this->getAttachment($this->inscripcion->pdf_comprobante_pago));
+    //     $attachments = array_merge($attachments, $this->getAttachment($this->inscripcion->pdf_permiso_porte));
+    //     $attachments = array_merge($attachments, $this->getAttachment($this->inscripcion->consentimiento_padres));
+
+    //     return $attachments;
+    // }
+
+    // private function getAttachment($jsonField): array
+    // {
+    //     $attachments = [];
+    //     if (!empty($jsonField)) {
+    //         $decoded = json_decode($jsonField);
+    //         if (is_array($decoded)) {
+    //             foreach ($decoded as $file) {
+    //                 $downloadLink = $file->download_link;
+    //                 $downloadLink = str_replace('\\', '/', $downloadLink); // Convert backslashes to slashes
+    //                 $path = storage_path('app/public/' . $downloadLink);
+
+    //                 // Check if the file exists
+    //                 if (file_exists($path)) {
+    //                     $attachments[] = Attachment::fromPath($path);
+    //                 } else {
+    //                     Log::error('Archivo no encontrado: ' . $path);
+    //                 }
+    //             }
+    //         } else {
+    //             // Handle single file case if needed
+    //             $downloadLink = $decoded;
+    //             $downloadLink = str_replace('\\', '/', $downloadLink);
+    //             $path = storage_path('app/public/' . $downloadLink);
+
+    //             if (file_exists($path)) {
+    //                 $attachments[] = Attachment::fromPath($path);
+    //             } else {
+    //                 Log::error('Archivo no encontrado: ' . $path);
+    //             }
+    //         }
+    //     }
+    //     return $attachments;
+    // }
 }

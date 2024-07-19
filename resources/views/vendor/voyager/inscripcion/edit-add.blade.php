@@ -132,7 +132,7 @@
                                 <h5>{{ __('¿Acepta las políticas de tratamiento de datos?') }}</h5>
                                 <div class="toggle-switch">
                                     <input type="checkbox" id="acepta_politicas" name="acepta_politicas"
-                                        {{ old('acepta_politicas', $dataTypeContent->acepta_politicas ?? '') == '1' ? 'checked' : '' }}>
+                                        {{ old('acepta_politicas', $dataTypeContent->acepta_politicas ?? '') == 'SI' ? 'checked' : '' }}>
                                 </div>
                             </div>
 
@@ -162,12 +162,14 @@
                                 <select name="codigo_tipo_categoria" id="codigo_tipo_categoria"
                                     class="form-control select2">
                                     <option value="" disabled selected>Seleccione una Categoría</option>
-                                    @foreach (Voyager::categoria() as $categoria)
-                                        <option value="{{ $categoria['codigo_tipo_categoria'] }}"
-                                            {{ $categoria['codigo_tipo_categoria'] == $selected_categoria ? 'selected' : '' }}>
-                                            {{ $categoria['nombre_completo'] }}
-                                        </option>
-                                    @endforeach
+                                    @if (is_array(Voyager::categoria()) || is_object(Voyager::categoria()))
+                                        @foreach (Voyager::categoria() as $categoria)
+                                            <option value="{{ $categoria['codigo_tipo_categoria'] }}"
+                                                {{ $categoria['codigo_tipo_categoria'] == $selected_categoria ? 'selected' : '' }}>
+                                                {{ $categoria['nombre_completo'] }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
 
@@ -183,15 +185,16 @@
                                 <h5 for="codigo_evento">{{ __('Evento') }}</h5>
                                 <select name="codigo_evento" id="codigo_evento" class="form-control select2">
                                     <option value="" disabled selected>Seleccione un Evento</option>
-                                    @foreach (Voyager::eventos() as $evento)
-                                        <option value="{{ $evento->codigo_evento }}"
-                                            {{ $evento->codigo_evento == $selected_evento ? 'selected' : '' }}>
-                                            {{ $evento->nombre_evento }}
-                                        </option>
-                                    @endforeach
+                                    @if (is_array(Voyager::eventos()) || is_object(Voyager::eventos()))
+                                        @foreach (Voyager::eventos() as $evento)
+                                            <option value="{{ $evento->codigo_evento }}"
+                                                {{ $evento->codigo_evento == $selected_evento ? 'selected' : '' }}>
+                                                {{ $evento->nombre_evento }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
-
                             {{-- <div class="form-group">
                                 <h5 for="codigo_evento">Evento</h5>
                                 <select class="form-control select2" id="codigo_evento" name="codigo_evento">
@@ -204,6 +207,7 @@
                                     @endforeach
                                 </select>
                             </div> --}}
+
                             @php
                                 // Decodificar los datos almacenados en formato JSON
                                 $selected_modalidad_arma = isset($dataTypeContent->codigo_tipo_arma_evento)
@@ -216,6 +220,7 @@
                                 <h5 for="codigo_tipo_arma_evento">Modalidades de Arma - (Seleccione Una o Varias)</h5>
                                 <select multiple class="form-control select2" id="modalidad_arma"
                                     name="codigo_tipo_arma_evento[]">
+                                    {{-- @if (is_array(Voyager::evento_detalle()) || is_object(Voyager::evento_detalle())) --}}
                                     @foreach (Voyager::evento_detalle() as $modalidadArma)
                                         <option value="{{ $modalidadArma->codigo_evento }}"
                                             {{ in_array($modalidadArma->codigo_evento, $selected_modalidad_arma) ? 'selected' : '' }}>
@@ -225,8 +230,36 @@
                                             {{ $modalidadArma->horario }} - {{ $modalidadArma->lugar }}
                                         </option>
                                     @endforeach
+                                    {{-- @endif --}}
                                 </select>
                             </div>
+
+                            @php
+                                // Decodificar los datos almacenados en formato JSON
+                                $selected_arma = isset($dataTypeContent->codigo_arma)
+                                    ? json_decode($dataTypeContent->codigo_arma)
+                                    : [];
+                            @endphp
+
+                            <!-- Selector Múltiple de Tipo de Arma -->
+                            <div class="form-group">
+                                <h5 for="codigo_arma">Mi Galería de Armas - (Seleccione Una o Varias)</h5>
+                                <select multiple class="form-control select2" id="codigo_arma" name="codigo_arma[]">
+                                    @if (is_array(Voyager::armas()) || is_object(Voyager::armas()))
+                                        @foreach (Voyager::armas() as $arma)
+                                            <option value="{{ $arma->codigo_arma }}"
+                                                {{ in_array($arma->codigo_arma, $selected_arma) ? 'selected' : '' }}
+                                                data-metodo-propulsion="{{ $arma->metodoPropulsion->metodo_propulsion }}">
+                                                {{ $arma->metodoPropulsion->metodo_propulsion }} -
+                                                {{ $arma->numero_serie }} -
+                                                {{ $arma->tipoArma->arma }} - {{ $arma->calibre->nombre_comun }} -
+                                                {{ $arma->tipoPropiedad->tipo_propiedad }}
+                                            </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+
 
                             <div class="form-group">
                                 <h5 for="valor">{{ __('Valor') }}</h5>
@@ -248,7 +281,10 @@
                                     value="{{ old('comprobante_pago', $dataTypeContent->comprobante_pago ?? '') }}">
                             </div>
                             <div class="form-group">
-                                @if (!empty($dataTypeContent->pdf_comprobante_pago))
+                                @if (
+                                    !empty($dataTypeContent->pdf_comprobante_pago) &&
+                                        (is_array(json_decode($dataTypeContent->pdf_comprobante_pago)) ||
+                                            is_object(json_decode($dataTypeContent->pdf_comprobante_pago))))
                                     @foreach (json_decode($dataTypeContent->pdf_comprobante_pago) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -267,30 +303,7 @@
                                 </div>
                             </div>
 
-                            @php
-                                // Decodificar los datos almacenados en formato JSON
-                                $selected_arma = isset($dataTypeContent->codigo_arma)
-                                    ? json_decode($dataTypeContent->codigo_arma)
-                                    : [];
-                            @endphp
-
-                            <!-- Selector Múltiple de Tipo de Arma -->
-                            <div class="form-group">
-                                <h5 for="codigo_arma">Tipo de Arma - (Seleccione Una o Varias)</h5>
-                                <select multiple class="form-control select2" id="codigo_arma" name="codigo_arma[]">
-                                    @foreach (Voyager::armas() as $arma)
-                                        <option value="{{ $arma->codigo_arma }}"
-                                            {{ in_array($arma->codigo_arma, $selected_arma) ? 'selected' : '' }}
-                                            data-metodo-propulsion="{{ $arma->metodoPropulsion->metodo_propulsion }}">
-                                            {{ $arma->metodoPropulsion->metodo_propulsion }} - {{ $arma->numero_serie }} -
-                                            {{ $arma->tipoArma->arma }} - {{ $arma->calibre->nombre_comun }} -
-                                            {{ $arma->tipoPropiedad->tipo_propiedad }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div id="permisoPorteFields" style="display: none;">
+                            {{-- <div id="permisoPorteFields" style="display: none;">
                                 <div class="form-group">
                                     <h5 for="fecha_permiso_porte">{{ __('Fecha de Permiso de Porte') }}</h5>
                                     <input type="text" class="form-control datepicker" id="fecha_permiso_porte"
@@ -312,10 +325,13 @@
                                         placeholder="{{ __('Titular de Permiso de Porte') }}"
                                         value="{{ old('titular_permiso_porte', $dataTypeContent->titular_permiso_porte ?? '') }}">
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group" id="consentimientoPadresGroup" style="display: block;">
-                                @if (!empty($dataTypeContent->consentimiento_padres))
+                                @if (
+                                    !empty($dataTypeContent->consentimiento_padres) &&
+                                        (is_array(json_decode($dataTypeContent->consentimiento_padres)) ||
+                                            is_object(json_decode($dataTypeContent->consentimiento_padres))))
                                     @foreach (json_decode($dataTypeContent->consentimiento_padres) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -325,7 +341,6 @@
                                         </div>
                                     @endforeach
                                 @endif
-
                                 <div class="custom-file">
                                     <label class="btn btn-primary" for="fileInputPadres">Seleccionar Consentimiento de
                                         Padres</label>
@@ -338,7 +353,10 @@
 
                             <!-- Campo de archivo de Permiso de Porte -->
                             <div class="form-group" id="permisoPorteFileGroup" style="display: none;">
-                                @if (!empty($dataTypeContent->pdf_permiso_porte))
+                                @if (
+                                    !empty($dataTypeContent->pdf_permiso_porte) &&
+                                        (is_array(json_decode($dataTypeContent->pdf_permiso_porte)) ||
+                                            is_object(json_decode($dataTypeContent->pdf_permiso_porte))))
                                     @foreach (json_decode($dataTypeContent->pdf_permiso_porte) as $pdf)
                                         <div class="file-preview">
                                             <a href="{{ filter_var($pdf->download_link ?? '', FILTER_VALIDATE_URL) ? $pdf->download_link : Voyager::image($pdf->download_link) }}"
@@ -448,7 +466,7 @@
         $('input.formatted-number').each(function() {
             var $input = $(this);
             var value = $input.val().replace(/[^0-9.]/g,
-            ''); // Eliminar caracteres no numéricos excepto el punto
+                ''); // Eliminar caracteres no numéricos excepto el punto
             $input.val(formatNumberWithDecimals(value)); // Formatear con decimales
         });
 
@@ -610,20 +628,11 @@
 
             // Mostrar u ocultar los campos de permiso de porte
             if (showFields) {
-                $('#permisoPorteFields').show();
                 $('#permisoPorteFileGroup').show();
                 // Hacer obligatorios los campos si se muestran
-                $('#fecha_permiso_porte').attr('required', true);
-                $('#numero_permiso_porte').attr('required', true);
-                $('#titular_permiso_porte').attr('required', true);
                 $('#fileInputPermisoPorte').attr('required', true);
             } else {
-                $('#permisoPorteFields').hide();
                 $('#permisoPorteFileGroup').hide();
-                // Eliminar el atributo requerido si se ocultan
-                $('#fecha_permiso_porte').removeAttr('required');
-                $('#numero_permiso_porte').removeAttr('required');
-                $('#titular_permiso_porte').removeAttr('required');
                 $('#fileInputPermisoPorte').removeAttr('required');
             }
         }

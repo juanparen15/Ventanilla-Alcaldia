@@ -17,11 +17,9 @@ class Inscripcion extends Model
         'documento_tercero',
         'acepta_politicas',
         'codigo_tipo_categoria',
-        'codigo_tipo_arma_evento',
         'codigo_evento',
         'comprobante_pago',
         'codigo_tipo_estado_inscripcion',
-        'codigo_arma',
         'valor',
         'user_id',
     ];

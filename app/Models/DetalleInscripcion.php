@@ -12,7 +12,15 @@ class DetalleInscripcion extends Model
 
     protected $table = 'detalle_inscripcion';
     protected $primaryKey = 'codigo_detalle_inscripcion';
-
+    protected $fillable = [
+        'user_id',
+        'documento_tercero',
+        'codigo_inscripcion',
+        'codigo_evento_detalle',
+        'codigo_arma',
+        'puntaje',
+        'observaciones',
+    ];
 
     public function scopeCurrentUser($query)
     {
@@ -25,18 +33,18 @@ class DetalleInscripcion extends Model
         }
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        // Utiliza el evento creating para establecer el campo documento_tercero
-        static::creating(function ($detalle_inscripcion) {
-            // Verifica si hay un usuario autenticado
-            if (Auth::check()) {
-                // Establece el valor del campo documento_tercero como el nombre de usuario del usuario autenticado
-                $detalle_inscripcion->documento_tercero = Auth::user()->username;
-                $detalle_inscripcion->user_id = Auth::user()->id;
-            }
-        });
-    }
+    //     // Utiliza el evento creating para establecer el campo documento_tercero
+    //     static::creating(function ($detalle_inscripcion) {
+    //         // Verifica si hay un usuario autenticado
+    //         if (Auth::check()) {
+    //             // Establece el valor del campo documento_tercero como el nombre de usuario del usuario autenticado
+    //             $detalle_inscripcion->documento_tercero = Auth::user()->username;
+    //             $detalle_inscripcion->user_id = Auth::user()->id;
+    //         }
+    //     });
+    // }
 }

@@ -763,6 +763,20 @@
                 return;
             }
 
+            // Verifica si se ha seleccionado un evento
+            if ($('select[name="codigo_evento"]').val() === null) {
+                // Evita el envío del formulario
+                event.preventDefault();
+
+                // Muestra SweetAlert2 para informar al usuario
+                Swal.fire({
+                    title: 'Debe seleccionar un Evento',
+                    text: 'Por favor, seleccione un Evento antes de continuar.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
             // Verifica si se ha seleccionado una categoría
             if ($('select[name="codigo_tipo_categoria"]').val() === null) {
                 // Evita el envío del formulario

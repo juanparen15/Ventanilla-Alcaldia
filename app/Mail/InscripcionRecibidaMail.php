@@ -66,21 +66,24 @@ class InscripcionRecibidaMail extends Mailable
      *
      * @return \Illuminate\Mail\Mailables\Attachment[]
      */
-
-    // public function attachments()
-    // {
-    //     return [
-    //         Attachment::fromStorageDisk('public', '/inscripcion\\July2024\\4MaZYD4r7j7w8GWZ2meH.pdf')
-    //             ->as('cpadres.pdf')
-    //             ->withMime('application/pdf'),
-    //     ];
-    // }
-
-
     public function attachments(): array
     {
         $attachments = [];
-    
+
+        // Consentimiento de padres
+        if (!empty($this->inscripcion->consentimiento_padres)) {
+            $pdfConsentimientoPadres = json_decode($this->inscripcion->consentimiento_padres, true);
+            if (is_array($pdfConsentimientoPadres)) {
+                foreach ($pdfConsentimientoPadres as $archivo) {
+                    $attachments[] = Attachment::fromStorageDisk('public', $archivo['download_link'])
+                        ->as($archivo['original_name']);
+                }
+            } else {
+                $attachments[] = Attachment::fromStorageDisk('public', $this->inscripcion->consentimiento_padres)
+                    ->as('consentimiento_padres.pdf');
+            }
+        }
+
         // Comprobante de pago
         if (!empty($this->inscripcion->pdf_comprobante_pago)) {
             $pdfComprobantePago = json_decode($this->inscripcion->pdf_comprobante_pago, true);
@@ -94,7 +97,6 @@ class InscripcionRecibidaMail extends Mailable
                     ->as('comprobante_pago.pdf');
             }
         }
-    
         // Permiso de porte
         if (!empty($this->inscripcion->pdf_permiso_porte)) {
             $pdfPermisoPorte = json_decode($this->inscripcion->pdf_permiso_porte, true);
@@ -108,19 +110,10 @@ class InscripcionRecibidaMail extends Mailable
                     ->as('permiso_porte.pdf');
             }
         }
-    
-        // Consentimiento de padres
-        if (!empty($this->inscripcion->consentimiento_padres)) {
-            $consentimientoPadres = json_decode($this->inscripcion->consentimiento_padres, true);
-            foreach ($consentimientoPadres as $archivo) {
-                $attachments[] = Attachment::fromStorageDisk('public', $archivo['download_link'])
-                    ->as($archivo['original_name']);
-            }
-        }
-    
+
         return $attachments;
     }
-    
+
 
 
     // public function attachments(): array

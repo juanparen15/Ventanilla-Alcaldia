@@ -45,15 +45,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 //     Voyager::routes();
 // });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
-    Voyager::routes();
-});
-
-// Route::group(['prefix' => 'admin'], function () {
-//     Route::middleware(['auth', 'verified'])->group(function () {
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::prefix('admin')->group(function () {
 //         Voyager::routes();
 //     });
 // });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::middleware(['auth', 'verified'])->group(function () {
+    Voyager::routes();
+    });
+});
 
 
 // Custom routes for Ajax requests

@@ -12,19 +12,24 @@ class DetalleInscripcion extends Model
 
     protected $table = 'detalle_inscripcion';
     protected $primaryKey = 'codigo_detalle_inscripcion';
-    // protected $fillable = [
-    //     'user_id',
-    //     'documento_tercero',
-    //     'codigo_inscripcion',
-    //     'codigo_evento_detalle',
-    //     'codigo_arma',
-    //     'puntaje',
-    //     'observaciones',
-    // ];
+    protected $fillable = [
+        'user_id',
+        'documento_tercero',
+        'codigo_inscripcion',
+        'codigo_evento_detalle',
+        'codigo_arma',
+        'puntaje',
+        // 'observaciones',
+    ];
 
     public function eventoDetalle()
     {
         return $this->belongsTo(EventoDetalleModalidadesArma::class, 'codigo_evento_detalle', 'codigo_evento_detalle');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function arma()

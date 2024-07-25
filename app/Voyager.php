@@ -48,6 +48,7 @@ use App\Models\OjoMaestro;
 use App\Models\TipoArma;
 use App\Models\TipoCategoria;
 use App\Models\TipoDocumento;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use TCG\Voyager\Traits\Translatable;

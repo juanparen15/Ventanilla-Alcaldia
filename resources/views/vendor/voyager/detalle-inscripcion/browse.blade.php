@@ -136,23 +136,29 @@
                                                         @else
                                                             {{ __('voyager::generic.none') }}
                                                         @endif
+                                                    @elseif ($row->field == 'user_id')
+                                                        @php
+                                                            // Obtenemos el detalle del evento relacionado
+                                                            $usuario = $data->usuario;
+                                                        @endphp
+                                                        @if ($usuario)
+                                                            {{ $usuario->primer_nombre }} 
+                                                            {{ $usuario->segundo_nombre }} 
+                                                            {{ $usuario->primer_apellido }} 
+                                                            {{ $usuario->segundo_apellido }}
+                                                        @else
+                                                            {{ __('voyager::generic.none') }}
+                                                        @endif
                                                     @elseif ($row->field == 'codigo_evento_detalle')
-                                                        @if ($data->{$row->field})
-                                                            @php
-                                                                $eventoDetalle = \App\Models\EventoDetalleModalidadesArma::find(
-                                                                    $data->{$row->field},
-                                                                );
-                                                            @endphp
-
-                                                            @if ($eventoDetalle)
-                                                                {{ $eventoDetalle->evento->nombre_evento }} -
-                                                                {{ $eventoDetalle->tipoArma->arma }} -
-                                                                {{ $eventoDetalle->tipoModalidadArma->modalidad }} -
-                                                                {{ $eventoDetalle->horario }} -
-                                                                {{ $eventoDetalle->lugar }}
-                                                            @else
-                                                                {{ __('voyager::generic.none') }}
-                                                            @endif
+                                                        @php
+                                                            // Obtenemos el detalle del evento relacionado
+                                                            $eventoDetalle = $data->eventoDetalle;
+                                                        @endphp
+                                                        @if ($eventoDetalle)
+                                                            {{ $eventoDetalle->evento->nombre_evento }} -
+                                                            {{ $eventoDetalle->tipoArma->arma }} -
+                                                            {{ $eventoDetalle->tipoModalidadArma->modalidad }} -
+                                                            {{ $eventoDetalle->horario }} - {{ $eventoDetalle->lugar }}
                                                         @else
                                                             {{ __('voyager::generic.none') }}
                                                         @endif
@@ -172,7 +178,8 @@
                                                                         {{ $arma->numero_serie }} -
                                                                         {{ $arma->tipoArma->arma }} -
                                                                         {{ $arma->calibre->nombre_comun }} -
-                                                                        {{ $arma->tipoPropiedad->tipo_propiedad }}
+                                                                        {{ $arma->tipoPropiedad->tipo_propiedad }}. <br></br>
+
                                                                     @else
                                                                         {{ __('voyager::generic.none') }}
                                                                     @endif

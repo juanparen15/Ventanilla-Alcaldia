@@ -25,4 +25,9 @@ class EventoDetalleModalidadesArma extends Model
     {
         return $this->belongsTo(ModalidadArma::class, 'codigo_tipo_modalidad_arma', 'id');
     }
+
+    public function detalleInscripciones()
+    {
+        return $this->hasMany(DetalleInscripcion::class, 'codigo_evento_detalle', 'codigo_evento_detalle');
+    }
 }

@@ -14,6 +14,7 @@ use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use TCG\Voyager\Events\BreadDataAdded;
 use App\Mail\inscripcion_recibida;
+use App\Mail\InscripcionAdminRecibidaMail;
 use App\Mail\InscripcionRecibidaMail;
 use App\Models\DetalleInscripcion;
 use App\Models\Evento;
@@ -177,7 +178,9 @@ class InscripcionController extends VoyagerBaseController
             DB::commit();
 
             // Enviar el correo al usuario
+            Mail::to('deseosecreto92@gmail.com')->send(new InscripcionAdminRecibidaMail($inscripcion, $user));
             Mail::to($user->email)->send(new InscripcionRecibidaMail($inscripcion, $user));
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al crear la inscripción: ' . $e->getMessage());

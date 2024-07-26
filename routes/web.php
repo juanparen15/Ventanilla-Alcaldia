@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Voyager\InscripcionController;
+use App\Http\Middleware\AllowPublicAccess;
+use DragonCode\Support\Facades\Filesystem\File;
+use Illuminate\Support\Facades\Response;
 use TCG\Voyager\Facades\Voyager;
 
 /*
@@ -40,24 +43,44 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 });
 
 
-// // Voyager routes with authentication and verification middleware
 // Route::group(['prefix' => 'admin'], function () {
 //     Voyager::routes();
 // });
 
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::prefix('admin')->group(function () {
+// // Definir las rutas de Voyager con middleware
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::middleware(['auth', 'verified'])->group(function () {
 //         Voyager::routes();
 //     });
 // });
 
+// // Define las rutas de Voyager sin middleware para cargar los assets
+// Route::group(['prefix' => 'admin'], function () {
+//     Voyager::routes();
+// });
 
+// // Define las rutas protegidas de Voyager con middleware
+// Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
+//     Voyager::routes();
+// });
+
+
+// Define las rutas de Voyager sin middleware para los activos
+// Route::group(['prefix' => 'admin'], function () {
+//     Voyager::routes();
+// });
+
+// Define las rutas de Jetstream para autenticación
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+// Define las rutas de Voyager con middleware
 Route::group(['prefix' => 'admin'], function () {
     Route::middleware(['auth', 'verified'])->group(function () {
-    Voyager::routes();
+        Voyager::routes();
     });
 });
-
 
 // Custom routes for Ajax requests
 Route::get('/get-municipios/{departamento}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_municipios');

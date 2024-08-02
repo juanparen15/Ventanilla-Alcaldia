@@ -118,8 +118,10 @@
             </div>
             <div class="col-lg-6 col-md-6 login-section">
                 <div class="login-container">
-                    <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
-                        alt="FEDETIRO Logo">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
+                            alt="FEDETIRO Logo">
+                    </a>
                     <h2>Iniciar Sesión</h2>
                     <x-guest-layout>
                         <x-authentication-card>

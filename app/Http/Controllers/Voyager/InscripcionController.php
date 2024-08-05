@@ -177,10 +177,16 @@ class InscripcionController extends VoyagerBaseController
 
             DB::commit();
 
-            // Enviar el correo al usuario
-            Mail::to('deseosecreto92@gmail.com')->send(new InscripcionAdminRecibidaMail($inscripcion, $user));
-            Mail::to($user->email)->send(new InscripcionRecibidaMail($inscripcion, $user));
+            // // Enviar el correo al usuario
+            // Mail::to('deseosecreto92@gmail.com')->send(new InscripcionAdminRecibidaMail($inscripcion, $user));
+            // Mail::to($user->email)->send(new InscripcionRecibidaMail($inscripcion, $user));
 
+            // Obtener el correo desde las configuraciones de Voyager
+            $adminEmail = Voyager::setting('admin.correo', 'deseosecreto92@gmail.com');
+
+            // Enviar el correo al usuario
+            Mail::to($adminEmail)->send(new InscripcionAdminRecibidaMail($inscripcion, $user));
+            Mail::to($user->email)->send(new InscripcionRecibidaMail($inscripcion, $user));
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al crear la inscripción: ' . $e->getMessage());

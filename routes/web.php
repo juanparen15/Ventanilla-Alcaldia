@@ -47,34 +47,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 //     Voyager::routes();
 // });
 
-// // Definir las rutas de Voyager con middleware
-// Route::group(['prefix' => 'admin'], function () {
-//     Route::middleware(['auth', 'verified'])->group(function () {
-//         Voyager::routes();
-//     });
-// });
-
-// // Define las rutas de Voyager sin middleware para cargar los assets
-// Route::group(['prefix' => 'admin'], function () {
-//     Voyager::routes();
-// });
-
-// // Define las rutas protegidas de Voyager con middleware
-// Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
-//     Voyager::routes();
-// });
-
-
-// Define las rutas de Voyager sin middleware para los activos
-// Route::group(['prefix' => 'admin'], function () {
-//     Voyager::routes();
-// });
-
-// Define las rutas de Jetstream para autenticación
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');
-
 // Define las rutas de Voyager con middleware
 Route::group(['prefix' => 'admin'], function () {
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -88,7 +60,4 @@ Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obte
 Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
 Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
 Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);
-// Route::get('/inscripciones/{id}/detalles', [InscripcionController::class, 'showDetalles']);
-// Route::get('/get-inscripcion-details', [InscripcionController::class, 'getDetails'])->name('get.inscripcion.details');
-// web.php
 Route::get('inscripciones/{id}/detalle', [App\Http\Controllers\Voyager\InscripcionController::class, 'detalle'])->name('inscripciones.detalle');

@@ -88,3 +88,7 @@ Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obte
 Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
 Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
 Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);
+// Route::get('/inscripciones/{id}/detalles', [InscripcionController::class, 'showDetalles']);
+// Route::get('/get-inscripcion-details', [InscripcionController::class, 'getDetails'])->name('get.inscripcion.details');
+// web.php
+Route::get('inscripciones/{id}/detalle', [App\Http\Controllers\Voyager\InscripcionController::class, 'detalle'])->name('inscripciones.detalle');

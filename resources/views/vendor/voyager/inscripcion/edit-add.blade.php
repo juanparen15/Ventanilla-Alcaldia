@@ -174,12 +174,24 @@
                             </div>
 
                             @php
+                                // Obtener el ID del usuario autenticado
+                                $userId = Auth::id();
+
+                                // Método para verificar si el usuario ya está registrado en un evento
+                                function isRegistered($userId, $eventoId)
+                                {
+                                    return \App\Models\Inscripcion::where('user_id', $userId)
+                                        ->where('codigo_evento', $eventoId)
+                                        ->exists();
+                                }
+
                                 if (isset($dataTypeContent->codigo_evento)) {
                                     $selected_evento = $dataTypeContent->codigo_evento;
                                 } else {
                                     $selected_evento = null; // Cambia '' por null
                                 }
                             @endphp
+
                             <!-- Campo de evento -->
                             <div class="form-group">
                                 <h5 for="codigo_evento">{{ __('Evento') }}</h5>
@@ -187,53 +199,45 @@
                                     <option value="" disabled selected>Seleccione un Evento</option>
                                     @if (is_array(Voyager::eventos()) || is_object(Voyager::eventos()))
                                         @foreach (Voyager::eventos() as $evento)
-                                            <option value="{{ $evento->codigo_evento }}"
-                                                {{ $evento->codigo_evento == $selected_evento ? 'selected' : '' }}>
-                                                {{ $evento->nombre_evento }}
-                                            </option>
+                                            @php
+                                                // Verifica si el usuario ya está registrado en el evento
+                                                $isRegistered = isRegistered($userId, $evento->codigo_evento);
+                                            @endphp
+
+                                            @if (!$isRegistered)
+                                                <!-- Muestra la opción solo si no está registrado -->
+                                                <option value="{{ $evento->codigo_evento }}"
+                                                    {{ $evento->codigo_evento == $selected_evento ? 'selected' : '' }}>
+                                                    {{ $evento->nombre_evento }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     @endif
                                 </select>
                             </div>
-                            {{-- <div class="form-group">
-                                <h5 for="codigo_evento">Evento</h5>
-                                <select class="form-control select2" id="codigo_evento" name="codigo_evento">
-                                    <option value="" disabled selected>Seleccione un Evento</option>
-                                    @foreach (Voyager::eventos() as $evento)
-                                        <option value="{{ $evento->codigo_evento }}"
-                                            {{ old('codigo_evento') == $evento->codigo_evento ? 'selected' : '' }}>
-                                            {{ $evento->nombre_evento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
 
                             @php
-                                // Decodificar los datos almacenados en formato JSON
-                                $selected_modalidad_arma = isset($dataTypeContent->codigo_tipo_arma_evento)
-                                    ? json_decode($dataTypeContent->codigo_tipo_arma_evento)
-                                    : [];
-                            @endphp
-
-                            <!-- Selector Múltiple de Modalidades -->
-                            <div class="form-group">
-                                <h5 for="codigo_tipo_arma_evento">Modalidades de Arma - (Seleccione Una o Varias)</h5>
-                                <select multiple class="form-control select2" id="modalidad_arma"
-                                    name="codigo_tipo_arma_evento[]">
-                                    {{-- @if (is_array(Voyager::evento_detalle()) || is_object(Voyager::evento_detalle())) --}}
-                                    @foreach (Voyager::evento_detalle() as $modalidadArma)
-                                        <option value="{{ $modalidadArma->codigo_evento }}"
-                                            {{ in_array($modalidadArma->codigo_evento, $selected_modalidad_arma) ? 'selected' : '' }}>
-                                            {{ $modalidadArma->evento->nombre_evento }} -
-                                            {{ $modalidadArma->tipoArma->arma }} -
-                                            {{ $modalidadArma->tipoModalidadArma->modalidad }} -
-                                            {{ $modalidadArma->horario }} - {{ $modalidadArma->lugar }}
-                                        </option>
-                                    @endforeach
-                                    {{-- @endif --}}
-                                </select>
-                            </div>
-
+                            // Decodificar los datos almacenados en formato JSON
+                            $selected_modalidad_arma = isset($dataTypeContent->codigo_tipo_arma_evento)
+                                ? json_decode($dataTypeContent->codigo_tipo_arma_evento, true) // true para obtener un array
+                                : [];
+                        @endphp
+                        
+                        <div class="form-group">
+                            <h5 for="codigo_tipo_arma_evento">Modalidades de Arma - (Seleccione Una o Varias)</h5>
+                            <select multiple class="form-control select2" id="modalidad_arma" name="codigo_tipo_arma_evento[]">
+                                @foreach (Voyager::evento_detalle() as $modalidadArma)
+                                    <option value="{{ $modalidadArma->codigo_evento }}"
+                                        {{ in_array($modalidadArma->codigo_evento, $selected_modalidad_arma) ? 'selected' : '' }}>
+                                        {{ $modalidadArma->evento->nombre_evento }} -
+                                        {{ $modalidadArma->tipoArma->arma }} -
+                                        {{ $modalidadArma->tipoModalidadArma->modalidad }} -
+                                        {{ $modalidadArma->horario }} - {{ $modalidadArma->lugar }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                                            
                             @php
                                 // Decodificar los datos almacenados en formato JSON
                                 $selected_arma = isset($dataTypeContent->codigo_arma)

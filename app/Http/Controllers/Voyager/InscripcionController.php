@@ -16,6 +16,7 @@ use TCG\Voyager\Events\BreadDataAdded;
 use App\Mail\inscripcion_recibida;
 use App\Mail\InscripcionAdminRecibidaMail;
 use App\Mail\InscripcionRecibidaMail;
+use App\Models\Arma;
 use App\Models\DetalleInscripcion;
 use App\Models\Evento;
 use App\Models\User;
@@ -35,6 +36,54 @@ use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 class InscripcionController extends VoyagerBaseController
 {
+    public function detalle($id)
+    {
+        try {
+            $detalles = DetalleInscripcion::where('codigo_inscripcion', $id)->get();
+    
+            if ($detalles->isEmpty()) {
+                return response()->json(['error' => 'No se encontraron detalles para esta inscripción.'], 404);
+            }
+    
+            // Prepara los detalles para la respuesta JSON
+            $detalleData = $detalles->map(function ($detalle) {
+                // Obtener usuario
+                $usuario = User::find($detalle->user_id);
+                $usuarioNombre = $usuario ? $usuario->primer_nombre . ' ' . $usuario->segundo_nombre . ' ' . $usuario->primer_apellido . ' ' . $usuario->segundo_apellido : __('voyager::generic.none');
+    
+                // Obtener detalle del evento
+                $eventoDetalle = EventoDetalleModalidadesArma::find($detalle->codigo_evento_detalle);
+                $eventoDetalleInfo = $eventoDetalle ? $eventoDetalle->evento->nombre_evento . ' - ' . $eventoDetalle->tipoArma->arma . ' - ' . $eventoDetalle->tipoModalidadArma->modalidad . ' - ' . $eventoDetalle->horario . ' - ' . $eventoDetalle->lugar : __('voyager::generic.none');
+    
+                // Obtener información de armas
+                $armasInfo = [];
+                $tipoArmasIds = json_decode($detalle->codigo_arma);
+                if ($tipoArmasIds) {
+                    foreach ($tipoArmasIds as $armaId) {
+                        $arma = Arma::find($armaId);
+                        if ($arma) {
+                            $armasInfo[] = $arma->metodoPropulsion->metodo_propulsion . ' - ' . $arma->numero_serie . ' - ' . $arma->tipoArma->arma . ' - ' . $arma->calibre->nombre_comun . ' - ' . $arma->tipoPropiedad->tipo_propiedad;
+                        }
+                    }
+                }
+    
+                return [
+                    'codigo_inscripcion' => $detalle->codigo_inscripcion,
+                    'documento_tercero' => $detalle->documento_tercero ?: __('voyager::generic.none'),
+                    'usuario' => $usuarioNombre,
+                    'eventoDetalle' => $eventoDetalleInfo,
+                    'armas' => $armasInfo,
+                    'puntaje' => $detalle->puntaje ?: __('voyager::generic.none'),
+                    'observaciones' => $detalle->observaciones ?: __('voyager::generic.none'),
+                ];
+            });
+    
+            return response()->json(['detalles' => $detalleData]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se pudieron cargar los detalles de la inscripción.'], 500);
+        }
+    }
+    
     public function getValorInscripcion(Request $request)
     {
         // Obtener los datos del request

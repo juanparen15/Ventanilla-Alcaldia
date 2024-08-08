@@ -192,12 +192,12 @@ return [
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
         // 'css/custom.css',
-        'resources/css/app.css',
+        // 'resources/css/app.css',
     ],
 
     'additional_js' => [
         // 'js/custom.js',
-        'resources/js/app.js',
+        // 'resources/js/app.js',
     ],
 
     'googlemaps' => [
@@ -210,7 +210,7 @@ return [
     ],
 
     // Activate compass when environment is NOT local
-    'compass_in_production' => false,
+    'compass_in_production' => true,
 
     'media' => [
         // The allowed mimetypes to be uploaded through the media-manager.

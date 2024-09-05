@@ -81,6 +81,13 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         return $this->belongsTo(Liga::class, 'liga');
     }
 
+    
+    public function Municipios()
+    {
+        return $this->belongsTo(Municipios::class, 'municipios');
+    }
+
+
     protected static function boot()
     {
         parent::boot();

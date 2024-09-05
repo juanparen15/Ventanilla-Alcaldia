@@ -8,9 +8,8 @@
 // use Illuminate\Notifications\Notification;
 // use App\Models\ArmorumappSolicitud;
 // use App\Models\User;
-// use Illuminate\Support\Facades\Storage;
 
-// class SolicitudRecibida extends Notification
+// class SolicitudAdminRecibida extends Notification
 // {
 //     use Queueable;
 
@@ -43,24 +42,19 @@
 //     public function toMail(object $notifiable): MailMessage
 //     {
 //         $usuario = $this->usuario;
-//         $solicitud = $this->solicitud;
 
 //         return (new MailMessage)
-//             ->subject('Recepción de Solicitud por Ventanilla Única')
-//             ->greeting('POR FAVOR NO RESPONDA ESTE EMAIL, ESTA ES UNA NOTIFICACIÓN ELECTRÓNICA AUTOMÁTICA')
-//             ->line('Se ha recepcionado a través de la Ventanilla Única Virtual una solicitud con los siguientes datos:')
-//             ->line('Fecha de Solicitud: ' . now()->format('d-m-Y \a \l\a\s H:i:s'))
-//             ->line('Nombre solicitante: ' . $usuario->primer_nombre . ' ' . $usuario->segundo_nombre . ' ' . $usuario->primer_apellido . ' ' . $usuario->segundo_apellido)
-//             ->line('Identificación: ' . $usuario->documento_tercero)
-//             ->line('Email: ' . $usuario->email)
-//             ->line('Móvil: ' . $usuario->movil)
-//             ->line('Dirección: ' . $usuario->direccion)
-//             ->line('Ciudad: ' . $usuario->Municipios->municipio)
-//             ->line('Tipo petición: ' . $solicitud->tipo_peticion)
-//             ->line('Mensaje: ' . $solicitud->mensaje);
+//             ->subject('Solicitud de Trámite')
+//             ->greeting('POR FAVOR NO RESPONDER ESTE EMAIL, ESTA ES UNA NOTIFICACIÓN ELECTRÓNICA AÚTOMATICA')
+//             // ->line('Señor(a) ' . $notifiable->name . ':')
+//             ->line('Señor(a) ' . $usuario->primer_nombre . ' ' .  $usuario->segundo_nombre . ' ' . $usuario->primer_apellido . ' ' . $usuario->segundo_apellido . ':')
+//             ->line('Le informamos que hemos recibido su solicitud el ' . now()->format('d-m-Y \a \l\a\s H:i:s') . ' y se iniciará su gestión de acuerdo a lo establecido en el procedimiento de recepción, tramite, seguimiento y respuesta de su solicitud.')
+//             ->line('Datos Recibidos:')
+//             ->line('Tipo Petición: ' . $this->solicitud->tipo_peticion)
+//             ->line('Asunto: ' . $this->solicitud->asunto)
+//             ->line('Mensaje: ' . $this->solicitud->mensaje)
+//             ->line('Recuerde que puede consultar el estado de la petición por medio de nuestro portal');
 //     }
-
-
 
 
 //     /**

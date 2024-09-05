@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Voyager;
 
-use App\Mail\solicitud_recibida;
+use App\Mail\solicitudAdminRecibida;
+use App\Mail\solicitudRecibida;
 use App\Models\ArmorumappSolicitud;
-use App\Notifications\SolicitudRecibida;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +14,8 @@ use TCG\Voyager\Http\Controllers\VoyagerBaseController;
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
@@ -29,39 +31,84 @@ class SolicitudController extends VoyagerBaseController
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);
-
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
         $this->authorize('add', app($dataType->model_name));
 
-        // Validate fields with ajax
+        // Validar campos
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
         $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
         event(new BreadDataAdded($dataType, $data));
 
-        // Validar y guardar la solicitud
+        // Datos del usuario autenticado
+        $user = Auth::user();
+
+        // Crear la solicitud
         $solicitud = new ArmorumappSolicitud();
         $solicitud->tipo_peticion = $request->tipo_peticion;
         $solicitud->asunto = $request->asunto;
         $solicitud->mensaje = $request->mensaje;
-        // Aquí guarda las imágenes si es necesario
+
+        $currentMonth = now()->format('FY'); // Ejemplo: 'September_2024'
+        $directory = "armorumapp-solicitud/{$currentMonth}";
+
+        // Crear la carpeta si no existe
+        if (!Storage::disk('public')->exists($directory)) {
+            Storage::disk('public')->makeDirectory($directory);
+        }
+
+        // Manejo de archivos adjuntos
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $fileName = $file->getClientOriginalName();
+            $solicitud->foto = $file->storeAs($directory, $fileName, 'public');
+        }
+
+        if ($request->hasFile('cedula')) {
+            $file = $request->file('cedula');
+            $fileName = $file->getClientOriginalName();
+            $solicitud->cedula = $file->storeAs($directory, $fileName, 'public');
+        }
+
+        if ($request->hasFile('pago')) {
+            $file = $request->file('pago');
+            $fileName = $file->getClientOriginalName();
+            $solicitud->pago = $file->storeAs($directory, $fileName, 'public');
+        }
+
+        if ($request->hasFile('otro_archivo')) {
+            $file = $request->file('otro_archivo');
+            $fileName = $file->getClientOriginalName();
+            $solicitud->otro_archivo = $file->storeAs($directory, $fileName, 'public');
+        }
 
         $usuario = $request->user();
+
         try {
-            // Mail::to($usuario->email)->send(new solicitud_recibida($solicitud, $usuario));
-            // Enviar la notificación al usuario
-            $usuario->notify(new SolicitudRecibida($solicitud, $usuario));
+            DB::beginTransaction();
+
+            // Guardar la solicitud en la base de datos
+            // $solicitud->save();
+            // Notificar al usuario
+            // $usuario->notify(new SolicitudRecibida($solicitud, $usuario));
+
+            // Obtener el correo del admin desde Voyager y enviarle notificación
+            $adminEmail = Voyager::setting('admin.correo', 'deseosecreto92@gmail.com');
+            Mail::to($adminEmail)->send(new solicitudAdminRecibida($solicitud, $usuario));
+            Mail::to($user->email)->send(new solicitudRecibida($solicitud, $usuario));
+            DB::commit();
         } catch (\Exception $e) {
-            // Manejar el error si ocurre
+            DB::rollBack();
+            Log::error('Error al guardar la solicitud: ' . $e->getMessage());
             return back()->with([
                 'message'    => __('voyager::generic.error_added_new') . " {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'danger',
             ]);
         }
 
-        // Redireccionar u hacer lo que sea necesario después de guardar la solicitud
+        // Redireccionar
         if (!$request->has('_tagging')) {
             if (auth()->user()->can('browse', $data)) {
                 $redirect = redirect()->route("voyager.{$dataType->slug}.index");
@@ -77,6 +124,7 @@ class SolicitudController extends VoyagerBaseController
             return response()->json(['success' => true, 'data' => $data]);
         }
     }
+
 
     public function index(Request $request)
     {

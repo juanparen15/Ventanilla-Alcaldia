@@ -66,7 +66,7 @@
                                     src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                             @endif
                             <div class="copy animated fadeIn">
-                                <h1>{{ Voyager::setting('admin.title', 'Fedetiro') }}</h1>
+                                <h1>{{ Voyager::setting('admin.title', 'Ventanilla') }}</h1>
                                 <p>{{ Voyager::setting('admin.description', __('voyager::login.welcome')) }}</p>
                             </div>
                         </div> <!-- .logo-title-container -->

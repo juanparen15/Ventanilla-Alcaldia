@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - FEDETIRO</title>
+    <title>Registro - VENTANILLA</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -141,7 +141,7 @@
             <div class="login-container">
                 <a href="{{ url('/') }}">
                     <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
-                        alt="FEDETIRO Logo">
+                        alt="VENTANILLA Logo">
                 </a>
                 <h2>Registrarse</h2>
                 <x-guest-layout>
@@ -197,11 +197,11 @@
                                             <div class="ml-2">
                                                 {!! __('Acepto los :terms_of_service', [
                                                     'terms_of_service' =>
-                                                        '<a target="_blank" href="https://www.fedetirocol.com/politica-tratamiento-de-datos/" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                        '<a target="_blank" href="" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                                         __('Términos de servicio') .
                                                         '</a>',
                                                     'privacy_policy' =>
-                                                        '<a target="_blank" href="https://www.fedetirocol.com/politica-tratamiento-de-datos/" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
+                                                        '<a target="_blank" href="" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">' .
                                                         __('Política de privacidad') .
                                                         '</a>',
                                                 ]) !!}

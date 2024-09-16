@@ -6,7 +6,7 @@
 
     Se ha inscrito a un Evento deportivo con la siguiente información:
 
-    FEDETIRO revisará la información enviada junto con los documentos de soporte para dejar en firme su inscripción, la cual se recibió con la siguiente información:
+    VENTANILLA revisará la información enviada junto con los documentos de soporte para dejar en firme su inscripción, la cual se recibió con la siguiente información:
 
     - Nombre evento: {{ $inscripcion->evento->codigo_evento }} - {{ $inscripcion->evento->nombre_evento }}
     - Deportista: {{ $usuario->primer_nombre }} {{ $usuario->segundo_nombre }} {{ $usuario->primer_apellido }} {{ $usuario->segundo_apellido }}

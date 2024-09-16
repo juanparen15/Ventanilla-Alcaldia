@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title class="title">{{ Voyager::setting('site.title', 'FEDETIRO') }},
-        {{ Voyager::setting('site.description', 'Bienvenido a Fedetiro') }} </title>
+    <title class="title">{{ Voyager::setting('site.title', 'VENTANILLA') }},
+        {{ Voyager::setting('site.description', 'Bienvenido a Ventanilla') }} </title>
     <meta name="description" content="Responsive Tailwind CSS Template">
     <meta name="version" content="1.0.0">
     <!-- favicon -->
@@ -33,7 +33,7 @@
             </div>
             <div class="justify-content-center">
                 <div class="text-center">
-                    <h4 class="mb-0 mt-2 text-lg font-semibold">{{ Voyager::setting('site.title', 'FEDETIRO') }}</h4>
+                    <h4 class="mb-0 mt-2 text-lg font-semibold">{{ Voyager::setting('site.title', 'VENTANILLA') }}</h4>
                 </div>
             </div>
         </div>
@@ -1188,14 +1188,14 @@
                         <p class="mb-0">©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Fedetiro. Hecho con <i class="mdi mdi-heart text-red-600"></i> por
+                            </script> Ventanilla al Ciudadano. Hecho con <i class="mdi mdi-heart text-red-600"></i> por
                             <a href="https://armorumsgdea.net" target="_blank" class="text-reset">ARMORUM VU-SGDEA
                                 ®</a>
                         </p>
                     </div>
 
                     <ul class="lg:col-span-4 list-none md:text-end text-center mt-6 md:mt-0">
-                        <li class="inline"><a href="https://www.facebook.com/Fedetirocol?mibextid=ibOpuV"
+                        {{-- <li class="inline"><a href="https://www.facebook.com/Fedetirocol?mibextid=ibOpuV"
                                 target="_blank"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
                                     data-feather="facebook" class="size-4 align-middle" title="facebook"></i></a>
@@ -1212,7 +1212,7 @@
                                     data-feather="youtube" class="size-4 align-middle" title="youtube"></i></a></li>
                         <li class="inline"><a href="mailto:info@fedetirocol.com"
                                 class="size-8 inline-flex justify-center items-center border border-gray-800 rounded-md hover:border-teal-500 dark:hover:border-teal-500 hover:bg-teal-500 dark:hover:bg-teal-500"><i
-                                    data-feather="mail" class="size-4 align-middle" title="email"></i></a></li>
+                                    data-feather="mail" class="size-4 align-middle" title="email"></i></a></li> --}}
                     </ul><!--end icon-->
                 </div><!--end grid-->
             </div><!--end container-->

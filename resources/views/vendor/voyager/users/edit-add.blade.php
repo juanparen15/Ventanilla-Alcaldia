@@ -26,7 +26,7 @@
             {{ csrf_field() }}
 
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-8">
                     <div class="panel panel-bordered">
                         {{-- <div class="panel"> --}}
                         @if (count($errors) > 0)
@@ -78,7 +78,8 @@
                             @if (Auth::user()->role_id == '2')
                                 <div class="form-group">
                                     <h5 for="documento_tercero">{{ __('Número de Documento') }}</h5>
-                                    <label for="documento_tercero">{{ old('username', $dataTypeContent->username ?? '') }}</label>
+                                    <label
+                                        for="documento_tercero">{{ old('username', $dataTypeContent->username ?? '') }}</label>
                                 </div>
                             @endif
                             <div class="form-group">
@@ -198,24 +199,6 @@
                                 </select>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-5">
-                    <div class="panel panel-bordered">
-                        {{-- <div class="panel"> --}}
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <div class="panel-body">
                             @php
                                 if (isset($dataTypeContent->genero)) {
                                     $selected_genero = $dataTypeContent->genero;
@@ -230,158 +213,6 @@
                                         <option value="{{ $genero->id }}"
                                             {{ $genero->id == $selected_genero ? 'selected' : '' }}>
                                             {{ $genero->genero }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <h5 for="inicio_competencia">{{ __('Inicio Competencia') }}</h5>
-                                <input required="true" type="date" class="form-control" id="inicio_competencia"
-                                    name="inicio_competencia" placeholder="{{ __('Inicio Competencia') }}"
-                                    value="{{ old('inicio_competencia', $dataTypeContent->inicio_competencia ?? '') }}">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="practicando_tiro_desde">{{ __('Practica Tiro Desde') }}</h5>
-                                <input required="true" type="date" class="form-control" id="practicando_tiro_desde"
-                                    name="practicando_tiro_desde" placeholder="{{ __('Practica Tiro Desde') }}"
-                                    value="{{ old('practicando_tiro_desde', $dataTypeContent->practicando_tiro_desde ?? '') }}">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="entrenador_personal">{{ __('Entrenador Personal') }}</h5>
-                                <input required="true" type="text" class="form-control" id="entrenador_personal"
-                                    name="entrenador_personal" placeholder="{{ __('Entrenador Personal') }}"
-                                    value="{{ old('entrenador_personal', $dataTypeContent->entrenador_personal ?? '') }}">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="entrenador_nacional">{{ __('Entrenador Nacional') }}</h5>
-                                <input required="true" type="text" class="form-control" id="entrenador_nacional"
-                                    name="entrenador_nacional" placeholder="{{ __('Entrenador Nacional') }}"
-                                    value="{{ old('entrenador_nacional', $dataTypeContent->entrenador_nacional ?? '') }}">
-                            </div>
-
-                            @php
-                                if (isset($dataTypeContent->lateralidad)) {
-                                    $selected_lateralidad = $dataTypeContent->lateralidad;
-                                } else {
-                                    $selected_lateralidad = null; // Cambia '' por null
-                                }
-                            @endphp
-                            <div class="form-group">
-                                <h5 for="lateralidad">{{ __('Lateralidad') }}</h5>
-                                <select class="form-control select2" id="lateralidad" name="lateralidad">
-                                    @foreach (Voyager::lateralidad() as $lateralidad)
-                                        <option value="{{ $lateralidad->id }}"
-                                            {{ $lateralidad->id == $selected_lateralidad ? 'selected' : '' }}>
-                                            {{ $lateralidad->lateralidad }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            @php
-                                if (isset($dataTypeContent->ojo_maestro)) {
-                                    $selected_ojo_maestro = $dataTypeContent->ojo_maestro;
-                                } else {
-                                    $selected_ojo_maestro = null; // Cambia '' por null
-                                }
-                            @endphp
-                            <div class="form-group">
-                                <h5 for="ojo_maestro">{{ __('Ojo Maestro') }}</h5>
-                                <select class="form-control select2" id="ojo_maestro" name="ojo_maestro">
-                                    @foreach (Voyager::ojo_maestro() as $ojo_maestro)
-                                        <option value="{{ $ojo_maestro->id }}"
-                                            {{ $ojo_maestro->id == $selected_ojo_maestro ? 'selected' : '' }}>
-                                            {{ $ojo_maestro->ojo_maestro }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            @php
-                                if (isset($dataTypeContent->liga)) {
-                                    $selected_liga = $dataTypeContent->liga;
-                                } else {
-                                    $selected_liga = null; // Cambia '' por null
-                                }
-                            @endphp
-                            <div class="form-group">
-                                <h5 for="liga">{{ __('Liga') }}</h5>
-                                <select class="form-control select2" id="liga" name="liga">
-                                    <option value="" disabled selected>Seleccione una Liga</option>
-                                    @foreach (Voyager::liga() as $liga)
-                                        <option value="{{ $liga->id }}"
-                                            {{ $liga->id == $selected_liga ? 'selected' : '' }}>
-                                            {{ $liga->liga }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            @php
-                                if (isset($dataTypeContent->club)) {
-                                    $selected_club = $dataTypeContent->club;
-                                } else {
-                                    $selected_club = null; // Cambia '' por null
-                                }
-                            @endphp
-                            <div class="form-group">
-                                <h5 for="club">{{ __('Club') }}</h5>
-                                <select class="form-control select2" id="club" name="club">
-                                    <option value="" disabled selected>Seleccione un Club</option>
-                                    @foreach (Voyager::club() as $club)
-                                        <option value="{{ $club->id }}"
-                                            {{ $club->id == $selected_club ? 'selected' : '' }}>
-                                            {{ $club->club }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-
-                            <div class="form-group">
-                                <h5 for="medico_tramitante">{{ __('Medico Tratante') }}</h5>
-                                <input required="true" type="text" class="form-control" id="medico_tramitante"
-                                    name="medico_tramitante" placeholder="{{ __('Medico Tratante') }}"
-                                    value="{{ old('medico_tramitante', $dataTypeContent->medico_tramitante ?? '') }}">
-                            </div>
-                            <div class="form-group">
-                                <h5 for="lugar_entrenamiento">{{ __('Lugar de Entrenamiento') }}</h5>
-                                <input required="true" type="text" class="form-control" id="lugar_entrenamiento"
-                                    name="lugar_entrenamiento" placeholder="{{ __('Lugar de Entrenamiento') }}"
-                                    value="{{ old('lugar_entrenamiento', $dataTypeContent->lugar_entrenamiento ?? '') }}">
-                            </div>
-
-
-                            @php
-                                // Decodificar los datos almacenados en formato JSON
-                                $selected_tipo_arma = isset($dataTypeContent->tipo_arma)
-                                    ? json_decode($dataTypeContent->tipo_arma)
-                                    : [];
-                                $selected_modalidad_arma = isset($dataTypeContent->modalidad_arma)
-                                    ? json_decode($dataTypeContent->modalidad_arma)
-                                    : [];
-                            @endphp
-
-                            <div class="form-group">
-                                <h5 for="tipo_arma">Tipo de Arma</h5>
-                                <select multiple class="form-control select2" id="tipo_arma" name="tipo_arma[]">
-                                    @foreach (Voyager::tipo_arma() as $tipoArma)
-                                        <option value="{{ $tipoArma->id }}"
-                                            {{ in_array($tipoArma->id, $selected_tipo_arma) ? 'selected' : '' }}>
-                                            {{ $tipoArma->arma }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <h5 for="modalidad_arma">Modalidad de Arma</h5>
-                                <select multiple class="form-control select2" id="modalidad_arma"
-                                    name="modalidad_arma[]">
-                                    @foreach (Voyager::modalidad_arma() as $modalidadArma)
-                                        <option value="{{ $modalidadArma->id }}"
-                                            {{ in_array($modalidadArma->id, $selected_modalidad_arma) ? 'selected' : '' }}>
-                                            {{ $modalidadArma->modalidad }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -429,7 +260,27 @@
                                     $selected_locale = config('app.locale', 'es');
                                 }
                             @endphp
-                            {{-- <div class="form-group">
+
+                        </div>
+                    </div>
+                </div>
+
+                {{-- <div class="col-md-5">
+                    <div class="panel panel-bordered">
+                        <div class="panel">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <div class="panel-body">
+                            
+                            <div class="form-group">
                                 <h5 for="locale">{{ __('voyager::generic.locale') }}</h5>
                                 <select class="form-control select2" id="locale" name="locale">
                                     @foreach (Voyager::getLocales() as $locale)
@@ -438,12 +289,12 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <div class="panel panel panel-bordered panel-warning">
                         <div class="panel-body">
                             <div class="form-group">
@@ -495,29 +346,6 @@
                             </div>
                             <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
                             <br></br> --}}
-                            <div class="form-group">
-                                <h5 for="tipo_arma">{{ __('Tipos de Arma') }}</h5>
-                                @foreach ($selected_tipo_arma as $tipoArmaId)
-                                    @php
-                                        $tipoArma = \App\Models\TipoArma::find($tipoArmaId);
-                                    @endphp
-                                    @if ($tipoArma)
-                                        <label>• {{ $tipoArma->arma }}</label><br>
-                                    @endif
-                                @endforeach
-                            </div>
-
-                            <div class="form-group">
-                                <h5 for="modalidad_arma">{{ __('Modalidades de Arma') }}</h5>
-                                @foreach ($selected_modalidad_arma as $modalidadArmaId)
-                                    @php
-                                        $modalidadArma = \App\Models\ModalidadArma::find($modalidadArmaId);
-                                    @endphp
-                                    @if ($modalidadArma)
-                                        <label>• {{ $modalidadArma->modalidad }}</label><br>
-                                    @endif
-                                @endforeach
-                            </div>
                         </div>
                     </div>
 

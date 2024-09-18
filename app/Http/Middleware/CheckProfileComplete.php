@@ -49,12 +49,6 @@ class CheckProfileComplete
             !is_null($user->fecha_nacimiento) &&
             !is_null($user->peso) &&
             !is_null($user->altura) &&
-            !is_null($user->entrenador_personal) &&
-            !is_null($user->entrenador_nacional) &&
-            !is_null($user->inicio_competencia) &&
-            !is_null($user->practicando_tiro_desde) &&
-            !is_null($user->medico_tramitante) &&
-            !is_null($user->lugar_entrenamiento) &&
             !is_null($user->estado_civil) &&
             !is_null($user->genero);
     }

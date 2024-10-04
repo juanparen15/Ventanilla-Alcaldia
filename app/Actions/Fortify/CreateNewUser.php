@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Notifications\CustomVerifyEmailNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +24,6 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'tipo_documento' => ['required', 'integer', 'exists:tipo_documentos,id'],
             'username' => ['required', 'regex:/^[0-9]+$/', 'string', 'max:255', 'min:4', 'unique:users'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
@@ -34,15 +34,23 @@ class CreateNewUser implements CreatesNewUsers
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
         ])->validate();
 
-        $user = User::create([
+        // Genera un PIN de 6 dígitos
+        $verificationPin = rand(100000, 999999);
+
+        return User::create([
             'tipo_documento' => $input['tipo_documento'],
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'verification_pin' => $verificationPin,
+            'pin_expires_at' => now()->addMinutes(10), // Establecer la expiración del PIN
         ]);
 
-        event(new Registered($user));
+        // Enviar la notificación con el PIN
+        // $user->notify(new CustomVerifyEmailNotification($verificationPin));
 
-        return $user;
+        // event(new Registered($user));
+
+        // return $user;
     }
 }

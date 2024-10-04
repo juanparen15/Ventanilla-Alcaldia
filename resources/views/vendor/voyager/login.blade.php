@@ -16,12 +16,14 @@
                 align-items: center;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
+
             .container-fluid {
                 height: 100%;
                 padding: 0;
                 display: flex;
                 flex-wrap: wrap;
             }
+
             .image-section {
                 background-size: cover;
                 background-position: center;
@@ -30,13 +32,17 @@
                 flex: 1;
                 min-height: 300px;
                 position: relative;
-                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5); /* Sombra a la derecha */
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
+                /* Sombra a la derecha */
                 transition: filter 1s ease;
-                z-index: 1; /* Asegura que esté por debajo del contenedor de login */
+                z-index: 1;
+                /* Asegura que esté por debajo del contenedor de login */
             }
+
             .image-section:hover {
                 filter: grayscale(100%);
             }
+
             .login-section {
                 display: flex;
                 justify-content: center;
@@ -45,9 +51,12 @@
                 flex: 1;
                 min-height: 300px;
                 position: relative;
-                z-index: 2; /* Asegura que esté por encima del contenedor de imagen */
-                padding-left: 15px; /* Espacio para la sombra */
+                z-index: 2;
+                /* Asegura que esté por encima del contenedor de imagen */
+                padding-left: 15px;
+                /* Espacio para la sombra */
             }
+
             .login-container {
                 max-width: 400px;
                 width: 100%;
@@ -56,24 +65,29 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 border-radius: 10px;
             }
+
             .login-container img {
                 display: block;
                 margin: 0 auto 20px;
                 max-width: 150px;
             }
+
             .login-container h2 {
                 text-align: center;
                 margin-bottom: 20px;
                 color: #333;
             }
+
             .form-group {
                 margin-bottom: 15px;
             }
+
             .form-control {
                 border-radius: 5px;
                 box-shadow: none;
                 border-color: #ddd;
             }
+
             .btn-primary {
                 width: 100%;
                 padding: 10px;
@@ -83,24 +97,31 @@
                 box-shadow: none;
                 transition: background-color 0.3s, border-color 0.3s;
             }
+
             .btn-primary:hover {
                 background-color: #0056b3;
                 border-color: #0056b3;
             }
+
             .text-sm {
                 font-size: 0.875rem;
                 color: #666;
             }
+
             .underline {
                 text-decoration: underline;
             }
+
             .text-center {
                 text-align: center;
             }
+
             @media (max-width: 768px) {
                 .image-section {
-                    display: none; /* Oculta la imagen en dispositivos móviles */
+                    display: none;
+                    /* Oculta la imagen en dispositivos móviles */
                 }
+
                 .login-section {
                     flex: 0 0 100%;
                     max-width: 100%;
@@ -153,8 +174,8 @@
                                         for="remember_me">{{ __('Recuerdame') }}</label>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">{{ __('Iniciar Sesión') }}</button>
-
+                                <x-button type="submit">{{ __('Iniciar Sesión') }}</x-button>
+                                
                                 <div class="text-center mt-4">
                                     @if (Route::has('password.request'))
                                         <a class="underline text-sm"
@@ -165,8 +186,39 @@
                                         <a href="{{ route('register') }}"
                                             class="ml-4 underline text-sm">{{ __('Registrarme') }}</a>
                                     @endif
+                                    {{-- <!-- Botón para reenviar verificación si el correo no ha sido confirmado -->
+                                    @if (auth()->check() && !auth()->user()->hasVerifiedEmail())
+                                        <div class="mt-3">
+                                            <form method="POST" action="{{ route('verification.send') }}">
+                                                @csrf
+                                                <p class="text-sm text-warning">
+                                                    {{ __('Tu correo electrónico no ha sido verificado. Haz clic en el botón de abajo para reenviar el enlace de verificación.') }}
+                                                </p>
+                                                <x-button type="submit" class="btn btn-warning">
+                                                    {{ __('Reenviar Correo de Verificación') }}
+                                                </x-button>
+                                            </form>
+                                        </div>
+                                    @endif --}}
                                 </div>
                             </form>
+
+                            {{-- Mostrar mensaje si el correo no está verificado --}}
+                            {{-- @if (session('resent'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ __('Se ha reenviado un enlace de verificación a su dirección de correo electrónico.') }}
+                                </div>
+                            @endif
+
+                            @if (auth()->user() && !auth()->user()->hasVerifiedEmail())
+                                <div class="alert alert-warning mt-4">
+                                    {{ __('Su correo electrónico no ha sido verificado.') }}
+                                    <form class="d-inline" method="POST" action="{{ route('verification.send') }}">
+                                        @csrf
+                                        <x-button type="submit">{{ __('Reenviar enlace de verificación') }}</x-button>
+                                    </form>
+                                </div>
+                            @endif --}}
                         </x-authentication-card>
                     </x-guest-layout>
                 </div>

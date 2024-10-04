@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Voyager\InscripcionController;
+use App\Http\Controllers\Voyager\VoyagerUserController;
 use App\Http\Middleware\AllowPublicAccess;
 use DragonCode\Support\Facades\Filesystem\File;
 use Illuminate\Support\Facades\Response;
 use TCG\Voyager\Facades\Voyager;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +64,16 @@ Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxCon
 Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
 Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);
 Route::get('inscripciones/{id}/detalle', [App\Http\Controllers\Voyager\InscripcionController::class, 'detalle'])->name('inscripciones.detalle');
+
+
+// Email verification routes
+Route::get('/email/verify', [EmailVerificationController::class, 'showVerifyForm'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::post('/email/verify', [EmailVerificationController::class, 'verify'])
+    ->middleware('auth')
+    ->name('verification.verify');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);

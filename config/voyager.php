@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'hidden_files' => true,
+    'hidden_files' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -199,6 +199,8 @@ return [
         // 'js/custom.js',
         // 'resources/js/app.js',
     ],
+
+    'assets_path' => '/vendor/tcg/voyager/publishable/assets',
 
     'googlemaps' => [
         'key'    => env('GOOGLE_MAPS_KEY', ''),

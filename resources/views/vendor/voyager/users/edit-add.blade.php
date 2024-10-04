@@ -336,19 +336,8 @@
                             </div>
                             <label for="movil">{{ old('movil', $dataTypeContent->movil ?? '') }}</label>
                             <br></br>
-                            {{-- <div class="form-group">
-                                <h5 for="">{{ __('Porcentaje de Descuento') }}</h5>
-                            </div>
-                            <label>{{ Voyager::setting('admin.descuento', '0%') }}</label>
-                            <br></br> --}}
-                            {{-- <div class="form-group">
-                                <h5 for="">{{ __('Valor Credencial') }}</h5>
-                            </div>
-                            <label>{{ Voyager::setting('admin.valor_credencial', '$') }}</label>
-                            <br></br> --}}
                         </div>
                     </div>
-
                 </div>
             </div>
     </div>
@@ -403,59 +392,4 @@
             });
         });
     </script>
-
-    <script>
-        var liga = $('#liga');
-        var club = $('#club');
-
-        $(document).ready(function() {
-            liga.change(function() {
-                var liga = $(this).val();
-                // console.log("Cambio en liga detectado");
-                if (liga) {
-                    $.get('/get-club/' + liga, function(data) {
-                        $('#club').empty();
-
-
-                        $('#club').append(
-                            '<option disabled selected>Seleccione un Club</option>'
-                        );
-                        $.each(data, function(key, value) {
-                            $('#club').append('<option value="' + value.id +
-                                '" name="' + value.id + '">' + value
-                                .club + '</option>');
-                        });
-                        // Selecciona automáticamente la primera opción
-                        $('#club').val($('#club option:first').val());
-                    });
-                } else {
-                    // Si no se selecciona ningun departamento, limpia la lista de municipios
-                    $('#club').empty();
-                }
-            });
-        });
-    </script>
-
-    <script>
-        var tipoArma = $('#tipo_arma');
-        var modalidadArma = $('#modalidad_arma');
-
-        $(document).ready(function() {
-            tipoArma.change(function() {
-                var tipoArmaIds = $(this).val(); // Obtener los IDs de los tipos de arma seleccionados
-                if (tipoArmaIds) {
-                    $.get('/get-modalidades/' + tipoArmaIds.join(','), function(data) {
-                        $('#modalidad_arma').empty();
-                        $.each(data, function(key, value) {
-                            modalidadArma.append('<option value="' + value.id +
-                                '">' + value.modalidad + '</option>');
-                        });
-                    });
-                } else {
-                    modalidadArma.empty();
-                }
-            });
-        });
-    </script>
-
 @stop

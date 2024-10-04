@@ -142,15 +142,15 @@
                 <div class="logo-icon-container">
                     <?php $admin_logo_img = Voyager::setting('admin.icon_image', ''); ?>
                     @if ($admin_logo_img == '')
-                    <a href="{{ url('/') }}">
-                        <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
-                            alt="VENTANILLA Logo">
-                    </a>
-                @else
-                    <a href="{{ url('/') }}">
-                        <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-                    </a>
-                @endif
+                        <a href="{{ url('/') }}">
+                            <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
+                                alt="VENTANILLA Logo">
+                        </a>
+                    @else
+                        <a href="{{ url('/') }}">
+                            <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+                        </a>
+                    @endif
                 </div>
                 </a>
                 <h2>Restablecer Contraseña</h2>
@@ -182,6 +182,13 @@
                                 <x-button>
                                     {{ __('Restablecer contraseña') }}
                                 </x-button>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-4">
+                                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    href="{{ route('login') }}">
+                                    {{ __('Iniciar Sesión') }}
+                                </a>
                             </div>
                         </form>
                     </x-authentication-card>

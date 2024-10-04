@@ -29,8 +29,21 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
-        VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new CustomVerifyEmailNotification($url))->toMail($notifiable, $url);
+        // VerifyEmail::toMailUsing(function ($notifiable, $url) {
+        //     return (new CustomVerifyEmailNotification($url))->toMail($notifiable, $url);
+        // });
+        VerifyEmail::toMailUsing(function ($notifiable) {
+            // Asegúrate de que el PIN se esté generando y almacenando en el modelo del usuario
+            $verificationPin = rand(100000, 999999); // Genera el PIN
+
+            // Asigna el PIN al usuario, si no está ya almacenado
+            $notifiable->verification_pin = $verificationPin; // Asignar el PIN al notifiable (usuario)
+            $notifiable->pin_expires_at = now()->addMinutes(10); // Establecer la expiración
+
+            // Guarda el PIN en el usuario
+            $notifiable->save();
+
+            return (new CustomVerifyEmailNotification($verificationPin))->toMail($notifiable);
         });
 
         ResetPassword::toMailUsing(function ($notifiable, $url) {

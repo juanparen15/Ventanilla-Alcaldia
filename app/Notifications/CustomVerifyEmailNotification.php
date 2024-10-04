@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\URL;
 class CustomVerifyEmailNotification extends Notification
 {
     /**
+     * The verification PIN.
+     *
+     * @var string
+     */
+    protected $verificationPin;
+
+    /**
      * The callback that should be used to create the verify email URL.
      *
      * @var \Closure|null
@@ -24,6 +31,17 @@ class CustomVerifyEmailNotification extends Notification
      * @var \Closure|null
      */
     public static $toMailCallback;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @param string $verificationPin
+     * @return void
+     */
+    public function __construct(string $verificationPin)
+    {
+        $this->verificationPin = $verificationPin;
+    }
 
     /**
      * Get the notification's channels.
@@ -64,7 +82,9 @@ class CustomVerifyEmailNotification extends Notification
         return (new MailMessage)
             ->subject(Lang::get('Verificación de Correo Electrónico'))
             ->line(Lang::get('Por favor, haz clic en el botón de abajo para verificar tu dirección de correo electrónico.'))
-            ->action(Lang::get('Verificar dirección de correo electrónico'), $url)
+            // ->action(Lang::get('Verificar dirección de correo electrónico'), $url)
+            ->line(Lang::get('Tu código de verificación es: :pin', ['pin' => $this->verificationPin])) // Muestra el PIN
+            ->line(Lang::get('Este código expirará en 10 minutos.'))
             ->line(Lang::get('Si no creaste una cuenta, no es necesario realizar ninguna otra acción.'));
     }
 

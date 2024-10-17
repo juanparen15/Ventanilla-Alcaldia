@@ -65,9 +65,6 @@ class CheckProfileComplete
             !is_null($user->movil) &&
             !is_null($user->direccion) &&
             !is_null($user->fecha_nacimiento) &&
-            !is_null($user->peso) &&
-            !is_null($user->altura) &&
-            !is_null($user->estado_civil) &&
-            !is_null($user->genero);
+            !is_null($user->peso);
     }
 }

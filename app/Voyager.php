@@ -35,6 +35,7 @@ use \App\Models\ArmorumappEstadocivil;
 use App\Models\ArmorumappLugar;
 use App\Models\ArmorumappTipopeticion;
 use App\Models\Club;
+use App\Models\CondicionEspecial;
 use App\Models\Departamentos;
 use App\Models\Evento;
 use App\Models\EventoDetalleModalidadesArma;
@@ -400,6 +401,11 @@ class Voyager extends BaseVoyager
     public function genero()
     {
         return Genero::all();
+    }
+
+    public function condicion_especial()
+    {
+        return CondicionEspecial::all();
     }
 
     public function lateralidad()

@@ -62,7 +62,7 @@
 
                             {{-- Opción de carga de imagen --}}
                             <div class="form-group" id="imagen_option">
-                                <h5 for="foto">{{ __('Imagen') }}</h5>
+                                <h5 for="foto">{{ __('Anexos (PDF)') }}</h5>
                                 @if (!empty($dataTypeContent->foto))
                                     @foreach (json_decode($dataTypeContent->foto) as $pdf)
                                         <div class="file-preview">
@@ -76,16 +76,16 @@
 
                                 <div class="custom-file">
                                     <label class="btn btn-primary" for="fileInput"><i class="voyager-images"></i>
-                                        Seleccionar imagen</label>
+                                        Seleccionar Archivo</label>
                                     <input type="file" class="custom-file-input" id="fileInput" data-name="foto"
-                                        accept="image/*, .pdf" name="foto" style="display: none;">
+                                        accept=".pdf" name="foto" style="display: none;">
                                     <span id="fileLabel"></span>
                                 </div>
                             </div>
 
                             {{-- Opción de carga de cédula --}}
                             <div class="form-group" id="cedula_option">
-                                <h5 for="cedula">{{ __('Cédula') }}</h5>
+                                <h5 for="cedula">{{ __('Anexos (JPG, PNG)') }}</h5>
                                 @if (!empty($dataTypeContent->cedula))
                                     @foreach (json_decode($dataTypeContent->cedula) as $pdf)
                                         <div class="file-preview">
@@ -99,16 +99,16 @@
 
                                 <div class="custom-file">
                                     <label class="btn btn-primary" for="fileInputCedula"><i class="voyager-credit-card"></i>
-                                        Seleccionar cédula</label>
+                                        Seleccionar Archivo</label>
                                     <input type="file" class="custom-file-input" id="fileInputCedula" data-name="cedula"
-                                        accept="image/*, .pdf" name="cedula" style="display: none;">
+                                        accept="image/*" name="cedula" style="display: none;">
                                     <span id="fileLabelCedula"></span>
                                 </div>
                             </div>
 
                             {{-- Opción de carga de pago --}}
                             <div class="form-group" id="pago_option">
-                                <h5 for="pago">{{ __('Pago') }}</h5>
+                                <h5 for="pago">{{ __('Anexos (MP3, MP4)') }}</h5>
                                 @if (!empty($dataTypeContent->pago))
                                     @foreach (json_decode($dataTypeContent->pago) as $pdf)
                                         <div class="file-preview">
@@ -122,9 +122,9 @@
 
                                 <div class="custom-file">
                                     <label class="btn btn-primary" for="fileInputPago"><i class="voyager-images"></i>
-                                        Seleccionar Imagen de Pago</label>
+                                        Seleccionar Archivo</label>
                                     <input type="file" class="custom-file-input" id="fileInputPago" data-name="pago"
-                                        accept="image/*, .pdf" name="pago" style="display: none;">
+                                        accept="audio/*, video/*" name="pago" style="display: none;">
                                     <span id="fileLabelPago"></span>
                                 </div>
                             </div>
@@ -145,9 +145,9 @@
 
                                 <div class="custom-file">
                                     <label class="btn btn-primary" for="fileInputOtroArchivo"><i class="voyager-upload"></i>
-                                        Seleccionar archivo</label>
+                                        Seleccionar Archivo</label>
                                     <input type="file" class="custom-file-input" id="fileInputOtroArchivo"
-                                        data-name="otro_archivo" accept="image/*, .pdf" name="otro_archivo"
+                                        data-name="otro_archivo" accept="application/pdf" name="otro_archivo"
                                         style="display: none;">
                                     <span id="fileLabelOtroArchivo"></span>
                                 </div>
@@ -169,8 +169,8 @@
 
                             {{-- Botón de pago en línea --}}
                             <!-- <div class="form-group">
-                        <a target="blank" type="button" class="btn btn-primary float-right" href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN LÍNEA</a>
-                    </div> -->
+                                                                    <a target="blank" type="button" class="btn btn-primary float-right" href="https://checkout.wompi.co/l/0vsdUZ"><i class="voyager-paypal"></i> PAGOS EN LÍNEA</a>
+                                                                </div> -->
                         </div>
                     </div>
                 </div>
@@ -214,8 +214,43 @@
             });
         </script>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function() {
+
+                // Validación de tamaño del archivo
+                function validateFileSize(input, maxSizeMB) {
+                    var file = input.files[0];
+                    var fileSizeMB = file.size / (1024 * 1024); // Convierte bytes a MB
+                    if (fileSizeMB > maxSizeMB) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Archivo demasiado grande',
+                            text: 'El archivo no debe superar los ' + maxSizeMB + ' MB.',
+                        });
+                        input.value = ''; // Limpia el campo de archivo
+                        return false;
+                    }
+                    return true;
+                }
+
+                // Validación para cada input de archivo
+                $('#fileInput').on('change', function() {
+                    validateFileSize(this, 5); // 5 MB límite
+                });
+
+                $('#fileInputCedula').on('change', function() {
+                    validateFileSize(this, 5);
+                });
+
+                $('#fileInputPago').on('change', function() {
+                    validateFileSize(this, 5);
+                });
+
+                $('#fileInputOtroArchivo').on('change', function() {
+                    validateFileSize(this, 5);
+                });
+
                 var tipoPeticiones = @json($tipoPeticiones);
                 var tipoPeticionSelect = $('#tipo_peticion');
                 var imagenOption = $('#imagen_option');
@@ -265,11 +300,20 @@
                             return 'jpg';
                         case 'application/pdf':
                             return 'pdf';
+                        case 'audio/mpeg':
+                            return 'mp3';
+                        case 'audio/wav':
+                            return 'wav';
+                        case 'video/mp4':
+                            return 'mp4';
+                        case 'video/webm':
+                            return 'webm';
                             // Agrega más casos según sea necesario
                         default:
                             return 'bin'; // Extensión por defecto si no se encuentra
                     }
                 }
+
 
                 function updateFileLabel(inputId, labelId, baseFileName) {
                     $('#' + inputId).on('change', function() {
@@ -295,32 +339,21 @@
                 updateFileLabel('fileInput', 'fileLabel', '{{ time() }}-imagen');
                 updateFileLabel('fileInputCedula', 'fileLabelCedula', '{{ time() }}-cedula');
                 updateFileLabel('fileInputPago', 'fileLabelPago', '{{ time() }}-pago');
+                updateFileLabel('fileInputOtroArchivo', 'fileLabelOtroArchivo',
+                    '{{ time() }}-otro-archivo');
             });
         </script>
 
         <script>
-            $(document).ready(function() {
-                function updateFileLabel(inputId, labelId, newFileName) {
-                    $('#' + inputId).on('change', function() {
-                        var files = $(this)[0].files;
-                        if (files.length > 0) {
-                            var file = files[0];
-                            var renamedFile = new File([file], newFileName, {
-                                type: file.type
-                            });
-
-                            var dataTransfer = new DataTransfer();
-                            dataTransfer.items.add(renamedFile);
-
-                            $('#' + inputId)[0].files = dataTransfer.files;
-                            $('#' + labelId).text(newFileName);
-                        }
-                    });
+            function validateFileSize(input, maxSizeMB) {
+                var file = input.files[0];
+                var fileSizeMB = file.size / (1024 * 1024); // Convierte bytes a MB
+                if (fileSizeMB > maxSizeMB) {
+                    alert('El archivo no debe superar los ' + maxSizeMB + ' MB.');
+                    input.value = ''; // Limpia el campo de archivo
+                    return false;
                 }
-
-                // Actualizar nombre de archivo para el archivo opcional
-                updateFileLabel('fileInputOtroArchivo', 'fileLabelOtroArchivo',
-                '{{ time() }}-otro-archivo.pdf');
-            });
+                return true;
+            }
         </script>
     @stop

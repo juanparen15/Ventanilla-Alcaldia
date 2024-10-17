@@ -173,13 +173,13 @@
                                     placeholder="{{ __('Peso KG') }}"
                                     value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="altura">{{ __('Altura (CM)') }}</h5>
                                 <input min="120" max="250" required="true" type="number"
                                     class="form-control" id="altura" name="altura"
                                     placeholder="{{ __('Altura (CM)') }}"
                                     value="{{ old('altura', $dataTypeContent->altura ?? '') }}">
-                            </div>
+                            </div> --}}
                             @php
                                 if (isset($dataTypeContent->estado_civil)) {
                                     $selected_estado_civil = $dataTypeContent->estado_civil;
@@ -187,7 +187,7 @@
                                     $selected_estado_civil = null; // Cambia '' por null
                                 }
                             @endphp
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="estado_civil">{{ __('Estado Civil') }}</h5>
                                 <select class="form-control select2" id="estado_civil" name="estado_civil">
                                     @foreach (Voyager::estadoCivil() as $estado_civil)
@@ -197,7 +197,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
 
                             @php
                                 if (isset($dataTypeContent->genero)) {
@@ -206,13 +206,33 @@
                                     $selected_genero = null; // Cambia '' por null
                                 }
                             @endphp
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="genero">{{ __('Genero') }}</h5>
                                 <select class="form-control select2" id="genero" name="genero">
                                     @foreach (Voyager::genero() as $genero)
                                         <option value="{{ $genero->id }}"
                                             {{ $genero->id == $selected_genero ? 'selected' : '' }}>
                                             {{ $genero->genero }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+
+                            @php
+                                if (isset($dataTypeContent->condicion_especial)) {
+                                    $selected_condicion_especial = $dataTypeContent->condicion_especial;
+                                } else {
+                                    $selected_condicion_especial = null; // Cambia '' por null
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <h5 for="condicion_especial">{{ __('Condición Especial') }}</h5>
+                                <select class="form-control select2" id="condicion_especial" name="condicion_especial">
+                                    <option value="" disabled selected>Seleccione una Condición Especial</option>
+                                    @foreach (Voyager::condicion_especial() as $condicion_especial)
+                                        <option value="{{ $condicion_especial->id }}"
+                                            {{ $condicion_especial->id == $selected_condicion_especial ? 'selected' : '' }}>
+                                            {{ $condicion_especial->condicion }}
                                         </option>
                                     @endforeach
                                 </select>

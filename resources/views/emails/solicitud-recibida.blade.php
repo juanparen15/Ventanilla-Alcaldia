@@ -13,6 +13,6 @@
     - Tipo petición: {{ $solicitud->tipo_peticion }}
     - Mensaje: {{ $solicitud->mensaje }}
 
-    Gracias,<br>
+    Saludos,
     {{ config('app.name') }}
 </x-mail::message>

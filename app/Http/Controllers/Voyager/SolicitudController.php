@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Voyager;
 
 use App\Mail\solicitudAdminRecibida;
 use App\Mail\solicitudRecibida;
+use App\Models\ArmorumappRadicado;
 use App\Models\ArmorumappSolicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -47,6 +48,9 @@ class SolicitudController extends VoyagerBaseController
 
         // Crear la solicitud
         $solicitud = new ArmorumappSolicitud();
+
+        $usuario = $request->user();
+
         $solicitud->tipo_peticion = $request->tipo_peticion;
         $solicitud->asunto = $request->asunto;
         $solicitud->mensaje = $request->mensaje;
@@ -84,20 +88,44 @@ class SolicitudController extends VoyagerBaseController
             $solicitud->otro_archivo = $file->storeAs($directory, $fileName, 'public');
         }
 
-        $usuario = $request->user();
-
         try {
             DB::beginTransaction();
 
-            // Guardar la solicitud en la base de datos
-            // $solicitud->save();
-            // Notificar al usuario
-            // $usuario->notify(new SolicitudRecibida($solicitud, $usuario));
+            // Paso 1: Obtener el último radicado generado para crear el código secuencial
+            $lastRadicado = ArmorumappRadicado::where('codigo_radicado', 'like', 'RAD2024%')
+                ->orderBy('codigo_radicado', 'desc')
+                ->first();
 
-            // Obtener el correo del admin desde Voyager y enviarle notificación
+            // Paso 2: Extraer el número del último código generado
+            if ($lastRadicado) {
+                $lastNumber = (int)substr($lastRadicado->codigo_radicado, 7); // Obtener la parte numérica
+            } else {
+                $lastNumber = 0; // Si no hay radicados previos, empieza en 0
+            }
+
+            // Paso 3: Incrementar el número y generar el nuevo código de radicado
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT); // Agregar ceros a la izquierda
+            $codigoRadicado = 'RAD2024' . $newNumber;
+
+            // Paso 4: Crear el radicado
+            $radicado = new ArmorumappRadicado();
+            $radicado->codigo_radicado = $codigoRadicado;
+            $radicado->usuario = $user->id; // Usuario autenticado
+            $radicado->tipo_peticion = $request->tipo_peticion;
+            $radicado->estado = 'Radicado'; // Estado inicial del radicado
+            $radicado->documento_tercero = $user->documento_tercero; // Estado inicial del radicado
+            $radicado->save();
+
+            // Paso 5: Actualizar la solicitud (ya guardada por insertUpdateData) con el código de radicado
+            $data->codigo_radicado = $codigoRadicado; // Asociamos el radicado a la solicitud
+            $data->estado = $radicado->id;
+            $data->save();
+
+            // Notificaciones
             $adminEmail = Voyager::setting('admin.correo', 'deseosecreto92@gmail.com');
-            Mail::to($adminEmail)->send(new solicitudAdminRecibida($solicitud, $usuario));
-            Mail::to($user->email)->send(new solicitudRecibida($solicitud, $usuario));
+            Mail::to($adminEmail)->send(new solicitudAdminRecibida($data, $user));
+            Mail::to($user->email)->send(new solicitudRecibida($data, $user));
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -107,6 +135,7 @@ class SolicitudController extends VoyagerBaseController
                 'alert-type' => 'danger',
             ]);
         }
+
 
         // Redireccionar
         if (!$request->has('_tagging')) {

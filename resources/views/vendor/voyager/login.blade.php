@@ -175,8 +175,13 @@
                                 </div>
 
                                 <x-button type="submit">{{ __('Iniciar Sesión') }}</x-button>
-                                
+
+                                <a class="text-sm btn btn-outline-secondary" href="{{ url('/') }}">
+                                    {{ __('Inicio') }}
+                                </a>
+
                                 <div class="text-center mt-4">
+
                                     @if (Route::has('password.request'))
                                         <a class="underline text-sm"
                                             href="{{ route('password.request') }}">{{ __('¿Olvidaste tu contraseña?') }}</a>

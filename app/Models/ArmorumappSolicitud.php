@@ -13,7 +13,8 @@ class ArmorumappSolicitud extends Model
     protected $table = 'armorumapp_solicitud';
     protected $fillable = [
         // Otros campos fillable que puedas tener
-        'documento_tercero', 'tipo_peticion',
+        'documento_tercero',
+        'tipo_peticion',
     ];
 
     public function scopeCurrentUser($query)
@@ -40,5 +41,10 @@ class ArmorumappSolicitud extends Model
                 $solicitud->user_id = Auth::user()->id;
             }
         });
+    }
+
+    public function radicado()
+    {
+        return $this->belongsTo(ArmorumappRadicado::class, 'estado', 'id'); // 'estado' es el campo en la tabla 'solicitud' que hace referencia a la tabla 'radicado'
     }
 }

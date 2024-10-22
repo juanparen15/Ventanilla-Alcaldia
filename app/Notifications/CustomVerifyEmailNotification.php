@@ -81,7 +81,7 @@ class CustomVerifyEmailNotification extends Notification
     {
         return (new MailMessage)
             ->subject(Lang::get('Verificación de Correo Electrónico'))
-            ->line(Lang::get('Por favor, haz clic en el botón de abajo para verificar tu dirección de correo electrónico.'))
+            // ->line(Lang::get('Por favor, haz clic en el botón de abajo para verificar tu dirección de correo electrónico.'))
             // ->action(Lang::get('Verificar dirección de correo electrónico'), $url)
             ->line(Lang::get('Tu código de verificación es: :pin', ['pin' => $this->verificationPin])) // Muestra el PIN
             ->line(Lang::get('Este código expirará en 10 minutos.'))

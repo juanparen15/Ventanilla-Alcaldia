@@ -1108,31 +1108,40 @@
     </section><!--end section-->
     <!-- End Blog --> --}}
 
-    {{-- <section class="relative lg:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="contact">
+    <section class="relative lg:py-24 py-16 bg-slate-50 dark:bg-slate-800" id="contact">
         <div class="container relative">
             <div class="grid grid-cols-1 pb-6 text-center">
                 <h3 class="font-semibold text-2xl leading-normal mb-4">CONTÁCTANOS</h3>
-
-                <p class="text-slate-400 max-w-xl mx-auto">This is just a simple text made for this unique and awesome
-                    template, you can replace it with any text.</p>
-            </div><!--end grid-->
+            </div>
 
             <div class="grid md:grid-cols-12 grid-cols-1 items-center gap-6">
+                <!-- Información de contacto -->
                 <div class="md:col-span-6">
                     <div class="lg:me-8">
-                        <div class="relative">
-                            <?php $bg_contact = Voyager::setting('site.bg_contact', ''); ?>
-                            <img src="{{ Voyager::image($bg_contact) }}"
-                                class="rounded-full shadow dark:shadow-gray-700" alt="Logo Icon">
+                        <div class="relative p-6 bg-white dark:bg-slate-900 rounded-md shadow dark:shadow-gray-700">
+                            <h4 class="font-semibold text-xl mb-4">Información de contacto</h4>
+                            <ul class="space-y-2 text-left text-slate-600 dark:text-slate-400">
+                                <li><strong>Horario de atención:</strong> {{ Voyager::setting('home.horario') }}</li>
+                                <li><strong>Dirección:</strong> {{ Voyager::setting('home.direccion_entidad') }}</li>
+                                <li><strong>Email:</strong> {{ Voyager::setting('home.email_entidad') }}</li>
+                                <li><strong>Teléfono:</strong> {{ Voyager::setting('home.telefono_entidad') }}</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <a>
+                                    <img src="{{ $admin_logo_img ? Voyager::image($admin_logo_img) : voyager_asset('images/fedetiro.png') }}"
+                                        alt="VENTANILLA Logo">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Formulario de contacto -->
                 <div class="lg:col-span-5 md:col-span-6">
                     <div class="lg:ms-5">
                         <div class="bg-white dark:bg-slate-900 rounded-md shadow dark:shadow-gray-700 p-6">
-                            <form method="post" name="myForm" id="myForm" onsubmit="return validateForm()">
-                                <p class="mb-0" id="error-msg"></p>
-                                <div id="simple-msg"></div>
+                            <form method="POST" action="{{ route('contact.send') }}" id="myForm">
+                                @csrf
                                 <div class="grid lg:grid-cols-12 grid-cols-1 gap-3">
                                     <div class="lg:col-span-6">
                                         <label for="name" class="font-semibold">Tu Nombre:</label>
@@ -1170,8 +1179,9 @@
                     </div>
                 </div>
             </div>
-        </div><!--end container-->
-    </section> --}}
+        </div>
+    </section>
+
 
     <!-- Footer Start -->
     <footer class="footer bg-dark-footer relative text-gray-200 dark:text-gray-200">
@@ -1188,7 +1198,8 @@
                         <p class="mb-0">©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Ventanilla al Ciudadano. Hecho con <i class="mdi mdi-heart text-red-600"></i> por
+                            </script> Ventanilla al Ciudadano. Hecho con <i
+                                class="mdi mdi-heart text-red-600"></i> por
                             <a href="https://armorumsgdea.net" target="_blank" class="text-reset">ARMORUM VU-SGDEA
                                 ®</a>
                         </p>
@@ -1253,14 +1264,13 @@
     <!-- LTR & RTL Mode Code -->
 
     <!-- JAVASCRIPTS -->
-    <script src="assets/libs/swiper/js/swiper.min.js"></script>
     <script src="assets/libs/feather-icons/feather.min.js"></script>
     <script src="assets/libs/gumshoejs/gumshoe.polyfills.min.js"></script>
     <script src="assets/libs/tobii/js/tobii.min.js"></script>
     <script src="assets/libs/tiny-slider/min/tiny-slider.js"></script>
     <script src="assets/js/plugins.init.js"></script>
     <script src="assets/js/app.js"></script>
-    <!-- JAVASCRIPTS -->
+    <!-- JAVASCRIPTS -->
 </body>
 
 </html>

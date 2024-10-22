@@ -166,13 +166,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <h5 for="peso">{{ __('Peso (KG)') }}</h5>
                                 <input min="30" max="200" required="true" type="number"
                                     class="form-control" id="peso" name="peso"
                                     placeholder="{{ __('Peso KG') }}"
                                     value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-group">
                                 <h5 for="altura">{{ __('Altura (CM)') }}</h5>
                                 <input min="120" max="250" required="true" type="number"

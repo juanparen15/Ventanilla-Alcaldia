@@ -9,6 +9,7 @@ use DragonCode\Support\Facades\Filesystem\File;
 use Illuminate\Support\Facades\Response;
 use TCG\Voyager\Facades\Voyager;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,11 +60,11 @@ Route::group(['prefix' => 'admin'], function () {
 
 // Custom routes for Ajax requests
 Route::get('/get-municipios/{departamento}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_municipios');
-Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_club');
-Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
-Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
-Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);
-Route::get('inscripciones/{id}/detalle', [App\Http\Controllers\Voyager\InscripcionController::class, 'detalle'])->name('inscripciones.detalle');
+// Route::get('/get-club/{liga}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_club');
+// Route::get('/get-modalidades/{tipo_arma}', 'TCG\Voyager\Http\Controllers\AjaxController@obtener_modalidades');
+// Route::get('/get-modalidades-by-evento/{codigo_evento}', 'TCG\Voyager\Http\Controllers\AjaxController@getModalidadesByEvento');
+// Route::post('/get-valor-inscripcion', [InscripcionController::class, 'getValorInscripcion']);
+// Route::get('inscripciones/{id}/detalle', [App\Http\Controllers\Voyager\InscripcionController::class, 'detalle'])->name('inscripciones.detalle');
 
 
 // Email verification routes
@@ -77,3 +78,5 @@ Route::post('/email/verify', [EmailVerificationController::class, 'verify'])
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::post('/send-message', [ContactController::class, 'send'])->name('contact.send');

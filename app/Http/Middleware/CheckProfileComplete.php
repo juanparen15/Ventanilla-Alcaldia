@@ -25,7 +25,8 @@ class CheckProfileComplete
         if (
             $user &&
             $user->hasVerifiedEmail() &&
-            !$this->profileCompleted($user)
+            !$this->profileCompleted($user)  &&
+            !$request->ajax()
         ) {
             // Si la ruta es la de edición, permitir el acceso sin redirección adicional
             if (in_array($currentRoute, $this->allowedRoutes())) {
@@ -49,8 +50,8 @@ class CheckProfileComplete
         return [
             'voyager.users.edit',   // Ruta de edición de usuario
             'voyager.users.update', // Ruta de actualización de perfil
-            'voyager.voyager_assets',// Puedes agregar más rutas aquí si es necesario
-            'voyager.logout',// Puedes agregar más rutas aquí si es necesario
+            'voyager.voyager_assets',
+            'voyager.logout',
         ];
     }
 
@@ -64,7 +65,8 @@ class CheckProfileComplete
             !is_null($user->primer_apellido) &&
             !is_null($user->movil) &&
             !is_null($user->direccion) &&
-            !is_null($user->fecha_nacimiento) &&
-            !is_null($user->peso);
+            !is_null($user->departamentos) &&
+            !is_null($user->municipios) &&
+            !is_null($user->condicion_especial);
     }
 }

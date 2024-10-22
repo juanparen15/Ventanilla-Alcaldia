@@ -4,6 +4,6 @@
     Gracias por registrarte.
     Tu código de seis dígitos es {{ $pin }}
 
-    Gracias,<br>
+    Gracias,
     {{ config('app.name') }}
 @endcomponent

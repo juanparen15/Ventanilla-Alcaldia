@@ -137,7 +137,7 @@
                             @endphp
                             <div class="form-group">
                                 <h5 for="departamentos">{{ __('Departamento de Nacimiento') }}</h5>
-                                <select class="form-control select2" id="departamentos" name="departamentos">
+                                <select required class="form-control select2" id="departamentos" name="departamentos">
                                     <option value="" disabled selected>Seleccione un Departamento</option>
                                     @foreach (Voyager::departamentos() as $departamento)
                                         <option value="{{ $departamento->id }}"
@@ -156,7 +156,7 @@
                             @endphp
                             <div class="form-group">
                                 <h5 for="municipios">{{ __('Municipio de Nacimiento') }}</h5>
-                                <select class="form-control select2" id="municipios" name="municipios">
+                                <select required class="form-control select2" id="municipios" name="municipios">
                                     <option value="" disabled selected>Seleccione un Municipio</option>
                                     @foreach (Voyager::municipios() as $municipio)
                                         <option value="{{ $municipio->id }}"
@@ -166,20 +166,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            {{-- <div class="form-group">
-                                <h5 for="peso">{{ __('Peso (KG)') }}</h5>
-                                <input min="30" max="200" required="true" type="number"
-                                    class="form-control" id="peso" name="peso"
-                                    placeholder="{{ __('Peso KG') }}"
-                                    value="{{ old('peso', $dataTypeContent->peso ?? '') }}">
-                            </div> --}}
-                            {{-- <div class="form-group">
-                                <h5 for="altura">{{ __('Altura (CM)') }}</h5>
-                                <input min="120" max="250" required="true" type="number"
-                                    class="form-control" id="altura" name="altura"
-                                    placeholder="{{ __('Altura (CM)') }}"
-                                    value="{{ old('altura', $dataTypeContent->altura ?? '') }}">
-                            </div> --}}
                             @php
                                 if (isset($dataTypeContent->estado_civil)) {
                                     $selected_estado_civil = $dataTypeContent->estado_civil;
@@ -227,7 +213,7 @@
                             @endphp
                             <div class="form-group">
                                 <h5 for="condicion_especial">{{ __('Condición Especial') }}</h5>
-                                <select class="form-control select2" id="condicion_especial" name="condicion_especial">
+                                <select required class="form-control select2" id="condicion_especial" name="condicion_especial">
                                     <option value="" disabled selected>Seleccione una Condición Especial</option>
                                     @foreach (Voyager::condicion_especial() as $condicion_especial)
                                         <option value="{{ $condicion_especial->id }}"

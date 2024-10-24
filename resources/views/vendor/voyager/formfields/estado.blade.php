@@ -1,6 +1,6 @@
 @php
     // Obtener el valor del estado desde la relación radicado y convertir a minúsculas
-    $estado = strtolower($data->radicado->estado ?? 'Desconocido'); // Obtener el nombre del estado en minúsculas
+    $estado = strtolower($data->estado ?? 'Desconocido'); // Obtener el nombre del estado en minúsculas
     $color = '';
 
     switch ($estado) {

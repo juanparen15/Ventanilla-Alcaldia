@@ -71,16 +71,6 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         return $this->belongsToMany(TipoArma::class, 'arma_modalidad', 'user_id', 'tipo_arma_id');
     }
 
-    public function Club()
-    {
-        return $this->belongsTo(Club::class, 'club');
-    }
-    
-    public function Liga()
-    {
-        return $this->belongsTo(Liga::class, 'liga');
-    }
-
     
     public function Municipios()
     {

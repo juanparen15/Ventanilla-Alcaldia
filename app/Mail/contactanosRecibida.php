@@ -37,7 +37,8 @@ class contactanosRecibida extends Mailable
      */
     public function build()
     {
-        return $this->subject('Nuevo mensaje de contacto recibido')
+        return $this
+        // ->subject('Nuevo mensaje de contacto recibido')
                     ->markdown('emails.contactanos-recibido')
                     ->withAttachments($this->attachments());
     }
@@ -48,7 +49,7 @@ class contactanosRecibida extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nuevo mensaje de contacto recibido',
+            // subject: 'Nuevo mensaje de contacto recibido',
         );
     }
 

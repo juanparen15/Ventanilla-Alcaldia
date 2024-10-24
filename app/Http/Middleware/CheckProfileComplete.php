@@ -65,6 +65,7 @@ class CheckProfileComplete
             !is_null($user->primer_apellido) &&
             !is_null($user->movil) &&
             !is_null($user->direccion) &&
+            !is_null($user->fecha_nacimiento) &&
             !is_null($user->departamentos) &&
             !is_null($user->municipios) &&
             !is_null($user->condicion_especial);

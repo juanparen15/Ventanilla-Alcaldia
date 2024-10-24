@@ -1,4 +1,5 @@
 @component('mail::message')
+
     # Nuevo mensaje de contacto
 
     - Nombre: {{ $name }}
